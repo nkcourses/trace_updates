@@ -1,0 +1,10 @@
+{
+  "latest": "0.6.0",
+  "released": "2026-08-12",
+  "headline": "Subclip matching, and Trace now tells you when there is an update.",
+  "url": "https://www.nkcourses.co.uk/trace",
+  "notes": [
+    "Selecting a master clip now finds uses of its subclips, matched on the shared media file.",
+    "An update notice appears in the panel when a new version is out."
+  ]
+}
