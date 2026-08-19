@@ -39,675 +39,1404 @@
   │  GIF sitting unused beside it. One file per figure cannot fail that way. │
   └──────────────────────────────────────────────────────────────────────────┘
 -->
-<html lang="en-GB">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trace — Help &amp; Documentation</title>
-<meta name="description" content="User guide for Trace, a free Premiere Pro panel that shows every place a clip is used across every sequence — and selects every instance at once.">
-<link rel="icon" href="assets/trace-mark-black.png">
+<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Squarespace build kit — Trace pages</title>
 <style>
-  /* 🔴 The accent is BLUE, where VersionUp's is violet. The two panels are
-     siblings and should look it, but a reader who has both pages open must be
-     able to tell them apart at a glance without reading the logo. Blue is also
-     the panel's own --tr-accent (#2680eb), so the page and the product agree.
-     --blue-ink is the darkened cut for body links, because #2680eb on white is
-     under 4.5:1 at 16px and this page has a lot of links in prose. */
-  :root{
-    --ink:#14181C; --body:#2A3138; --muted:#6B7280;
-    --blue:#2680EB; --blue-hi:#378EF0; --blue-ink:#1266CC; --mint:#0A7E56;
-    --tint:#F3F8FE; --edge:#D8E7FA; --line:#E6E8EC; --bg:#ffffff;
-    --code:#F4F5F7;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth; scroll-padding-top:80px}
-  body{
-    margin:0; background:var(--bg); color:var(--body);
-    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  a{color:var(--blue-ink); text-decoration:none}
-  a:hover{text-decoration:underline}
-
-  /* ---------- header ---------- */
-  .top{
-    position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:12px;
-    padding:14px 24px; background:rgba(255,255,255,.92); backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .top img{width:26px;height:26px}
-  .top b{color:var(--ink); font-size:16px}
-  .top span{color:var(--muted); font-size:14px}
-  .top .buy{margin-left:auto; background:var(--blue); color:#fff; padding:8px 16px;
-            border-radius:8px; font-size:14px; font-weight:600}
-  .top .buy:hover{background:var(--blue-hi); text-decoration:none}
-  .menu-btn{display:none; margin-left:auto; border:1px solid var(--line); background:none;
-            border-radius:8px; padding:7px 12px; font-size:14px; cursor:pointer}
-
-  /* ---------- layout ---------- */
-  .wrap{display:flex; max-width:1180px; margin:0 auto; gap:40px; padding:0 24px}
-  nav{
-    width:230px; flex:0 0 230px; position:sticky; top:64px; align-self:flex-start;
-    max-height:calc(100vh - 64px); overflow-y:auto; padding:28px 0 60px;
-  }
-  nav h4{margin:22px 0 8px; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-         color:var(--muted)}
-  nav h4:first-child{margin-top:0}
-  nav a{display:block; padding:5px 10px; margin-left:-10px; border-radius:6px;
-        color:var(--body); font-size:14.5px}
-  nav a:hover{background:var(--tint); text-decoration:none}
-  nav a.on{background:var(--tint); color:var(--blue-ink); font-weight:600}
-
-  main{flex:1 1 auto; min-width:0; padding:34px 0 100px; max-width:760px}
-
-  /* ---------- type ---------- */
-  h1{margin:0 0 8px; font-size:40px; line-height:1.1; color:var(--ink); letter-spacing:-.02em}
-  .lede{font-size:19px; color:var(--muted); margin:0 0 30px}
-  h2{margin:56px 0 14px; font-size:27px; color:var(--ink); letter-spacing:-.01em;
-     padding-top:10px; border-top:1px solid var(--line)}
-  h3{margin:32px 0 8px; font-size:19px; color:var(--ink)}
-  p{margin:0 0 15px}
-  ul,ol{margin:0 0 15px; padding-left:22px}
-  li{margin:6px 0}
-  code{background:var(--code); padding:2px 6px; border-radius:4px;
-       font:14px ui-monospace,Menlo,Consolas,monospace; color:var(--ink)}
-  kbd{background:#fff; border:1px solid #D3D7DD; border-bottom-width:2px; border-radius:5px;
-      padding:1px 6px; font:13px ui-monospace,Menlo,Consolas,monospace; color:var(--ink)}
-  strong{color:var(--ink)}
-
-  /* ---------- pieces ---------- */
-  figure{margin:22px 0}
-  figure img{width:100%; border:1px solid var(--line); border-radius:10px; display:block}
-  figcaption{margin-top:8px; font-size:13.5px; color:var(--muted); text-align:center}
-
-  .cards{display:flex; flex-wrap:wrap; gap:14px; margin:28px 0}
-  .card{flex:1 1 220px; border:1px solid var(--edge); background:var(--tint);
-        border-radius:12px; padding:16px 18px}
-  .card b{display:block; color:var(--blue-ink); margin-bottom:3px; font-size:15px}
-  .card span{font-size:14px; color:var(--body)}
-  a.card:hover{text-decoration:none; border-color:var(--blue)}
-
-  .note{border-left:3px solid var(--blue); background:var(--tint);
-        padding:14px 18px; border-radius:0 8px 8px 0; margin:22px 0}
-  .warn{border-left-color:#B45309; background:#FFF8EC}
-  .good{border-left-color:var(--mint); background:#F1FAF6}
-  .note p:last-child{margin-bottom:0}
-  .note b{color:var(--ink)}
-
-  .dl{display:flex; align-items:center; gap:16px; border:1px solid var(--edge);
-      background:var(--tint); border-radius:12px; padding:18px 20px; margin:24px 0}
-  .dl .pdf{flex:0 0 auto; font:600 12px/1 ui-monospace,Menlo,monospace; color:var(--blue-ink);
-           background:#fff; border:1px solid var(--edge); border-radius:8px; padding:14px 12px}
-  .dl b{display:block; color:var(--ink)}
-  .dl span{font-size:14px; color:var(--muted)}
-  .dl a{margin-left:auto; background:var(--blue); color:#fff; padding:9px 16px;
-        border-radius:8px; font-size:14px; font-weight:600; white-space:nowrap}
-  .dl a:hover{background:var(--blue-hi); text-decoration:none}
-
-  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:15px}
-  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line);
-        vertical-align:top}
-  th{color:var(--ink); font-size:13px; letter-spacing:.04em; text-transform:uppercase}
-  td code{white-space:nowrap}
-  /* The left column of the "is not" and "can't do" tables. Amber, not red:
-     these are boundaries, not errors, and red reads as something went wrong. */
-  td.no{color:#B45309; font-weight:600}
-
-  /* ---------- release history ---------- */
-  .rel{border:1px solid var(--line); border-radius:12px; padding:15px 20px; margin:14px 0}
-  .rel:first-child{border-color:var(--edge); background:var(--tint)}
-  .rel-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px}
-  .rel-ver{font-size:17px; font-weight:600; color:var(--ink)}
-  .pill{background:var(--blue); color:#fff; font-size:10.5px; font-weight:700;
-        letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:99px}
-  .rel-date{margin-left:auto; font-size:13.5px; color:var(--muted)}
-  .rel-body>p:first-child{color:var(--ink); font-weight:600}
-  .rel-body>:last-child{margin-bottom:0}
-  .rel-body ul{margin-bottom:0}
-  .loading{color:var(--muted); font-size:14.5px; margin:14px 0}
-
-  footer{border-top:1px solid var(--line); margin-top:70px; padding-top:22px;
-         font-size:14px; color:var(--muted)}
-
-  @media (max-width:900px){
-    .wrap{display:block; padding:0 20px}
-    nav{position:static; width:auto; max-height:none; display:none; padding:16px 0;
-        border-bottom:1px solid var(--line)}
-    nav.open{display:block}
-    .menu-btn{display:block}
-    .top .buy{display:none}
-    main{padding-top:24px}
-    h1{font-size:32px}
-  }
-</style>
-</head>
-<body>
-
-<header class="top">
-  <img src="assets/trace-mark-black.png" alt="">
-  <b>Trace</b> <span>Help &amp; documentation</span>
-  <button class="menu-btn" id="menuBtn" aria-label="Contents">Contents</button>
-  <a class="buy" href="https://www.nkcourses.co.uk/trace">Get Trace — free</a>
+:root{--bg:#12141a;--card:#1b1e26;--line:#2c313b;--tx:#e9ebef;--mu:#98a0ad;--ac:#5b8cff;--am:#d9a441}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif}
+.w{max-width:900px;margin:0 auto;padding:0 20px}
+header{padding:48px 0 10px;border-bottom:1px solid var(--line)}
+h1{font-size:31px;margin:0 0 10px;letter-spacing:-.02em}
+h2{font-size:23px;margin:46px 0 6px;letter-spacing:-.02em}
+p{color:var(--mu);margin:0 0 14px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:18px;margin:14px 0}
+.step h3{margin:0 0 4px;font-size:16.5px}
+.step .where{font-size:13.5px;color:var(--am);margin-bottom:10px}
+.step p{font-size:14.5px;margin:0 0 10px}
+textarea{width:100%;height:150px;background:#0f1116;color:#cfd6e2;border:1px solid var(--line);
+ border-radius:8px;padding:11px;font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;resize:vertical}
+button{background:var(--ac);color:#fff;border:0;border-radius:7px;padding:9px 16px;font:inherit;
+ font-size:14px;font-weight:600;cursor:pointer;margin-top:9px}
+button:hover{filter:brightness(1.12)}
+button.done{background:#3f7d4f}
+.note{border-left:3px solid var(--am);background:var(--card);border-radius:9px;padding:16px 18px;margin:16px 0}
+.note p:last-child{margin:0}
+ol{color:var(--mu);font-size:15px}li{margin-bottom:7px}
+code{background:#0f1116;padding:1px 5px;border-radius:4px;font-size:.9em}
+footer{padding:40px 0 70px;color:var(--mu);font-size:13.5px}
+</style></head><body><div class="w">
+<header>
+<h1>Squarespace build kit</h1>
+<p>Every block below is a separate paste. Build the page top to bottom, dropping native
+Squarespace blocks (images, newsletter, forms, spacers) wherever you like in between.</p>
 </header>
 
-<div class="wrap">
-<nav id="nav">
-  <h4>Start here</h4>
-  <a href="#overview">Overview</a>
-  <a href="#not">What Trace is not</a>
-  <a href="#requirements">Requirements</a>
-  <a href="#install">Install</a>
-  <a href="#quick-start">Quick start</a>
-
-  <h4>The panel</h4>
-  <a href="#two-views">One clip at a time</a>
-  <a href="#find">Finding every use</a>
-  <a href="#select">Selecting uses</a>
-  <a href="#stepping">Stepping through uses</a>
-  <a href="#gestures">Every gesture</a>
-
-  <h4>Real projects</h4>
-  <a href="#nests">Nested sequences</a>
-  <a href="#subclips">Subclips and duplicates</a>
-  <a href="#multicam">Merged and multicam</a>
-  <a href="#archived">Archived sequences</a>
-
-  <h4>Acting on what you find</h4>
-  <a href="#markers">Adding markers</a>
-  <a href="#source">The Source Monitor</a>
-  <a href="#copy">Copying the list</a>
-
-  <h4>Reference</h4>
-  <a href="#docking">Docking</a>
-  <a href="#updates">Updates and About</a>
-  <a href="#history">Release history</a>
-  <a href="#limits">What it can't do</a>
-  <a href="#troubleshooting">Troubleshooting</a>
-  <a href="#trace-plus">Trace+</a>
-  <a href="#support">Support</a>
-</nav>
-
-<main>
-  <h1>Trace</h1>
-  <p class="lede">Pick one clip. See every place it is used across your entire project — then select
-  every instance at once, which Premiere has never been able to do.</p>
-
-  <div class="cards">
-    <a class="card" href="#install"><b>Install</b><span>Get the panel into Premiere. About a
-      minute, and there is no licence key.</span></a>
-    <a class="card" href="#quick-start"><b>Quick start</b><span>Find every use of a clip and light
-      them all up in the timeline.</span></a>
-    <a class="card" href="#gestures"><b>Every gesture</b><span>Click, shift-click, cmd-click and
-      alt-click, in one table.</span></a>
-  </div>
-
-  <figure>
-    <img src="assets/trace-demo.gif" alt="Trace finding seven uses of a clip across four sequences, then selecting all of them in the timeline at once.">
-    <figcaption>One click on a clip, one press of <strong>Select all</strong>: every instance lights
-      up at the same moment.</figcaption>
-  </figure>
-
-  <h2 id="overview">Overview</h2>
-  <p>Click a clip in the Project panel and Trace shows every place it is used — which sequences,
-  which timecodes, how long, and how much of the source you have actually touched. Then one button
-  selects every instance in the timeline at once.</p>
-  <p><strong>The part that matters most:</strong> a selection is not a list. Once nine uses are
-  selected they are a real Premiere selection — nudge them, delete them, apply an effect, colour
-  them. Everything else that answers "where is this clip?" hands you a list and makes you visit the
-  entries one at a time.</p>
-
-  <div class="note">
-    <p><b>Premiere can already find your clips.</b> The Video Usage column does it, and Sequence
-    Index (26.2) lists what is in one sequence. Both are good, and Trace does not replace either.</p>
-    <p><b>What neither can do</b> is select every instance simultaneously, give you a total, resolve
-    through nested sequences, or ignore your archived versions. That is the whole of what Trace is
-    for.</p>
-  </div>
-
-  <h2 id="not">What Trace is not</h2>
-  <p>Trace answers one question — <strong>where is this clip used?</strong> — and it is worth being
-  blunt about everything it deliberately isn't, so you know inside a minute whether it is the tool
-  you want.</p>
-  <table>
-    <tr><th>It is not</th><th>What you actually want</th></tr>
-    <tr><td class="no">A media manager</td><td>Trace never moves, renames, copies, consolidates or deletes a single file. It reads.</td></tr>
-    <tr><td class="no">An unused-media finder</td><td>Trace answers about the clip <em>you selected</em>. "What in this project is used nowhere?" is a different question — that is <a href="#trace-plus">Trace+</a>.</td></tr>
-    <tr><td class="no">A duplicate finder</td><td>It shows repeats of one clip, not every duplicated asset in the project. Also Trace+.</td></tr>
-    <tr><td class="no">A project archiver or trimmer</td><td>It will not shrink your project folder or collect only the used media. Trace+.</td></tr>
-    <tr><td class="no">A reporting or export tool</td><td>No CSV, no PDF, no cue sheet. <strong>Copy list</strong> puts plain text on the clipboard, and that is the whole of it.</td></tr>
-    <tr><td class="no">A search tool</td><td>You cannot type a filename into Trace. It follows what you select, on purpose — nothing to configure and nothing to learn.</td></tr>
-    <tr><td class="no">A replacement for the Video Usage column</td><td>A different question, not a better version of the same one. Use both.</td></tr>
-    <tr><td class="no">Something that edits for you</td><td>It moves the playhead and makes selections. Only if you ask does it add markers or set in/out points. It never cuts, trims or ripples.</td></tr>
-    <tr><td class="no">A subscription, or a trial</td><td>Free. No account, no key, no sign-in, no expiry, nothing to cancel.</td></tr>
-  </table>
-  <p>It is also not a panel most people open every day. It earns its place on the days you inherit
-  someone else's project, hunt a clip you know you used somewhere, or need to know what a
-  forty-minute interview actually gave you.</p>
-
-  <h2 id="requirements">Requirements</h2>
-  <table>
-    <tr><th>Premiere Pro</th><td><strong>25.6 or newer.</strong> Check under
-      <code>Premiere Pro &gt; About Premiere Pro</code>. Earlier versions cannot run it — Trace uses
-      Adobe's current plugin system (UXP), and there is no build for older releases.</td></tr>
-    <tr><th>System</th><td>macOS or Windows.</td></tr>
-    <tr><th>Licence</th><td>None. Trace is free, with no account and no key.</td></tr>
-  </table>
-
-  <h2 id="install">Install</h2>
-  <ol>
-    <li><strong>Download <code>Trace.ccx</code> and double-click it.</strong> Creative Cloud Desktop
-      installs it for you — nothing to unzip.</li>
-    <li><strong>Quit Premiere Pro and open it again.</strong> Premiere only looks for new panels at
-      startup.</li>
-    <li><strong>Window &gt; UXP Plugins &gt; Trace.</strong></li>
-  </ol>
-  <p>That is all of it. There is no third step where you paste a key.</p>
-
-  <figure>
-    <img src="assets/window-menu.png" alt="Premiere's Window menu open, showing UXP Plugins and Trace.">
-    <figcaption>It is under <strong>Window &gt; UXP Plugins</strong> — not Window &gt;
-      Extensions.</figcaption>
-  </figure>
-
-  <div class="note warn">
-    <p><b>Double-clicking did nothing?</b> Open Creative Cloud Desktop first, then double-click the
-    file again. If Creative Cloud is not installed, use the free
-    <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a> instead.</p>
-  </div>
-
-  <h2 id="quick-start">Quick start</h2>
-  <ol>
-    <li>Open a project and dock Trace anywhere you like.</li>
-    <li><strong>Click a clip in the Project panel.</strong> Trace scans the project once — a few
-      hundred milliseconds on a normal job — then answers instantly from then on.</li>
-    <li>Click any row to jump the playhead to that use.</li>
-    <li>Press <strong>Select all N in this sequence</strong> to light up every use at once.</li>
-  </ol>
-  <p>With nothing selected, Trace waits. That is the whole loop; everything below is detail.</p>
-
-  <h2 id="two-views">One clip at a time</h2>
-  <p><strong>Trace answers about the clip you select, and nothing else.</strong> There is no view to
-  switch, no mode, no setting. Click a clip, a subclip, an audio file or a sequence in the Project
-  panel and Trace shows every place it is used. Click away and it waits.</p>
-  <p>That is the whole shape of it, and it is deliberate: a panel that only ever answers one question
-  needs no explaining. If you want the same answer for <strong>many clips at once</strong> — what a
-  whole sequence reuses, what the whole project no longer needs — that is
-  <a href="#trace-plus">Trace+</a>.</p>
-  <div class="note">
-    <p style="margin:0"><b>A sequence counts as a clip.</b> Select one and Trace tells you where
-    <em>that sequence</em> is nested, the same way it would for any other item.</p>
-  </div>
-
-  <h2 id="find">Finding every use of a clip</h2>
-  <p>Select a clip and Trace answers with a total line — <em>9 uses · 4 sequences · 3m 12s</em> —
-  and then the detail: every sequence it appears in, and inside each one, every use with its
-  timecode, its duration and which track it sits on.</p>
-
-  <figure>
-    <img src="assets/feature-find.gif" alt="Selecting a clip in the Project panel and Trace immediately listing every sequence it appears in.">
-    <figcaption><strong>Finding every use</strong> — nothing to press, and no column to turn on.
-      Trace follows the Project panel.</figcaption>
-  </figure>
-
-  <p>Audio and video that were shot together and are cut together count as <strong>one</strong> use,
-  not two. Trace pairs them when they overlap by more than half, so a J-cut stays one use and two
-  back-to-back edits stay two.</p>
-  <p>The list updates as you edit. Add a clip, delete one, or move something, and Trace re-scans on
-  its own within a few hundred milliseconds. <strong>☰ &gt; Re-scan project</strong> forces it
-  immediately if you would rather not wait.</p>
-
-  <h2 id="select">Selecting uses in the timeline</h2>
-  <p><strong>This is the thing nothing else does.</strong> Press <strong>Select all N in this
-  sequence</strong> and every use becomes a real Premiere selection at the same moment — ready to
-  nudge, delete, label, or drop an effect onto.</p>
-
-  <figure>
-    <img src="assets/feature-select-all.gif" alt="Pressing Select all in Trace and seven clips lighting up across the timeline simultaneously.">
-    <figcaption><strong>Select all uses</strong> — seven clips you could not have picked out become
-      one selection.</figcaption>
-  </figure>
-
-  <p>For a subset, tick the box beside any use, or <kbd>Cmd</kbd>-click (<kbd>Ctrl</kbd> on Windows)
-  the row. Ticked rows fill in so the panel and the timeline always agree.</p>
-
-  <div class="note">
-    <p><b>A selection cannot span two sequences</b> — that is Premiere, not Trace. Ticking a use in a
-    different sequence replaces your picks rather than adding to them, and the status line says so
-    when it happens.</p>
-  </div>
-
-  <h2 id="stepping">Stepping through uses</h2>
-  <p>The arrows at the bottom walk the playhead through every use on screen, in order, jumping
-  between sequences as needed. The counter between them tells you where you are —
-  <em>3 / 9</em>. <strong>Clear</strong> drops the selection and the picks.</p>
-
-  <h2 id="gestures">Every gesture</h2>
-  <table>
-    <tr><th>Do this</th><th>Get this</th></tr>
-    <tr><td>Click a use</td><td>Jump the playhead there and select that clip</td></tr>
-    <tr><td><kbd>Shift</kbd>-click, or double-click</td><td>Open in the Source Monitor, with that use set as in/out</td></tr>
-    <tr><td><kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click, or the tick box</td><td>Add or remove from the selection</td></tr>
-    <tr><td><kbd>Alt</kbd>-click</td><td>Copy the clip's name, to paste into the Project panel's search box</td></tr>
-    <tr><td>The arrows</td><td>Step through every use on screen</td></tr>
-  </table>
-  <p><kbd>Shift</kbd> and double-click do the same thing deliberately, so the Source Monitor is
-  reachable whichever one you reach for.</p>
-
-  <h2 id="nests">Nested sequences</h2>
-  <p>If a clip lives inside a nest and that nest is cut into a master, Trace reports
-  <strong>both</strong> — the use inside the nest, and where it lands in the master, labelled
-  <code>via &lt;nest name&gt;</code>. Native reports the first and never mentions the second, which
-  is the sequence you are actually working in.</p>
-  <table>
-    <tr><th>Nest trimmed past the use</th><td>Not reported. The master genuinely does not contain it, and a wrong number is worse than a missing one.</td></tr>
-    <tr><th>Retimed nest</th><td>Mapped, divided by the speed, and marked <code>~</code> with a note under the totals.</td></tr>
-    <tr><th>Reversed nest</th><td>Not mapped at all. The arithmetic depends on where the reversal's boundaries sit, and guessing would be a confident lie.</td></tr>
-    <tr><th>Nest inside a nest</th><td>Followed, to six levels, with a guard against a sequence that somehow contains itself.</td></tr>
-  </table>
-
-  <h2 id="subclips">Subclips and duplicate imports</h2>
-  <p>Selecting a master clip also finds uses of its <strong>subclips</strong>, matched on the shared
-  media file. Those rows are labelled with the name of the item they came from.</p>
-  <div class="note warn">
-    <p><b>Trace cannot tell a subclip from a second import of the same file</b> — Premiere exposes no
-    API for that relationship — so it does not claim to. Rows say <em>same media file</em> and name
-    the item, rather than saying <em>subclip</em>.</p>
-  </div>
-
-  <h2 id="multicam">Merged and multicam clips</h2>
-  <p>The component clips inside a merged clip, and the angles inside a multicam clip, are
-  <strong>not</strong> resolved. When you select one, Trace says so in the line under the totals
-  rather than quietly reporting a number that is too low.</p>
-  <div class="note warn">
-    <p><b>Merged clips cannot be resolved by any plugin.</b> Premiere exposes
-    <code>isMergedClip()</code> — enough to know that it is one — and nothing at all for reading the
-    sources inside it. Adobe's own answer, on the record: <em>"There are no ExtendScript APIs around
-    multi-cam, and there never will be."</em> The same gap covers merged clips, and no workaround has
-    ever been produced.</p>
-    <p><b>Multicam is a maybe.</b> A multicam source appears in the project as a sequence, so its
-    angles may be reachable that way. That is an untested route, not a promise — and even if it
-    works, nothing exposes which angle a clip is currently switched to.</p>
-  </div>
-
-  <h2 id="archived">Archived sequences</h2>
-  <p>If you keep old cuts in a <code>_PREVIOUS</code>, <code>_ARCHIVE</code> or <code>_OLD</code>
-  bin — as <a href="https://www.nkcourses.co.uk/versionup">VersionUp</a> creates — every native usage
-  list is full of them, and there is no way to filter them out.</p>
-
-  <figure>
-    <img src="assets/feature-archived.gif" alt="Toggling Hide archived sequences in Trace and the list dropping from fourteen results to five.">
-    <figcaption><strong>Hide archived sequences</strong> — fourteen results become the five that are
-      about the cut you are working on.</figcaption>
-  </figure>
-
-  <p>Trace hides them by default and tells you how many it is hiding. Untick to see them; the tick
-  box stays on screen either way, so it is a switch and not a trapdoor.</p>
-  <div class="note good">
-    <p>A Community Expert confirmed on the Adobe forums that native Premiere cannot do this. It is a
-    small feature that only exists because the person who built Trace also built a versioning tool
-    and got tired of the noise.</p>
-  </div>
-
-  <h2 id="markers">Adding markers</h2>
-  <p><strong>☰ &gt; Add markers to used</strong> drops a marker over every use in the list. Unlike a
-  selection, a marker survives you clicking somewhere else — it is the persistent version of
-  "highlight every use".</p>
-
-  <figure>
-    <img src="assets/feature-markers.gif" alt="Choosing Add markers to used and markers appearing above every use across the timeline.">
-    <figcaption><strong>Add markers to used</strong> — the flag that outlives the selection.</figcaption>
-  </figure>
-
-  <div class="note warn">
-    <p><b>It is one undo step per sequence</b>, not one for the lot, and Trace tells you how many
-    before you press it. Markers across four sequences is four presses of
-    <kbd>Cmd</kbd>+<kbd>Z</kbd>.</p>
-  </div>
-
-  <h2 id="source">The Source Monitor</h2>
-  <p><kbd>Shift</kbd>-click or double-click any use to open that clip in the Source Monitor with
-  <strong>the used section marked as in and out points</strong>, so you are looking at exactly the
-  stretch Trace is describing.</p>
-
-  <figure>
-    <img src="assets/feature-source-monitor.gif" alt="Shift-clicking a use in Trace and the clip opening in the Source Monitor with in and out points set around that section.">
-    <figcaption><strong>Open in the Source Monitor</strong> — with the used range already marked.</figcaption>
-  </figure>
-
-  <div class="note warn">
-    <p><b>This changes your project.</b> In and out points on a clip are what you get when you drag
-    it into a timeline afterwards, so setting them is a real edit — one
-    <kbd>Cmd</kbd>+<kbd>Z</kbd> to undo, and Trace says so in the status line when it happens.</p>
-    <p>Markers and this are the <strong>only two</strong> things Trace ever writes. Everything else
-    it does is a read.</p>
-  </div>
-
-  <h2 id="copy">Copying the list</h2>
-  <p><strong>☰ &gt; Copy list</strong> puts what is on screen on the clipboard as plain text —
-  sequence names, timecodes and durations — for an email, a note, or a message to whoever asked you
-  where that clip went. There is no CSV and no report file; if you need one of those, see
-  <a href="#trace-plus">Trace+</a>.</p>
-
-  <h2 id="docking">Docking</h2>
-  <p>Trace adapts to the space it is given, with nothing to configure.</p>
-
-  <figure>
-    <img src="assets/feature-docking.gif" alt="The Trace panel at three dock sizes: a normal column, a narrow strip, and a short bar under the timeline.">
-    <figcaption><strong>Three shapes, one panel</strong> — the answer keeps the room, the chrome
-      gives it up.</figcaption>
-  </figure>
-
-  <table>
-    <tr><th>A normal column</th><td>Everything: totals, the bin path, filters, the status line.</td></tr>
-    <tr><th>A narrow strip</th><td>Drops the duration column. The timecode still says where and the track still says which.</td></tr>
-    <tr><th>A short bar under the timeline</th><td>Drops the bin path, the filters and the status line so the list keeps the height.</td></tr>
-  </table>
-
-  <h2 id="updates">Updates and About</h2>
-  <p>Trace checks once a day whether a newer version exists and shows a small notice in the panel if
-  so. <strong>☰ &gt; Check for updates</strong> asks immediately.</p>
-  <p><strong>☰ &gt; About Trace</strong> shows the version you are running — the first thing to quote
-  if you report a problem — along with a link back to this site.</p>
-
-  <figure>
-    <img src="assets/about-dialog.png" alt="The About Trace window, showing the mark, the version number and the tagline.">
-    <figcaption><strong>☰ &gt; About Trace.</strong> The version number lives here.</figcaption>
-  </figure>
-
-  <h2 id="history">Release history</h2>
-  <div id="releases"><p class="loading">Loading releases…</p></div>
-
-  <h2 id="limits">What Trace can't do</h2>
-  <p>Not oversights. Premiere's plugin API genuinely does not offer these, and no plugin can do
-  them.</p>
-  <table>
-    <tr><th></th><th>Why</th></tr>
-    <tr><td class="no">Reveal a clip in the Project panel</td><td>The Project panel selection is read-only to plugins, and Premiere's own <em>Reveal in Project</em> command cannot be triggered either — Adobe segregates plugins from the main window's UI and keyboard handling deliberately. Trace shows the bin under the clip name, and <kbd>Alt</kbd>-click copies the name to paste into the search box.</td></tr>
-    <tr><td class="no">Colour or tint clips in the timeline</td><td>Colour labels are project-item only. Selection and markers are the two visual channels a plugin gets.</td></tr>
-    <tr><td class="no">Zoom or scroll the timeline</td><td>No API. Moving the playhead is the only navigation, and Premiere scrolls to follow it.</td></tr>
-    <tr><td class="no">Resolve merged clips</td><td>Nothing exists for reading the sources inside one. See <a href="#multicam">above</a>.</td></tr>
-    <tr><td class="no">Have a keyboard shortcut</td><td>Premiere does not support shortcuts for UXP plugins, and Adobe confirmed in April 2026 that none is planned.</td></tr>
-    <tr><td class="no">Search other or unopened projects</td><td>The API cannot reach a project that is not open. Productions are out for the same reason.</td></tr>
-    <tr><td class="no">Park the Source Monitor on the exact frame</td><td>Needs Premiere 26.3. Trace marks the used range as in/out instead, which shows you more.</td></tr>
-  </table>
-
-  <h2 id="troubleshooting">Troubleshooting</h2>
-
-  <h3>Trace isn't in the Window menu</h3>
-  <p>Restart Premiere after installing — it only looks for new panels at startup. Then check
-  <strong>Window &gt; UXP Plugins</strong>, not Window &gt; Extensions. If it is still missing,
-  confirm you are on 25.6 or later under <strong>Premiere Pro &gt; About Premiere Pro</strong>.</p>
-
-  <h3>Double-clicking the .ccx did nothing</h3>
-  <p>Creative Cloud Desktop has to be installed and signed in. Open it first, then double-click the
-  file again. If you do not have it, use the free
-  <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a>.</p>
-
-  <h3>It says 0 uses and I know I used that clip</h3>
-  <p>Three things do this, in order of likelihood:</p>
-  <ul>
-    <li><strong>The uses are in archived sequences.</strong> Untick <em>Hide archived sequences</em>.</li>
-    <li><strong>It is a merged or multicam clip.</strong> Trace flags this under the totals — see
-      <a href="#multicam">above</a>.</li>
-    <li><strong>The sequence has never been opened in this session.</strong> Press
-      <strong>☰ &gt; Re-scan project</strong>.</li>
-  </ul>
-
-  <h3>The numbers look out of date</h3>
-  <p>Trace re-scans on its own as you edit, but <strong>☰ &gt; Re-scan project</strong> forces it.
-  If a forced re-scan changes the answer, that is worth telling me about.</p>
-
-  <h3>Clicking a row moved the playhead but selected nothing</h3>
-  <p>Almost always means the clip has been trimmed or moved since the last scan. Re-scan and try
-  again.</p>
-
-  <h3>The panel is squashed or the buttons overlap</h3>
-  <p>Drag the dock wider or taller. Trace drops columns as it narrows, but below roughly 180px there
-  is nothing left to give up.</p>
-
-  <h2 id="trace-plus">Trace+</h2>
-  <p><strong>Both search your whole project.</strong> The difference is how many clips they answer
-  for.</p>
-  <table>
-    <tr><th></th><th>Trace</th><th>Trace+</th></tr>
-    <tr><th>You give it</th><td><strong>One</strong> clip</td><td>Nothing, a sequence, or the project</td></tr>
-    <tr><th>It answers for</th><td>That clip, everywhere</td><td><strong>Many clips at once</strong></td></tr>
-    <tr><th>The question</th><td>Where is <em>this</em> used?</td><td>What is reused, what is used <em>nowhere</em>, what can go</td></tr>
-    <tr><th>Depth</th><td>The list</td><td>The list <strong>plus the analysis</strong> — coverage, totals, archive weight</td></tr>
-  </table>
-  <p>So Trace+ is not "Trace with a bigger search". Trace already searches everything. Trace+ asks a
-  different question — <strong>one clip at a time versus all four hundred at once</strong> — and then
-  does something about the answer: files the unused media into <code>_UNUSED</code>, tells you what
-  your archive would weigh without it.</p>
-  <p><strong>Trace+ has everything Trace has, and more.</strong> Nothing you learn in Trace is
-  wasted, and nothing you can do here disappears there. The deeper reading of a single clip —
-  the <strong>source coverage bar</strong>, which draws the whole clip with the used parts filled in
-  and tells you the longest stretch you have never touched — is a Trace+ feature.</p>
-  <p>It is not a paid tier of this panel and Trace is not a trial for it. Trace is free, complete and
-  finished. <a href="https://www.nkcourses.co.uk/trace">Join the list</a> if you want to hear when
-  Trace+ is ready.</p>
-
-  <h2 id="support">Support</h2>
-  <p><a href="mailto:support@nkcourses.co.uk">support@nkcourses.co.uk</a>. Quote the version number
-  from <strong>☰ &gt; About Trace</strong> and say what you selected and what you expected — that is
-  usually enough to find it. I am one person, so it might take a day, but it will be me
-  answering.</p>
-
-  <footer>
-    © NK Courses 2026. All rights reserved. ·
-    <a href="https://www.nkcourses.co.uk/trace">nkcourses.co.uk/trace</a> ·
-    <a href="https://www.nkcourses.co.uk/termsconditions">Terms</a>
-  </footer>
-</main>
+<div class="note">
+<p><b>Do the CSS once, first.</b> Both pages share one stylesheet. Put it in
+<b>Design &rarr; Custom CSS</b> (site-wide, paste the raw CSS with no style tags) — then every
+markup block below just works, on any page, and you only ever edit the colours in one place.</p>
+<p>Prefer to keep it page-local? Put it in <b>Page Settings &rarr; Advanced &rarr; Code Injection</b>
+wrapped in <code>&lt;style&gt;&hellip;&lt;/style&gt;</code> instead.</p>
 </div>
 
-<script>
-  /* Highlight the section you are reading, and let the nav collapse on a phone. */
-  var links = [].slice.call(document.querySelectorAll('nav a'));
-  var heads = links.map(function (a) { return document.getElementById(a.hash.slice(1)); });
+<div class="note">
+<p><b>Two things worth knowing before you start.</b> Code blocks that run JavaScript need the
+<b>Core, Plus, Advanced, Business or a Commerce</b> plan — plain HTML and CSS work on any plan, so
+the pages will look right either way, but the interactive demos need one of those.</p>
+<p>And Squarespace sometimes hides custom code <b>while you are logged in</b>. If a block looks
+empty in the editor, use <b>Preview in Safe Mode</b> before assuming it is broken.</p>
+</div>
 
-  function mark() {
-    var best = 0;
-    for (var i = 0; i < heads.length; i++) {
-      if (heads[i] && heads[i].getBoundingClientRect().top < 120) best = i;
-    }
-    links.forEach(function (a, i) { a.className = i === best ? 'on' : ''; });
+<h2>Free Trace page</h2>
+<div class="step"><h3>1. The stylesheet</h3><div class="where">Design → Custom CSS (paste once for the whole site)</div><p>Only needed once. If you already pasted the other page's CSS, skip this — they are scoped separately and both can live in the same box, one after the other.</p><textarea readonly onclick="this.select()">.trace-lp {
+  --bg:      #0f1013;
+  --surface: #17191e;
+  --raised:  #1e2127;
+  --border:  #2b2f37;
+  --text:    #e8eaee;
+  --muted:   #9aa1ad;
+  --accent:  #5b8cff;   /* ← the one colour to change to match your brand */
+  --amber:   #d9a441;
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Inter, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.trace-lp * { box-sizing: border-box; }
+.trace-lp .tl-wrap { max-width: 940px; margin: 0 auto; padding: 0 22px; }
+.trace-lp section { padding: 66px 0; border-top: 1px solid var(--border); }
+.trace-lp section.tl-first { border-top: 0; }
+.trace-lp h1, .trace-lp h2, .trace-lp h3 { line-height: 1.2; margin: 0 0 14px; font-weight: 650; letter-spacing: -0.02em; }
+.trace-lp h1 { font-size: clamp(31px, 5.2vw, 50px); }
+.trace-lp h2 { font-size: clamp(24px, 3.4vw, 32px); }
+.trace-lp h3 { font-size: 17px; margin-bottom: 6px; }
+.trace-lp p  { margin: 0 0 16px; color: var(--muted); font-size: 16.5px; }
+.trace-lp p.lead { color: var(--text); font-size: clamp(17px, 2.2vw, 20px); }
+.trace-lp strong { color: var(--text); font-weight: 600; }
+
+.trace-lp .tl-hero { padding-top: 76px; text-align: center; }
+.trace-lp .tl-kicker {
+  display: inline-block; font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--border); background: var(--surface);
+  border-radius: 999px; padding: 5px 13px; margin-bottom: 22px;
+}
+.trace-lp .tl-hero p.lead { max-width: 620px; margin-left: auto; margin-right: auto; }
+.trace-lp .tl-cta {
+  display: inline-block; margin-top: 10px; padding: 14px 30px;
+  background: var(--accent); color: #fff; text-decoration: none;
+  border-radius: 10px; font-weight: 600; font-size: 16.5px; border: 0; cursor: pointer;
+  font-family: inherit;
+}
+.trace-lp .tl-cta:hover { filter: brightness(1.12); }
+.trace-lp .tl-cta.ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.trace-lp .tl-under { display: block; margin-top: 14px; font-size: 13.5px; color: var(--muted); }
+
+/* ───────── interactive demo ───────── */
+.trace-lp .tl-demo {
+  margin-top: 46px; text-align: left;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 13px; overflow: hidden; box-shadow: 0 26px 64px rgba(0,0,0,0.45);
+}
+.trace-lp .tl-demo-hint {
+  padding: 10px 16px; font-size: 12.5px; color: var(--muted);
+  background: var(--raised); border-bottom: 1px solid var(--border);
+}
+.trace-lp .tl-demo-hint b { color: var(--accent); font-weight: 600; }
+.trace-lp .tl-cols { display: grid; grid-template-columns: 1fr 1.25fr; }
+@media (max-width: 700px) { .trace-lp .tl-cols { grid-template-columns: 1fr; } }
+.trace-lp .tl-col { padding: 14px; min-width: 0; }
+.trace-lp .tl-col + .tl-col { border-left: 1px solid var(--border); }
+@media (max-width: 700px) { .trace-lp .tl-col + .tl-col { border-left: 0; border-top: 1px solid var(--border); } }
+.trace-lp .tl-coltitle {
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 10px;
+}
+.trace-lp .tl-bin-item {
+  display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 6px;
+  font-size: 13px; cursor: pointer; color: var(--muted);
+}
+.trace-lp .tl-bin-item:hover { background: var(--raised); color: var(--text); }
+.trace-lp .tl-bin-item.sel { background: rgba(91,140,255,0.18); color: var(--text); }
+.trace-lp .tl-bin-item i {
+  width: 9px; height: 9px; border-radius: 2px; flex: none; background: #4a5160;
+}
+.trace-lp .tl-bin-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.trace-lp .tl-panel-head { padding: 2px 4px 10px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.trace-lp .tl-panel-name { font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.trace-lp .tl-panel-sum  { font-size: 12.5px; color: var(--muted); }
+.trace-lp .tl-seqhead {
+  font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 9px 6px 4px;
+}
+.trace-lp .tl-row {
+  display: flex; align-items: center; gap: 10px; padding: 5px 8px; border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px; cursor: pointer;
+}
+.trace-lp .tl-row:hover { background: var(--raised); }
+.trace-lp .tl-row.on { background: rgba(91,140,255,0.16); }
+.trace-lp .tl-tick { width: 12px; height: 12px; border-radius: 3px; flex: none; border: 1.5px solid #4a5160; }
+.trace-lp .tl-row.on .tl-tick { background: var(--accent); border-color: var(--accent); }
+.trace-lp .tl-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.trace-lp .tl-flag { margin-left: auto; color: var(--amber); font-size: 12px; }
+.trace-lp .tl-allbtn {
+  display: block; width: 100%; margin-top: 10px; padding: 9px; text-align: center;
+  font-size: 12.5px; font-family: inherit; color: var(--text);
+  background: var(--raised); border: 1px solid var(--border); border-radius: 7px; cursor: pointer;
+}
+.trace-lp .tl-allbtn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.trace-lp .tl-markbtn {
+  margin-top: 8px; width: 100%; padding: 9px; font-size: 12.5px; font-family: inherit;
+  color: var(--text); background: transparent; border: 1px solid var(--border);
+  border-radius: 7px; cursor: pointer;
+}
+.trace-lp .tl-markbtn:hover { border-color: var(--amber); color: var(--amber); }
+.trace-lp .tl-empty { padding: 22px 8px; font-size: 13px; color: var(--muted); }
+
+.trace-lp .tl-tlwrap { border-top: 1px solid var(--border); padding: 13px 16px 16px; background: var(--bg); }
+.trace-lp .tl-tltitle { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 9px; }
+.trace-lp .tl-track { display: flex; gap: 2px; height: 34px; align-items: stretch; }
+.trace-lp .tl-blk { flex: 1 1 auto; border-radius: 3px; background: #262b33; position: relative; min-width: 4px; }
+.trace-lp .tl-blk.use { background: #35506e; }
+.trace-lp .tl-blk.on  { background: var(--accent); box-shadow: 0 0 0 1.5px #fff inset; }
+.trace-lp .tl-blk.mark::before {
+  content: &quot;&quot;; position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 7px solid var(--amber);
+}
+.trace-lp .tl-status {
+  margin-top: 11px; font-size: 12.5px; color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  min-height: 19px;
+}
+
+/* ───────── generic blocks ───────── */
+.trace-lp .tl-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.trace-lp .tl-card { background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 20px; }
+.trace-lp .tl-card p { margin: 0; font-size: 15px; }
+.trace-lp .tl-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 25px; height: 25px; border-radius: 50%; margin-bottom: 11px;
+  background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
+}
+.trace-lp .tl-note {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--amber); border-radius: 9px; padding: 22px 24px;
+}
+.trace-lp .tl-note ul { margin: 0; padding-left: 19px; color: var(--muted); font-size: 15.5px; }
+.trace-lp .tl-note li { margin-bottom: 9px; }
+.trace-lp .tl-note li:last-child { margin-bottom: 0; }
+.trace-lp .tl-capture {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 13px; padding: 34px 28px; text-align: center;
+}
+.trace-lp .tl-slot {
+  margin: 20px auto 0; max-width: 460px; padding: 26px 18px;
+  border: 1.5px dashed var(--border); border-radius: 10px; color: var(--muted); font-size: 14px;
+}
+.trace-lp .tl-fine { font-size: 13.5px; color: var(--muted); margin-top: 18px; }
+.trace-lp details { border-bottom: 1px solid var(--border); padding: 15px 0; }
+.trace-lp summary { cursor: pointer; font-weight: 600; font-size: 16px; list-style: none; }
+.trace-lp summary::-webkit-details-marker { display: none; }
+.trace-lp summary::after { content: &quot; +&quot;; color: var(--accent); }
+.trace-lp details[open] summary::after { content: &quot; –&quot;; }
+.trace-lp details p { margin: 11px 0 0; font-size: 15.5px; }
+.trace-lp .tl-plus {
+  background: linear-gradient(180deg, var(--surface), var(--bg));
+  border: 1px solid var(--border); border-radius: 13px; padding: 30px 28px;
+}
+.trace-lp .tl-foot { padding: 44px 0 58px; text-align: center; font-size: 14px; color: var(--muted); }
+.trace-lp .tl-foot a, .trace-lp .tl-plus a { color: var(--accent); }</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>2. Hero + the interactive demo</h3><div class="where">Code block, in page order</div><p>Contains the interactive demo's markup. It stays empty until the JavaScript block at the bottom of this page runs, so add that one too.</p><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section class=&quot;tl-hero tl-first&quot;&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;span class=&quot;tl-kicker&quot;&gt;Free panel · Premiere Pro 25.6+&lt;/span&gt;
+      &lt;h1&gt;See every place a clip is used.&lt;br&gt;Then select all of them at once.&lt;/h1&gt;
+      &lt;p class=&quot;lead&quot;&gt;Click a clip in the Project panel. Trace shows every sequence and every timecode
+      it appears at, across your whole project — then turns all of them into one real Premiere
+      selection you can nudge, replace or delete together.&lt;/p&gt;
+      &lt;a class=&quot;tl-cta&quot; href=&quot;#get&quot;&gt;Get Trace — free&lt;/a&gt;
+      &lt;span class=&quot;tl-under&quot;&gt;Mac and Windows · never deletes anything · never touches a file on disk&lt;/span&gt;
+
+      &lt;!-- ─── interactive demo ─── --&gt;
+      &lt;div class=&quot;tl-demo&quot;&gt;
+        &lt;div class=&quot;tl-demo-hint&quot;&gt;&lt;b&gt;Try it →&lt;/b&gt; pick a clip, tick the uses you want, then select or mark them. This is the real panel&#x27;s behaviour.&lt;/div&gt;
+        &lt;div class=&quot;tl-cols&quot;&gt;
+          &lt;div class=&quot;tl-col&quot;&gt;
+            &lt;div class=&quot;tl-coltitle&quot;&gt;Project panel&lt;/div&gt;
+            &lt;div id=&quot;tlBin&quot;&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;tl-col&quot;&gt;
+            &lt;div class=&quot;tl-coltitle&quot;&gt;Trace&lt;/div&gt;
+            &lt;div class=&quot;tl-panel-head&quot;&gt;
+              &lt;div class=&quot;tl-panel-name&quot; id=&quot;tlName&quot;&gt;Nothing selected&lt;/div&gt;
+              &lt;div class=&quot;tl-panel-sum&quot; id=&quot;tlSum&quot;&gt;Click a clip on the left&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div id=&quot;tlRows&quot;&gt;&lt;div class=&quot;tl-empty&quot;&gt;Trace follows your Project panel selection.&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tl-tlwrap&quot;&gt;
+          &lt;div class=&quot;tl-tltitle&quot; id=&quot;tlSeqName&quot;&gt;Timeline&lt;/div&gt;
+          &lt;div class=&quot;tl-track&quot; id=&quot;tlTrack&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;tl-status&quot; id=&quot;tlStatus&quot;&gt;Waiting for a selection&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>3. The problem — “every job has the same ten minutes”</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;h2&gt;Every job has the same ten minutes in it&lt;/h2&gt;
+      &lt;p class=&quot;lead&quot;&gt;Something needs replacing — a logo, a licensed track, a shot the client changed
+      their mind about — and the only honest way to find every place it was used is to scroll the
+      timeline and hope.&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;Edit &amp;gt; Remove Unused doesn&#x27;t answer it either&lt;/strong&gt;, and it&#x27;s worth being
+      precise about why: it looks at sequences. It doesn&#x27;t know about a subclip whose master is
+      sitting in a bin, a clip that only exists inside a nest, or the interview you imported twice
+      under two names. The number it gives you isn&#x27;t wrong — it&#x27;s answering a narrower question than
+      the one you asked.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>4. What Trace does — three cards</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;h2&gt;What Trace does&lt;/h2&gt;
+      &lt;div class=&quot;tl-grid&quot;&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;
+          &lt;h3&gt;Every use, everywhere&lt;/h3&gt;
+          &lt;p&gt;Which sequences, which timecodes, how long. Across the whole project, not just the
+          sequence you have open.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;
+          &lt;h3&gt;Select all of them at once&lt;/h3&gt;
+          &lt;p&gt;One button turns every use into a real Premiere selection. Nudge, delete or grade the
+          lot in one go. Native takes you to one instance per click.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;
+          &lt;h3&gt;Numbers you can trust&lt;/h3&gt;
+          &lt;p&gt;It follows nests and subclips, and counts audio and video shot and cut together as one
+          use rather than two — so a J-cut doesn&#x27;t double your total.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>5. How it works — four steps</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;h2&gt;How it works&lt;/h2&gt;
+      &lt;div class=&quot;tl-grid&quot;&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;&lt;span class=&quot;tl-num&quot;&gt;1&lt;/span&gt;
+          &lt;h3&gt;Click a clip&lt;/h3&gt;
+          &lt;p&gt;Select anything in your Project panel. Trace reads it straight away — no setup, no
+          account.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;&lt;span class=&quot;tl-num&quot;&gt;2&lt;/span&gt;
+          &lt;h3&gt;Read the list&lt;/h3&gt;
+          &lt;p&gt;Every use, grouped by sequence, with timecodes. Click one to jump the playhead
+          there.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;&lt;span class=&quot;tl-num&quot;&gt;3&lt;/span&gt;
+          &lt;h3&gt;Tick what you want&lt;/h3&gt;
+          &lt;p&gt;Or take all of them. The ticks are the selection — markers and everything else in the
+          panel follow them.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;&lt;span class=&quot;tl-num&quot;&gt;4&lt;/span&gt;
+          &lt;h3&gt;Do the work&lt;/h3&gt;
+          &lt;p&gt;They&#x27;re a real Premiere selection now. Replace, delete, move or grade them in a single
+          action.&lt;/p&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>6. What it won’t do</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;h2&gt;What it won&#x27;t do&lt;/h2&gt;
+      &lt;p&gt;Worth knowing before you install it, rather than after.&lt;/p&gt;
+      &lt;div class=&quot;tl-note&quot;&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;strong&gt;It never deletes anything and never touches a file on disk.&lt;/strong&gt; It reads
+          your project and makes selections. That&#x27;s the whole surface area.&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;It can&#x27;t highlight a clip in the Project panel.&lt;/strong&gt; Not a gap I&#x27;ve failed
+          to fill — Premiere&#x27;s plugin API makes that selection read-only. So Trace shows you the bin
+          path and copies the exact name for the Find box instead.&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;It flags merged and multicam clips rather than guessing.&lt;/strong&gt; Nothing can
+          read inside one from a plugin, so Trace tells you when one is in play instead of quietly
+          reporting a number that might be wrong.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>7. Get Trace — the email capture</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section id=&quot;get&quot;&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;div class=&quot;tl-capture&quot;&gt;
+        &lt;h2&gt;Get Trace&lt;/h2&gt;
+        &lt;p class=&quot;lead&quot;&gt;Free, for Mac and Windows. Premiere Pro 25.6 or newer.&lt;/p&gt;
+
+        &lt;!-- ▼▼ SQUARESPACE: DELETE THIS DASHED BOX AND DROP A NEWSLETTER BLOCK HERE ▼▼ --&gt;
+        &lt;div class=&quot;tl-slot&quot;&gt;
+          Newsletter block goes here — set its post-submit action to
+          &lt;strong&gt;redirect to your /trace-download page&lt;/strong&gt;.
+        &lt;/div&gt;
+        &lt;!-- ▲▲ ▲▲ --&gt;
+
+        &lt;p class=&quot;tl-fine&quot;&gt;I ask for an email so I can send you the install guide with it, and tell
+        you when the panel updates. Premiere plugins mostly fail at the install rather than at the
+        plugin — the guide is the part that matters. That&#x27;s the only thing I&#x27;ll ever send you that
+        you didn&#x27;t ask for, and one click unsubscribes.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>8. Trace+ teaser + link</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;div class=&quot;tl-plus&quot;&gt;
+        &lt;span class=&quot;tl-kicker&quot;&gt;Coming soon&lt;/span&gt;
+        &lt;h2&gt;Trace+ — select nothing, and ask the whole project&lt;/h2&gt;
+        &lt;p class=&quot;lead&quot;&gt;Trace answers about &lt;strong&gt;one clip&lt;/strong&gt;. Trace+ is the same engine asked
+        a bigger question: what is in this project, what has it stopped using, and what does that
+        weigh on disk.&lt;/p&gt;
+        &lt;p&gt;It reads every bin, not just the timelines. It weighs the dead footage in gigabytes rather
+        than file counts. It files it into &lt;code&gt;_UNUSED&lt;/code&gt; in one press and puts it back the day
+        you need it again — and it still never deletes anything.&lt;/p&gt;
+        &lt;p&gt;&lt;a href=&quot;/trace-plus&quot;&gt;&lt;strong&gt;See what&#x27;s in it and join the waiting list →&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>9. Questions (FAQ)</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;h2&gt;Questions&lt;/h2&gt;
+      &lt;details&gt;
+        &lt;summary&gt;Which Premiere versions does it work with?&lt;/summary&gt;
+        &lt;p&gt;Premiere Pro 25.6 and newer, on Mac and Windows. It&#x27;s a UXP plugin, so it installs through
+        Creative Cloud rather than by dropping files into a folder.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;details&gt;
+        &lt;summary&gt;Is it really free? What&#x27;s the catch?&lt;/summary&gt;
+        &lt;p&gt;Really free, no account, no trial clock. The catch, such as it is, is the email address —
+        it&#x27;s how I build a list for the paid panel that answers questions about many clips at once.
+        The free one is complete on its own terms and always will be.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;details&gt;
+        &lt;summary&gt;Does it handle nests?&lt;/summary&gt;
+        &lt;p&gt;Yes, and it&#x27;s the part that took longest to get right. A clip used only inside a nest
+        that&#x27;s itself on a timeline is used. A clip inside a nest that&#x27;s on no timeline is not.
+        Getting that wrong in either direction gives you a confident, wrong answer.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;details&gt;
+        &lt;summary&gt;What about multicam and merged clips?&lt;/summary&gt;
+        &lt;p&gt;It flags them. No plugin can read inside a merged clip, so rather than report a number
+        that might be missing something, Trace tells you one is in play and lets you judge.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;details&gt;
+        &lt;summary&gt;Will it slow my project down?&lt;/summary&gt;
+        &lt;p&gt;It indexes in the background and backs off automatically on big projects — the scan cost
+        is measured and the re-scan interval adapts to it. There&#x27;s a report in the menu that shows
+        you exactly what it&#x27;s doing, which is also what to send me if something looks wrong.&lt;/p&gt;
+      &lt;/details&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>10. Footer</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;div class=&quot;tl-foot&quot;&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      Made by an editor who got tired of scrolling the timeline.&lt;br&gt;
+      Something not right on your project? &lt;a href=&quot;mailto:hello@example.com&quot;&gt;Tell me&lt;/a&gt; — I&#x27;d
+      genuinely like to know.
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>11. The JavaScript</h3><div class="where">One code block, at the very BOTTOM of the page</div><p>This drives the demo. It must come after the hero block on the page. If you split the page across sections, put this in the last one.</p><textarea readonly onclick="this.select()">&lt;script&gt;
+(function () {
+  &quot;use strict&quot;;
+  /* Everything in memory. No storage APIs, no network, no dependencies. */
+
+  var SEQS = [&quot;Main Cut v7&quot;, &quot;Social 9x16&quot;, &quot;Client Review v3&quot;];
+
+  var CLIPS = [
+    { name: &quot;LOGO_ANIMATION_v4.mov&quot;, colour: &quot;#4fb0c4&quot;, uses: [
+        {seq:0, tc:&quot;00:01:07:02&quot;, blk:1},  {seq:0, tc:&quot;00:04:56:07&quot;, blk:5},
+        {seq:0, tc:&quot;00:05:05:02&quot;, blk:6},  {seq:0, tc:&quot;00:08:55:03&quot;, blk:11},
+        {seq:1, tc:&quot;00:00:02:11&quot;, blk:0},  {seq:1, tc:&quot;00:00:19:04&quot;, blk:3},
+        {seq:2, tc:&quot;00:02:41:18&quot;, blk:4} ] },
+    { name: &quot;INTERVIEW_SARAH_A.mp4&quot;, colour: &quot;#c46fa8&quot;, uses: [
+        {seq:0, tc:&quot;00:01:16:15&quot;, blk:2},  {seq:0, tc:&quot;00:01:40:04&quot;, blk:3},
+        {seq:0, tc:&quot;00:09:17:07&quot;, blk:12} ] },
+    { name: &quot;MUSIC_licensed_bed.wav&quot;, colour: &quot;#7b6fd4&quot;, uses: [
+        {seq:0, tc:&quot;00:00:00:00&quot;, blk:0},  {seq:0, tc:&quot;00:05:42:00&quot;, blk:8},
+        {seq:1, tc:&quot;00:00:00:00&quot;, blk:1},  {seq:1, tc:&quot;00:00:31:22&quot;, blk:5},
+        {seq:2, tc:&quot;00:00:00:00&quot;, blk:0} ] },
+    { name: &quot;DRONE_CITY_0042.mov&quot;, colour: &quot;#4f9d6a&quot;, uses: [
+        {seq:0, tc:&quot;00:05:52:15&quot;, blk:9},  {seq:2, tc:&quot;00:01:12:03&quot;, blk:2} ] },
+    { name: &quot;B_ROLL_kitchen_03.mov&quot;, colour: &quot;#d9a441&quot;, uses: [
+        {seq:0, tc:&quot;00:09:00:01&quot;, blk:13}, {seq:2, tc:&quot;00:03:20:09&quot;, blk:6} ] },
+    { name: &quot;TITLE_lower_third.psd&quot;, colour: &quot;#8a6a4f&quot;, uses: [] }
+  ];
+
+  var BLOCKS = 15;
+
+  var st = { clip: -1, picked: {}, marked: {}, seq: 0 };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var bin = $(&quot;tlBin&quot;), rows = $(&quot;tlRows&quot;), track = $(&quot;tlTrack&quot;);
+  if (!bin || !rows || !track) return;
+
+  function key(u) { return u.seq + &quot;@&quot; + u.tc; }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
   }
-  window.addEventListener('scroll', mark, { passive: true });
-  mark();
 
-  var nav = document.getElementById('nav');
-  document.getElementById('menuBtn').addEventListener('click', function () {
-    nav.classList.toggle('open');
+  /* ---- the Project panel ---- */
+  CLIPS.forEach(function (c, i) {
+    var item = el(&quot;div&quot;, &quot;tl-bin-item&quot;);
+    var swatch = el(&quot;i&quot;); swatch.style.background = c.colour;
+    item.appendChild(swatch);
+    item.appendChild(el(&quot;span&quot;, null, c.name));
+    item.addEventListener(&quot;click&quot;, function () { pickClip(i); });
+    item.setAttribute(&quot;role&quot;, &quot;button&quot;);
+    item.setAttribute(&quot;tabindex&quot;, &quot;0&quot;);
+    item.addEventListener(&quot;keydown&quot;, function (e) {
+      if (e.key === &quot;Enter&quot; || e.key === &quot; &quot;) { e.preventDefault(); pickClip(i); }
+    });
+    bin.appendChild(item);
   });
-  nav.addEventListener('click', function (e) {
-    if (e.target.tagName === 'A') nav.classList.remove('open');
-  });
 
-  /* ------------------------------------------------------------------------
-     RELEASE HISTORY — reads the repository's own releases at page load.
+  function pickClip(i) {
+    st.clip = i;
+    st.picked = {};
+    st.marked = {};
+    var c = CLIPS[i];
+    st.seq = c.uses.length ? c.uses[0].seq : 0;
+    render();
+    status(c.uses.length
+      ? c.uses.length + &quot; uses · &quot; + seqCount(c) + &quot; sequence&quot; + (seqCount(c) === 1 ? &quot;&quot; : &quot;s&quot;) + &quot; indexed&quot;
+      : &quot;Not used in any sequence — nothing points at this clip&quot;);
+  }
 
-     🔴 THERE IS NO PUBLISHING STEP FOR THIS SECTION, AND THERE MUST NEVER BE.
-     The chain already exists: commit updates.json -> the release builds a
-     GitHub release -> this reads it back. Adding "and also update the docs
-     page" to the release routine would be a step that gets skipped, and a
-     changelog that lags the product is worse than no changelog.
+  function seqCount(c) {
+    var seen = {}, n = 0;
+    c.uses.forEach(function (u) { if (!seen[u.seq]) { seen[u.seq] = 1; n++; } });
+    return n;
+  }
 
-     🔴 THE REPO BELOW DOES NOT EXIST YET. Until nkcourses/trace-updates is
-     created and has a release, this section shows the "nothing published yet"
-     line rather than an error — which is correct behaviour, and also the reason
-     it is easy to forget. It is item one on docs/launch.md.
-     ------------------------------------------------------------------------ */
-  (function () {
-    var REPO = 'nkcourses/trace-updates';
-    var API  = 'https://api.github.com/repos/' + REPO + '/releases?per_page=20';
-    var LIST = 'https://github.com/' + REPO + '/releases';
-    var box  = document.getElementById('releases');
-    if (!box) return;
+  function pickedCount() { return Object.keys(st.picked).length; }
 
-    var KEY = 'tr-releases', TTL = 3600000;   // an hour
+  function usesInSeq(c, s) {
+    return c.uses.filter(function (u) { return u.seq === s; });
+  }
 
-    function esc(s) {
-      return String(s).replace(/[&<>"]/g, function (c) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+  /* ---- the panel ---- */
+  function render() {
+    var c = CLIPS[st.clip];
+    rows.textContent = &quot;&quot;;
+
+    if (!c) {
+      rows.appendChild(el(&quot;div&quot;, &quot;tl-empty&quot;, &quot;Trace follows your Project panel selection.&quot;));
+      drawTrack();
+      return;
+    }
+
+    $(&quot;tlName&quot;).textContent = c.name;
+    $(&quot;tlSum&quot;).textContent = c.uses.length
+      ? c.uses.length + &quot; uses · &quot; + seqCount(c) + &quot; sequences&quot;
+      : &quot;0 uses&quot;;
+
+    if (!c.uses.length) {
+      rows.appendChild(el(&quot;div&quot;, &quot;tl-empty&quot;,
+        &quot;No uses anywhere in the project. Trace says so plainly rather than showing you an empty list.&quot;));
+      drawTrack();
+      return;
+    }
+
+    SEQS.forEach(function (name, s) {
+      var list = usesInSeq(c, s);
+      if (!list.length) return;
+
+      var head = el(&quot;div&quot;, &quot;tl-seqhead&quot;, name + &quot; · &quot; + list.length);
+      head.addEventListener(&quot;click&quot;, function () { st.seq = s; render(); });
+      head.style.cursor = &quot;pointer&quot;;
+      rows.appendChild(head);
+
+      list.forEach(function (u) {
+        var k = key(u);
+        var row = el(&quot;div&quot;, &quot;tl-row&quot; + (st.picked[k] ? &quot; on&quot; : &quot;&quot;));
+        row.appendChild(el(&quot;i&quot;, &quot;tl-tick&quot;));
+        var dot = el(&quot;i&quot;, &quot;tl-dot&quot;); dot.style.background = c.colour;
+        row.appendChild(dot);
+        row.appendChild(el(&quot;span&quot;, null, u.tc));
+        if (st.marked[k]) row.appendChild(el(&quot;span&quot;, &quot;tl-flag&quot;, &quot;⚑&quot;));
+        row.addEventListener(&quot;click&quot;, function () {
+          if (st.picked[k]) delete st.picked[k]; else st.picked[k] = u;
+          st.seq = u.seq;
+          render();
+          status(pickedCount()
+            ? pickedCount() + &quot; clip&quot; + (pickedCount() === 1 ? &quot;&quot; : &quot;s&quot;) + &quot; selected in &quot; + SEQS[u.seq]
+            : &quot;Selection cleared&quot;);
+        });
+        rows.appendChild(row);
       });
-    }
+    });
 
-    /* Release bodies are written by us, in one shape: a headline line, then
-       "- " bullets. This renders that shape and nothing else — a real Markdown
-       parser would be forty times the code for no visible gain. Everything is
-       escaped first, so a stray < in a release note cannot break the page. */
-    function body(md) {
-      var out = [], list = [];
-      String(md || '').split(/\r?\n/).forEach(function (raw) {
-        var line = raw.trim();
-        if (/^[-*]\s+/.test(line)) { list.push('<li>' + esc(line.replace(/^[-*]\s+/, '')) + '</li>'); return; }
-        if (list.length) { out.push('<ul>' + list.join('') + '</ul>'); list = []; }
-        if (line) out.push('<p>' + esc(line) + '</p>');
+    /* Select all / Deselect all — for the sequence on screen */
+    var here = usesInSeq(c, st.seq);
+    if (here.length &gt; 1) {
+      var allIn = here.every(function (u) { return !!st.picked[key(u)]; });
+      var btn = el(&quot;button&quot;, &quot;tl-allbtn&quot; + (allIn ? &quot; on&quot; : &quot;&quot;),
+        allIn ? &quot;Deselect all &quot; + here.length : &quot;Select all &quot; + here.length + &quot; in &quot; + SEQS[st.seq]);
+      btn.addEventListener(&quot;click&quot;, function () {
+        here.forEach(function (u) {
+          if (allIn) delete st.picked[key(u)]; else st.picked[key(u)] = u;
+        });
+        render();
+        status(allIn ? &quot;Selection cleared&quot;
+                     : here.length + &quot; clips selected in &quot; + SEQS[st.seq] + &quot; — one real Premiere selection&quot;);
       });
-      if (list.length) out.push('<ul>' + list.join('') + '</ul>');
-      return out.join('');
+      rows.appendChild(btn);
     }
 
-    function when(iso) {
-      if (!iso) return '';
-      var d = new Date(iso);
-      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    }
+    var mark = el(&quot;button&quot;, &quot;tl-markbtn&quot;, &quot;⚑  Add markers&quot;);
+    mark.addEventListener(&quot;click&quot;, function () {
+      var targets = pickedCount()
+        ? c.uses.filter(function (u) { return !!st.picked[key(u)]; })
+        : c.uses;
+      targets.forEach(function (u) { st.marked[key(u)] = true; });
+      render();
+      status(&quot;Marked &quot; + targets.length + (pickedCount() ? &quot; ticked&quot; : &quot;&quot;) +
+             &quot; use&quot; + (targets.length === 1 ? &quot;&quot; : &quot;s&quot;) + &quot; · 1 undo step per sequence&quot;);
+    });
+    rows.appendChild(mark);
 
-    function paint(rels) {
-      if (!rels || !rels.length) {
-        box.innerHTML = '<p class="loading">No releases published yet. ' +
-          '<a href="' + LIST + '">See them on GitHub</a> when there are.</p>';
-        return;
+    drawTrack();
+  }
+
+  /* ---- the timeline strip ---- */
+  function drawTrack() {
+    track.textContent = &quot;&quot;;
+    $(&quot;tlSeqName&quot;).textContent = CLIPS[st.clip] ? SEQS[st.seq] : &quot;Timeline&quot;;
+
+    var c = CLIPS[st.clip];
+    var here = c ? usesInSeq(c, st.seq) : [];
+    var byBlk = {};
+    here.forEach(function (u) { byBlk[u.blk] = u; });
+
+    for (var i = 0; i &lt; BLOCKS; i++) {
+      var b = el(&quot;div&quot;, &quot;tl-blk&quot;);
+      var u = byBlk[i];
+      if (u) {
+        b.className += &quot; use&quot;;
+        if (st.picked[key(u)]) b.className += &quot; on&quot;;
+        if (st.marked[key(u)]) b.className += &quot; mark&quot;;
+        b.style.flexGrow = &quot;1.6&quot;;
       }
-      box.innerHTML = rels.map(function (r, i) {
-        return '<div class="rel"><div class="rel-head">' +
-          '<span class="rel-ver">' + esc(r.name || r.tag_name) + '</span>' +
-          (i === 0 ? '<span class="pill">Latest</span>' : '') +
-          '<span class="rel-date">' + when(r.published_at) + '</span>' +
-          '</div><div class="rel-body">' + body(r.body) + '</div></div>';
-      }).join('');
+      track.appendChild(b);
+    }
+  }
+
+  function status(msg) { $(&quot;tlStatus&quot;).textContent = msg; }
+
+  render();
+})();
+&lt;/script&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<h2>Download / thank-you page</h2>
+<div class="note"><p><b>No stylesheet block for this page.</b> It shares the free page's CSS, which is already in your Custom CSS. Just paste the markup blocks.</p></div>
+<div class="step"><h3>1. Hero + the download button</h3><div class="where">Code block, in page order</div><p><b>Point the button at your .ccx file</b> — the <code>href="#"</code> near the top. Upload it as a Squarespace file link, or paste a Cloudflare URL.</p><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section class=&quot;tl-hero tl-first&quot;&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;span class=&quot;tl-kicker&quot;&gt;You&#x27;re on the list&lt;/span&gt;
+      &lt;h1&gt;Here&#x27;s Trace.&lt;/h1&gt;
+      &lt;p class=&quot;lead&quot;&gt;The same link is in your inbox, so you can install it on the machine you
+      actually edit on. Three steps, about a minute.&lt;/p&gt;
+
+      &lt;!-- ▼ POINT THIS AT THE .ccx FILE. Upload it in Squarespace via a File link,
+             or host it on Cloudflare and paste the URL here. ▼ --&gt;
+      &lt;a class=&quot;tl-cta&quot; href=&quot;#&quot; download&gt;Download Trace.ccx&lt;/a&gt;
+      &lt;span class=&quot;tl-under&quot;&gt;Mac and Windows · Premiere Pro 25.6 or newer · free, no account&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>2. Installing it — three steps</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;h2&gt;Installing it&lt;/h2&gt;
+      &lt;p&gt;Trace is a UXP plugin, so it installs through Creative Cloud rather than by dropping files
+      into a folder. That&#x27;s the good news — there&#x27;s nothing to put in the right place.&lt;/p&gt;
+      &lt;div class=&quot;tl-grid&quot;&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;&lt;span class=&quot;tl-num&quot;&gt;1&lt;/span&gt;
+          &lt;h3&gt;Quit Premiere Pro&lt;/h3&gt;
+          &lt;p&gt;Not strictly required every time, but it&#x27;s the difference between the panel appearing
+          straight away and you wondering why it hasn&#x27;t.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;&lt;span class=&quot;tl-num&quot;&gt;2&lt;/span&gt;
+          &lt;h3&gt;Double-click Trace.ccx&lt;/h3&gt;
+          &lt;p&gt;Creative Cloud takes over and installs it. If it asks whether to trust a plugin from
+          outside the marketplace, say yes — that&#x27;s what an unlisted plugin looks like.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tl-card&quot;&gt;&lt;span class=&quot;tl-num&quot;&gt;3&lt;/span&gt;
+          &lt;h3&gt;Open Premiere → Window → Trace&lt;/h3&gt;
+          &lt;p&gt;It appears in the Window menu under &lt;strong&gt;UXP Plugins&lt;/strong&gt;. Drag it into your
+          workspace wherever you like a narrow panel — beside the Project panel is the obvious
+          home.&lt;/p&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>3. The first thirty seconds</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;h2&gt;The first thirty seconds&lt;/h2&gt;
+      &lt;p class=&quot;lead&quot;&gt;Click any clip in your Project panel. That&#x27;s the whole interface.&lt;/p&gt;
+      &lt;p&gt;Trace indexes the project in the background the first time, so on a big one give it a few
+      seconds before the numbers settle. Then every use of that clip is on screen — which sequence,
+      which timecode, how long — and the button under each group turns all of them into one real
+      Premiere selection.&lt;/p&gt;
+      &lt;div class=&quot;tl-note&quot;&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;strong&gt;It never deletes anything and never touches a file on disk.&lt;/strong&gt; It reads
+          your project and makes selections.&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;Try it on a real project, not a test one.&lt;/strong&gt; The whole point is the
+          answer you can&#x27;t get by looking — a two-clip test project can&#x27;t show you that.&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;Nothing to configure.&lt;/strong&gt; There&#x27;s no setup step you&#x27;ve missed.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>4. If something&#x27;s not right (troubleshooting)</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;h2&gt;If something&#x27;s not right&lt;/h2&gt;
+
+      &lt;details&gt;
+        &lt;summary&gt;The panel isn&#x27;t in the Window menu&lt;/summary&gt;
+        &lt;p&gt;Check Creative Cloud actually finished installing it: open the Creative Cloud desktop app
+        and look under &lt;strong&gt;Stock &amp;amp; Marketplace → Plugins → Manage plugins&lt;/strong&gt;. Trace
+        should be listed there. If it is and Premiere still can&#x27;t see it, restart Premiere — and if
+        it&#x27;s still missing, look under &lt;strong&gt;Window → Extensions&lt;/strong&gt; as well, since the menu
+        name moved between Premiere versions.&lt;/p&gt;
+      &lt;/details&gt;
+
+      &lt;details&gt;
+        &lt;summary&gt;Double-clicking the .ccx did nothing&lt;/summary&gt;
+        &lt;p&gt;That usually means the Creative Cloud desktop app isn&#x27;t running, or the file downloaded
+        with the wrong extension. Make sure Creative Cloud is open and the file is still called
+        &lt;code&gt;.ccx&lt;/code&gt; — some browsers rename downloads to &lt;code&gt;.zip&lt;/code&gt;.&lt;/p&gt;
+      &lt;/details&gt;
+
+      &lt;details&gt;
+        &lt;summary&gt;Premiere says the plugin needs a newer version&lt;/summary&gt;
+        &lt;p&gt;Trace needs Premiere Pro &lt;strong&gt;25.6 or newer&lt;/strong&gt;. It uses parts of the plugin API
+        that don&#x27;t exist in earlier versions, so there&#x27;s no older build to fall back to.&lt;/p&gt;
+      &lt;/details&gt;
+
+      &lt;details&gt;
+        &lt;summary&gt;The numbers look wrong on my project&lt;/summary&gt;
+        &lt;p&gt;Open the panel&#x27;s &lt;strong&gt;☰ menu → Scan report&lt;/strong&gt;. Pressing it copies the whole
+        report to your clipboard — send me that and I can usually tell you exactly what happened.
+        It&#x27;s the single most useful thing you can send.&lt;/p&gt;
+        &lt;p&gt;One known case: merged and multicam clips. Nothing can read inside one from a plugin, so
+        Trace flags them rather than guessing.&lt;/p&gt;
+      &lt;/details&gt;
+
+      &lt;details&gt;
+        &lt;summary&gt;I didn&#x27;t get the email&lt;/summary&gt;
+        &lt;p&gt;Check spam and promotions. If it isn&#x27;t there,
+        &lt;a href=&quot;mailto:hello@example.com&quot;&gt;email me&lt;/a&gt; and I&#x27;ll send it directly — the download on
+        this page works either way.&lt;/p&gt;
+      &lt;/details&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>5. What happens now</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;h2&gt;What happens now&lt;/h2&gt;
+      &lt;p&gt;&lt;strong&gt;I&#x27;ll email you when Trace updates&lt;/strong&gt;, and that&#x27;s it. No sequence, no drip, no
+      weekly newsletter. One click unsubscribes and you keep the panel — it isn&#x27;t tied to anything.&lt;/p&gt;
+      &lt;p&gt;If Trace gets something wrong on your project, I&#x27;d genuinely like to know. It&#x27;s been tested
+      on real jobs but not on &lt;em&gt;your&lt;/em&gt; job, and the awkward cases are how it got this far.
+      &lt;a href=&quot;mailto:hello@example.com&quot;&gt;hello@example.com&lt;/a&gt;.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>6. Trace+ waiting-list nudge</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      &lt;div class=&quot;tl-plus&quot;&gt;
+        &lt;span class=&quot;tl-kicker&quot;&gt;While you&#x27;re here&lt;/span&gt;
+        &lt;h2&gt;Trace+ — the same engine, asked about the whole project&lt;/h2&gt;
+        &lt;p class=&quot;lead&quot;&gt;Trace answers about &lt;strong&gt;one clip&lt;/strong&gt;. Trace+ tells you what your
+        project has &lt;em&gt;stopped&lt;/em&gt; using, what that weighs in gigabytes, and files the dead weight
+        into &lt;code&gt;_UNUSED&lt;/code&gt; in one press — without deleting anything.&lt;/p&gt;
+        &lt;p&gt;It isn&#x27;t out yet. The waiting list is how I decide what to finish first, and it&#x27;s how
+        you&#x27;ll hear about it first.&lt;/p&gt;
+        &lt;p&gt;&lt;a href=&quot;/trace-plus&quot;&gt;&lt;strong&gt;See what&#x27;s in it and join the waiting list →&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>7. Footer</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;trace-lp&quot;&gt;
+&lt;div class=&quot;tl-foot&quot;&gt;
+    &lt;div class=&quot;tl-wrap&quot;&gt;
+      Thanks for trying it — that&#x27;s not nothing.&lt;br&gt;
+      &lt;a href=&quot;mailto:hello@example.com&quot;&gt;hello@example.com&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<h2>Trace+ waiting-list page</h2>
+<div class="step"><h3>1. The stylesheet</h3><div class="where">Design → Custom CSS (paste once for the whole site)</div><p>Only needed once. If you already pasted the other page's CSS, skip this — they are scoped separately and both can live in the same box, one after the other.</p><textarea readonly onclick="this.select()">.tracep-lp {
+  --bg:      #0f1013;
+  --surface: #17191e;
+  --raised:  #1e2127;
+  --border:  #2b2f37;
+  --text:    #e8eaee;
+  --muted:   #9aa1ad;
+  --accent:  #5b8cff;   /* ← match the panel */
+  --green:   #4f9d6a;
+  --red:     #c4614f;
+  --amber:   #d9a441;
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Inter, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.tracep-lp * { box-sizing: border-box; }
+.tracep-lp .tp-wrap { max-width: 940px; margin: 0 auto; padding: 0 22px; }
+.tracep-lp section { padding: 64px 0; border-top: 1px solid var(--border); }
+.tracep-lp section.tp-first { border-top: 0; }
+.tracep-lp h1, .tracep-lp h2, .tracep-lp h3 { line-height: 1.2; margin: 0 0 14px; font-weight: 650; letter-spacing: -0.02em; }
+.tracep-lp h1 { font-size: clamp(31px, 5.2vw, 50px); }
+.tracep-lp h2 { font-size: clamp(24px, 3.4vw, 32px); }
+.tracep-lp h3 { font-size: 16.5px; margin-bottom: 5px; }
+.tracep-lp p  { margin: 0 0 16px; color: var(--muted); font-size: 16.5px; }
+.tracep-lp p.lead { color: var(--text); font-size: clamp(17px, 2.2vw, 20px); }
+.tracep-lp strong { color: var(--text); font-weight: 600; }
+.tracep-lp code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em; background: var(--raised); padding: 1px 5px; border-radius: 4px;
+}
+
+.tracep-lp .tp-hero { padding-top: 74px; text-align: center; }
+.tracep-lp .tp-kicker {
+  display: inline-block; font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--border); background: var(--surface);
+  border-radius: 999px; padding: 5px 13px; margin-bottom: 22px;
+}
+.tracep-lp .tp-hero p.lead { max-width: 640px; margin-left: auto; margin-right: auto; }
+.tracep-lp .tp-cta {
+  display: inline-block; margin-top: 10px; padding: 14px 30px;
+  background: var(--accent); color: #fff; text-decoration: none;
+  border-radius: 10px; font-weight: 600; font-size: 16.5px;
+}
+.tracep-lp .tp-cta:hover { filter: brightness(1.12); }
+.tracep-lp .tp-under { display: block; margin-top: 14px; font-size: 13.5px; color: var(--muted); }
+
+/* ───────── demo shell ───────── */
+.tracep-lp .tp-demo {
+  margin-top: 42px; text-align: left;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 13px; overflow: hidden; box-shadow: 0 26px 64px rgba(0,0,0,0.45);
+}
+.tracep-lp .tp-demo-hint {
+  padding: 10px 16px; font-size: 12.5px; color: var(--muted);
+  background: var(--raised); border-bottom: 1px solid var(--border);
+}
+.tracep-lp .tp-demo-hint b { color: var(--accent); font-weight: 600; }
+.tracep-lp .tp-body { padding: 16px; }
+
+.tracep-lp .tp-switch { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.tracep-lp .tp-seg {
+  padding: 6px 13px; font-size: 12.5px; font-family: inherit; cursor: pointer;
+  background: var(--raised); color: var(--muted);
+  border: 1px solid var(--border); border-radius: 7px;
+}
+.tracep-lp .tp-seg.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.tracep-lp .tp-meter { margin-bottom: 6px; }
+.tracep-lp .tp-bar {
+  display: flex; height: 13px; border-radius: 7px; overflow: hidden;
+  background: var(--raised); border: 1px solid var(--border);
+}
+.tracep-lp .tp-bar i { display: block; height: 100%; transition: width .35s ease; }
+.tracep-lp .tp-bar .used   { background: var(--green); }
+.tracep-lp .tp-bar .unused { background: var(--red); }
+.tracep-lp .tp-key { display: flex; gap: 16px; margin: 8px 0 16px; font-size: 12.5px; color: var(--muted); flex-wrap: wrap; }
+.tracep-lp .tp-key span { display: flex; align-items: center; gap: 6px; }
+.tracep-lp .tp-key i { width: 9px; height: 9px; border-radius: 2px; display: block; }
+
+.tracep-lp .tp-rows { border-top: 1px solid var(--border); }
+.tracep-lp .tp-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 6px; border-bottom: 1px solid var(--border);
+  font-size: 13px; cursor: pointer;
+}
+.tracep-lp .tp-row:hover { background: var(--raised); }
+.tracep-lp .tp-row.on { background: rgba(91,140,255,0.14); }
+.tracep-lp .tp-row.refuse { animation: tpShake .32s ease; }
+@keyframes tpShake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); } 75% { transform: translateX(4px); }
+}
+.tracep-lp .tp-tick { width: 13px; height: 13px; border-radius: 3px; flex: none; border: 1.5px solid #4a5160; }
+.tracep-lp .tp-row.on .tp-tick { background: var(--accent); border-color: var(--accent); }
+.tracep-lp .tp-label { width: 4px; height: 20px; border-radius: 2px; flex: none; background: transparent; }
+.tracep-lp .tp-nm { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tracep-lp .tp-bin { font-size: 11.5px; color: var(--muted); flex: none; }
+.tracep-lp .tp-sz {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px; color: var(--muted); flex: none; width: 62px; text-align: right;
+}
+.tracep-lp .tp-tag {
+  font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
+  padding: 1px 6px; border-radius: 4px; flex: none;
+  border: 1px solid var(--border); color: var(--muted);
+}
+.tracep-lp .tp-tag.dup     { color: var(--amber); border-color: rgba(217,164,65,.4); }
+.tracep-lp .tp-tag.offline { color: var(--red);   border-color: rgba(196,97,79,.4); }
+.tracep-lp .tp-tag.arch    { color: var(--accent); border-color: rgba(91,140,255,.4); }
+
+.tracep-lp .tp-swatches { display: flex; gap: 5px; margin: 14px 0 4px; flex-wrap: wrap; align-items: center; }
+.tracep-lp .tp-swatches em { font-style: normal; font-size: 12px; color: var(--muted); margin-right: 6px; }
+.tracep-lp .tp-sw { width: 19px; height: 19px; border-radius: 4px; cursor: pointer; border: 1px solid rgba(255,255,255,.12); }
+.tracep-lp .tp-sw:hover { transform: scale(1.12); }
+
+.tracep-lp .tp-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.tracep-lp .tp-btn {
+  padding: 9px 15px; font-size: 12.5px; font-family: inherit; cursor: pointer;
+  background: var(--raised); color: var(--text);
+  border: 1px solid var(--border); border-radius: 7px;
+}
+.tracep-lp .tp-btn:hover { border-color: var(--accent); }
+.tracep-lp .tp-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tracep-lp .tp-btn:disabled { opacity: .4; cursor: default; }
+.tracep-lp .tp-btn:disabled:hover { border-color: var(--border); }
+.tracep-lp .tp-status {
+  margin-top: 12px; font-size: 12.5px; color: var(--muted); min-height: 19px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.tracep-lp .tp-status.warn { color: var(--amber); }
+
+/* ───────── generic ───────── */
+.tracep-lp .tp-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.tracep-lp .tp-card { background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 19px; }
+.tracep-lp .tp-card p { margin: 0; font-size: 14.5px; }
+.tracep-lp .tp-note {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--amber); border-radius: 9px; padding: 22px 24px;
+}
+.tracep-lp .tp-note ul { margin: 0; padding-left: 19px; color: var(--muted); font-size: 15.5px; }
+.tracep-lp .tp-note li { margin-bottom: 9px; }
+.tracep-lp .tp-note li:last-child { margin-bottom: 0; }
+.tracep-lp .tp-capture {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 13px; padding: 34px 28px; text-align: center;
+}
+.tracep-lp .tp-slot {
+  margin: 20px auto 0; max-width: 480px; padding: 26px 18px;
+  border: 1.5px dashed var(--border); border-radius: 10px; color: var(--muted); font-size: 14px;
+}
+.tracep-lp .tp-slot ul { text-align: left; margin: 10px 0 0; padding-left: 19px; font-size: 13.5px; }
+.tracep-lp .tp-fine { font-size: 13.5px; color: var(--muted); margin-top: 18px; }
+.tracep-lp .tp-price {
+  display: inline-block; margin: 4px 0 6px; padding: 9px 18px;
+  border: 1px solid var(--border); border-radius: 9px; background: var(--raised);
+  font-size: 15px;
+}
+.tracep-lp details { border-bottom: 1px solid var(--border); padding: 15px 0; }
+.tracep-lp summary { cursor: pointer; font-weight: 600; font-size: 16px; list-style: none; }
+.tracep-lp summary::-webkit-details-marker { display: none; }
+.tracep-lp summary::after { content: &quot; +&quot;; color: var(--accent); }
+.tracep-lp details[open] summary::after { content: &quot; –&quot;; }
+.tracep-lp details p { margin: 11px 0 0; font-size: 15.5px; }
+.tracep-lp .tp-foot { padding: 44px 0 58px; text-align: center; font-size: 14px; color: var(--muted); }
+.tracep-lp .tp-foot a { color: var(--accent); }</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>2. Hero + the interactive demo</h3><div class="where">Code block, in page order</div><p>Contains the interactive demo's markup. It stays empty until the JavaScript block at the bottom of this page runs, so add that one too.</p><textarea readonly onclick="this.select()">&lt;div class=&quot;tracep-lp&quot;&gt;
+&lt;section class=&quot;tp-hero tp-first&quot;&gt;
+    &lt;div class=&quot;tp-wrap&quot;&gt;
+      &lt;span class=&quot;tp-kicker&quot;&gt;In development · join the list&lt;/span&gt;
+      &lt;h1&gt;Select nothing.&lt;br&gt;See every clip your project no longer needs.&lt;/h1&gt;
+      &lt;p class=&quot;lead&quot;&gt;Trace+ reads your whole Premiere project — every bin, not just the timelines —
+      and tells you what it has stopped using, what that weighs on disk, and where everything else is
+      used. Then it files the dead weight into &lt;code&gt;_UNUSED&lt;/code&gt; in one press, and puts it back the
+      day you need it again.&lt;/p&gt;
+      &lt;a class=&quot;tp-cta&quot; href=&quot;#list&quot;&gt;Join the waiting list&lt;/a&gt;
+      &lt;span class=&quot;tp-under&quot;&gt;Never deletes anything · never touches a file on disk&lt;/span&gt;
+
+      &lt;!-- ─── interactive demo 1 ─── --&gt;
+      &lt;div class=&quot;tp-demo&quot;&gt;
+        &lt;div class=&quot;tp-demo-hint&quot;&gt;&lt;b&gt;Try it →&lt;/b&gt; switch to Unused, tick some rows, and file them away. Then put them back. Try ticking something that &lt;i&gt;is&lt;/i&gt; in use.&lt;/div&gt;
+        &lt;div class=&quot;tp-body&quot;&gt;
+
+          &lt;div class=&quot;tp-switch&quot;&gt;
+            &lt;button class=&quot;tp-seg on&quot; data-view=&quot;all&quot;&gt;All media&lt;/button&gt;
+            &lt;button class=&quot;tp-seg&quot; data-view=&quot;used&quot;&gt;Used&lt;/button&gt;
+            &lt;button class=&quot;tp-seg&quot; data-view=&quot;unused&quot;&gt;Not used&lt;/button&gt;
+            &lt;button class=&quot;tp-seg&quot; data-view=&quot;dupes&quot;&gt;Duplicates&lt;/button&gt;
+            &lt;button class=&quot;tp-seg&quot; data-view=&quot;offline&quot;&gt;Offline&lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;tp-meter&quot;&gt;
+            &lt;div class=&quot;tp-bar&quot;&gt;
+              &lt;i class=&quot;used&quot; id=&quot;tpBarUsed&quot; style=&quot;width:60%&quot;&gt;&lt;/i&gt;
+              &lt;i class=&quot;unused&quot; id=&quot;tpBarUnused&quot; style=&quot;width:40%&quot;&gt;&lt;/i&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;tp-key&quot;&gt;
+            &lt;span&gt;&lt;i style=&quot;background:#4f9d6a&quot;&gt;&lt;/i&gt; &lt;b id=&quot;tpUsedGB&quot;&gt;—&lt;/b&gt;&amp;nbsp;used&lt;/span&gt;
+            &lt;span&gt;&lt;i style=&quot;background:#c4614f&quot;&gt;&lt;/i&gt; &lt;b id=&quot;tpUnusedGB&quot;&gt;—&lt;/b&gt;&amp;nbsp;not used&lt;/span&gt;
+            &lt;span id=&quot;tpCounts&quot;&gt;&lt;/span&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;tp-rows&quot; id=&quot;tpRows&quot;&gt;&lt;/div&gt;
+
+          &lt;div class=&quot;tp-swatches&quot;&gt;
+            &lt;em&gt;Label the ticked:&lt;/em&gt;
+            &lt;span class=&quot;tp-sw&quot; data-c=&quot;#8f6fd4&quot;  style=&quot;background:#8f6fd4&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;tp-sw&quot; data-c=&quot;#3f8fd0&quot;  style=&quot;background:#3f8fd0&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;tp-sw&quot; data-c=&quot;#3f7d4f&quot;  style=&quot;background:#3f7d4f&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;tp-sw&quot; data-c=&quot;#d76f8f&quot;  style=&quot;background:#d76f8f&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;tp-sw&quot; data-c=&quot;#e0a04a&quot;  style=&quot;background:#e0a04a&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;tp-sw&quot; data-c=&quot;#3fa9a0&quot;  style=&quot;background:#3fa9a0&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;tp-sw&quot; data-c=&quot;#b79a72&quot;  style=&quot;background:#b79a72&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;tp-sw&quot; data-c=&quot;&quot;         style=&quot;background:#2b2f37&quot; title=&quot;No label&quot;&gt;&lt;/span&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;tp-actions&quot;&gt;
+            &lt;button class=&quot;tp-btn primary&quot; id=&quot;tpMove&quot; disabled&gt;Move to _UNUSED&lt;/button&gt;
+            &lt;button class=&quot;tp-btn&quot; id=&quot;tpPutback&quot; disabled&gt;Put back&lt;/button&gt;
+            &lt;button class=&quot;tp-btn&quot; id=&quot;tpCsv&quot;&gt;Export CSV&lt;/button&gt;
+            &lt;button class=&quot;tp-btn&quot; id=&quot;tpReset&quot;&gt;Reset demo&lt;/button&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;tp-status&quot; id=&quot;tpStatus&quot;&gt;Reading the project — 6 media files, 41.9 GB&lt;/div&gt;
+
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>3. The problem — what Premiere can’t tell you</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;tracep-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tp-wrap&quot;&gt;
+      &lt;h2&gt;Premiere cannot honestly tell you what you&#x27;ve stopped using&lt;/h2&gt;
+      &lt;p class=&quot;lead&quot;&gt;&lt;em&gt;Edit &amp;gt; Remove Unused&lt;/em&gt; looks at sequences. It doesn&#x27;t know about the
+      subclip whose master is sitting in a bin, the clip that only lives inside a nest, or the
+      interview you imported twice.&lt;/p&gt;
+      &lt;p&gt;And nothing in Premiere will tell you that the 340 GB you&#x27;re about to archive is 90% footage
+      that never made the cut. So the end of every job has the same ten minutes in it: scrolling the
+      Project panel, guessing.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>4. What Trace+ does — four cards</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;tracep-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tp-wrap&quot;&gt;
+      &lt;h2&gt;What Trace+ does&lt;/h2&gt;
+      &lt;div class=&quot;tp-grid&quot;&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;
+          &lt;h3&gt;Reads the whole project&lt;/h3&gt;
+          &lt;p&gt;Every bin, every timeline, every nest. One index, three views: one clip, one sequence,
+          or everything.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;
+          &lt;h3&gt;Says what isn&#x27;t used — and means it&lt;/h3&gt;
+          &lt;p&gt;A file is unused when nothing pointing at it is on any timeline. Three sections keep
+          that number honest: masters whose subclips are in use, clips used only in archived cuts,
+          and sequences, which are left out entirely.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;
+          &lt;h3&gt;Weighs it&lt;/h3&gt;
+          &lt;p&gt;In bytes, not file counts. Sixty unused stills and one unused ProRes master are the same
+          row count and a thousand times apart on disk. Where a file can&#x27;t be measured it says so
+          rather than dropping it.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;
+          &lt;h3&gt;Files it away — and puts it back&lt;/h3&gt;
+          &lt;p&gt;Tick what you don&#x27;t need, press &lt;strong&gt;Move to &lt;code&gt;_UNUSED&lt;/code&gt;&lt;/strong&gt;. When one
+          gets cut back in, Trace+ notices and offers &lt;strong&gt;Put back&lt;/strong&gt; — to the bin it came
+          from, rebuilding that bin if it was deleted.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>5. “It refuses, it doesn’t warn”</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;tracep-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tp-wrap&quot;&gt;
+      &lt;h2&gt;It refuses. It doesn&#x27;t warn.&lt;/h2&gt;
+      &lt;p class=&quot;lead&quot;&gt;Tick a clip that&#x27;s on a timeline and press Move, and nothing happens to that
+      clip — not a dialog you can click through, not an &quot;are you sure&quot;. It simply won&#x27;t file away
+      media that&#x27;s in use.&lt;/p&gt;
+      &lt;p&gt;The same principle runs through the whole panel: &lt;strong&gt;it never deletes anything&lt;/strong&gt;
+      — not a clip, not a bin, not a file. The most destructive thing in it moves items into a bin,
+      and Cmd-Z undoes that like any other edit. Nothing is remembered in a database either — the
+      trail back is the bin path itself, so Put back still works next week, on another machine, after
+      somebody has dragged things around by hand.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>6. Also in the box — ten cards</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;tracep-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tp-wrap&quot;&gt;
+      &lt;h2&gt;Also in the box&lt;/h2&gt;
+      &lt;div class=&quot;tp-grid&quot;&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Compare two cuts&lt;/h3&gt;
+          &lt;p&gt;What&#x27;s in v04 that isn&#x27;t in v03. Three lists off any two sequences — added, gone, and
+          survived-but-recut. Nothing else on the market answers this at all.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Label by rule&lt;/h3&gt;
+          &lt;p&gt;Not used · Used 5+ · Offline · Duplicates · Archived only. Pick a rule, pick a colour,
+          label the whole project in one undo step.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Only the cut you have open&lt;/h3&gt;
+          &lt;p&gt;A clip used in four versions of the same film answers with four groups. This narrows it
+          to the timeline in front of you.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Everything the free panel does&lt;/h3&gt;
+          &lt;p&gt;Every use of one clip across every sequence, and one button that selects every instance
+          at once — which Premiere has never been able to do.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Colour labels in bulk&lt;/h3&gt;
+          &lt;p&gt;Label everything ticked in one press, one undo step. Fifteen colours, read from
+          Premiere&#x27;s own list.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Markers over every use&lt;/h3&gt;
+          &lt;p&gt;In a colour you choose — and only over the rows you&#x27;ve ticked. Remove them again in one
+          press, without touching a marker you wrote yourself.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Duplicate imports&lt;/h3&gt;
+          &lt;p&gt;The same file imported twice under two names, found off the same walk.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Empty bins&lt;/h3&gt;
+          &lt;p&gt;Including the ones made of nothing but other empty bins. Sweep them in one action.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Offline media&lt;/h3&gt;
+          &lt;p&gt;Flagged and filterable, so a relink session starts with a list instead of a hunt.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Export CSV and a cue sheet&lt;/h3&gt;
+          &lt;p&gt;Whatever question you asked, as a file a spreadsheet opens without anybody repairing
+          it. Plus a music cue sheet off the same index.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Copy list&lt;/h3&gt;
+          &lt;p&gt;Whatever&#x27;s on screen, as plain text, in timecode or frames — for an email or a note to
+          an assistant.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;Three detail levels&lt;/h3&gt;
+          &lt;p&gt;So it reads well in a narrow dock, or tells you everything when you give it room.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;tp-card&quot;&gt;&lt;h3&gt;A scan report&lt;/h3&gt;
+          &lt;p&gt;One press copies it to your clipboard. If something looks wrong, that&#x27;s the thing to
+          send me — and it tells you what the panel is actually doing.&lt;/p&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>7. What it won’t do</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;tracep-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tp-wrap&quot;&gt;
+      &lt;h2&gt;What it won&#x27;t do&lt;/h2&gt;
+      &lt;p&gt;Said plainly, because a tool that only lists its strengths is a tool you can&#x27;t trust with
+      your project.&lt;/p&gt;
+      &lt;div class=&quot;tp-note&quot;&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;strong&gt;It never deletes anything, and never touches a file on disk.&lt;/strong&gt; Everything
+          happens inside the Premiere project.&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;It can&#x27;t reveal a clip in the Project panel.&lt;/strong&gt; Premiere&#x27;s API makes that
+          panel&#x27;s selection read-only to plugins — checked five times, most recently against an
+          unreleased beta. Trace+ shows you the bin and copies the name for the Find box, and calls
+          it Find rather than Reveal, because that&#x27;s what it does.&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;It can&#x27;t resolve merged or multicam clips.&lt;/strong&gt; Nothing exists for reading
+          the sources inside one, so Trace+ flags them rather than guessing.&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;It can&#x27;t read an unopened project.&lt;/strong&gt; Productions are out for the same
+          reason.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>8. Join the waiting list</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;tracep-lp&quot;&gt;
+&lt;section id=&quot;list&quot;&gt;
+    &lt;div class=&quot;tp-wrap&quot;&gt;
+      &lt;div class=&quot;tp-capture&quot;&gt;
+        &lt;h2&gt;Join the waiting list&lt;/h2&gt;
+        &lt;p class=&quot;lead&quot;&gt;Trace+ isn&#x27;t finished. The list is how I decide what to finish first — and
+        you&#x27;ll get first go at it.&lt;/p&gt;
+        &lt;div class=&quot;tp-price&quot;&gt;&lt;strong&gt;Planned: £29 one-time · two machines · not a subscription&lt;/strong&gt;&lt;/div&gt;
+
+        &lt;!-- ▼▼ SQUARESPACE: DELETE THIS BOX AND DROP A **FORM BLOCK** HERE ▼▼
+             A Form block (not a Newsletter block) so you can ask the two
+             questions that make this real demand data rather than a number. ▼▼ --&gt;
+        &lt;div class=&quot;tp-slot&quot;&gt;
+          Form block goes here. Suggested fields:
+          &lt;ul&gt;
+            &lt;li&gt;Email address &lt;em&gt;(required)&lt;/em&gt;&lt;/li&gt;
+            &lt;li&gt;Which would you use most? — &lt;em&gt;checkboxes:&lt;/em&gt; finding unused media · archiving it
+              · &lt;b&gt;comparing two cuts&lt;/b&gt; · &lt;b&gt;labelling by rule&lt;/b&gt; · duplicates &amp;amp; empty bins ·
+              CSV export&lt;/li&gt;
+            &lt;li&gt;How big is a typical project for you? — &lt;em&gt;under 100 clips / 100–500 / 500+&lt;/em&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+          Set storage to your email list, and post-submit to a short thank-you message.
+        &lt;/div&gt;
+        &lt;!-- ▲▲ ▲▲ --&gt;
+
+        &lt;p class=&quot;tp-fine&quot;&gt;No charge and no commitment — joining the list is not a pre-order. I&#x27;ll
+        write when there&#x27;s something to try, and one click unsubscribes.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>9. Questions (FAQ)</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;tracep-lp&quot;&gt;
+&lt;section&gt;
+    &lt;div class=&quot;tp-wrap&quot;&gt;
+      &lt;h2&gt;Questions&lt;/h2&gt;
+      &lt;details&gt;
+        &lt;summary&gt;How is this different from the free Trace?&lt;/summary&gt;
+        &lt;p&gt;Trace answers about &lt;strong&gt;one clip&lt;/strong&gt; — pick it, see every place it&#x27;s used, select
+        every instance at once. Trace+ is the same engine asked a bigger question: what is in this
+        project, and what of it is doing nothing. Everything you learn in Trace works in Trace+;
+        nothing moves, nothing is renamed, nothing is taken away.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;details&gt;
+        &lt;summary&gt;Why does it want full filesystem access?&lt;/summary&gt;
+        &lt;p&gt;So it can read how big your media files are — the number under the unused list. It reads
+        file &lt;em&gt;sizes&lt;/em&gt;, never file &lt;em&gt;contents&lt;/em&gt;, and it uploads nothing.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;details&gt;
+        &lt;summary&gt;Is it a subscription?&lt;/summary&gt;
+        &lt;p&gt;No. One payment, two machines, updates included. Moving to a third machine? Press Remove
+        on one and the seat frees immediately — no email to me required.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;details&gt;
+        &lt;summary&gt;What if it files away something I needed?&lt;/summary&gt;
+        &lt;p&gt;Nothing is deleted — it&#x27;s moved into a bin, and Cmd-Z undoes it like any other edit. And
+        when a filed-away clip gets cut back into a sequence, Trace+ notices and offers to put it
+        back where it came from.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;details&gt;
+        &lt;summary&gt;When will it be out?&lt;/summary&gt;
+        &lt;p&gt;It&#x27;s built and being tested on real projects. What&#x27;s left is packaging and the store, not
+        the panel. The list gets told first.&lt;/p&gt;
+      &lt;/details&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>10. Footer</h3><div class="where">Code block, in page order</div><textarea readonly onclick="this.select()">&lt;div class=&quot;tracep-lp&quot;&gt;
+&lt;div class=&quot;tp-foot&quot;&gt;
+    &lt;div class=&quot;tp-wrap&quot;&gt;
+      Not tried the free one yet? &lt;a href=&quot;/trace&quot;&gt;Start with Trace&lt;/a&gt; — it&#x27;s free, and it&#x27;s the same
+      engine.&lt;br&gt;
+      Questions: &lt;a href=&quot;mailto:hello@example.com&quot;&gt;hello@example.com&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+<div class="step"><h3>11. The JavaScript</h3><div class="where">One code block, at the very BOTTOM of the page</div><p>This drives the demo. It must come after the hero block on the page. If you split the page across sections, put this in the last one.</p><textarea readonly onclick="this.select()">&lt;script&gt;
+(function () {
+  &quot;use strict&quot;;
+  /* In-memory only. No storage APIs, no network, no dependencies. */
+
+  var START = [
+    { n: &quot;A001_C012_DRONE_CITY.mov&quot;,   bin: &quot;Footage / Drone&quot;,      gb: 12.4, used: false },
+    { n: &quot;INTERVIEW_SARAH_A.mp4&quot;,      bin: &quot;Footage / Interviews&quot;, gb: 8.1,  used: true  },
+    { n: &quot;INTERVIEW_SARAH_A copy.mp4&quot;, bin: &quot;Footage / Imports&quot;,    gb: 8.1,  used: false, dup: true },
+    { n: &quot;B_ROLL_kitchen_03.mov&quot;,      bin: &quot;Footage / B-roll&quot;,     gb: 6.7,  used: false },
+    { n: &quot;LOGO_ANIMATION_v4.mov&quot;,      bin: &quot;Graphics&quot;,             gb: 0.4,  used: true  },
+    { n: &quot;MUSIC_licensed_bed.wav&quot;,     bin: &quot;Audio / Music&quot;,        gb: 0.2,  used: true  },
+    { n: &quot;GRADE_REF_stills.psd&quot;,       bin: &quot;Graphics / Refs&quot;,      gb: 3.9,  used: false },
+    { n: &quot;A002_C004_ext_night.mov&quot;,    bin: &quot;Footage / Day 2&quot;,      gb: 2.1,  used: false, offline: true }
+  ];
+
+  var items, view = &quot;all&quot;, picked = {}, status;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var rowsEl = $(&quot;tpRows&quot;);
+  if (!rowsEl) return;
+
+  function reset() {
+    items = START.map(function (o) {
+      return { n:o.n, bin:o.bin, gb:o.gb, used:!!o.used, dup:!!o.dup,
+               offline:!!o.offline, archived:false, label:&quot;&quot; };
+    });
+    picked = {};
+    view = &quot;all&quot;;
+    setSeg(&quot;all&quot;);
+    render();
+    say(&quot;Reading the project — &quot; + items.length + &quot; media files, &quot; + total().toFixed(1) + &quot; GB&quot;);
+  }
+
+  function total() { return items.reduce(function (a, i) { return a + i.gb; }, 0); }
+  function usedGB()   { return items.filter(function (i) { return i.used; })
+                                    .reduce(function (a, i) { return a + i.gb; }, 0); }
+  function unusedGB() { return total() - usedGB(); }
+  function pickedList() { return items.filter(function (i) { return picked[i.n]; }); }
+
+  function visible() {
+    return items.filter(function (i) {
+      if (view === &quot;used&quot;)    return i.used;
+      if (view === &quot;unused&quot;)  return !i.used;
+      if (view === &quot;dupes&quot;)   return i.dup;
+      if (view === &quot;offline&quot;) return i.offline;
+      return true;
+    });
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+
+  function render() {
+    rowsEl.textContent = &quot;&quot;;
+
+    var list = visible();
+    if (!list.length) {
+      var e = el(&quot;div&quot;, &quot;tp-status&quot;, &quot;Nothing in this view — which is the answer, not an error.&quot;);
+      e.style.padding = &quot;18px 6px&quot;;
+      rowsEl.appendChild(e);
     }
 
-    /* Cached for an hour, because GitHub rate-limits unauthenticated calls by
-       IP and a docs page that 403s on the fifth reader is worse than a
-       changelog that is an hour stale. */
-    try {
-      var hit = JSON.parse(sessionStorage.getItem(KEY) || 'null');
-      if (hit && Date.now() - hit.at < TTL) { paint(hit.data); return; }
-    } catch (e) { /* no cache, no problem */ }
+    list.forEach(function (it) {
+      var row = el(&quot;div&quot;, &quot;tp-row&quot; + (picked[it.n] ? &quot; on&quot; : &quot;&quot;));
+      row.appendChild(el(&quot;i&quot;, &quot;tp-tick&quot;));
 
-    fetch(API)
-      .then(function (r) { return r.ok ? r.json() : []; })
-      .then(function (data) {
-        try { sessionStorage.setItem(KEY, JSON.stringify({ at: Date.now(), data: data })); } catch (e) {}
-        paint(data);
-      })
-      .catch(function () {
-        box.innerHTML = '<p class="loading"><a href="' + LIST + '">Release notes on GitHub</a>.</p>';
+      var lab = el(&quot;i&quot;, &quot;tp-label&quot;);
+      if (it.label) lab.style.background = it.label;
+      row.appendChild(lab);
+
+      row.appendChild(el(&quot;span&quot;, &quot;tp-nm&quot;, it.n));
+      if (it.dup)      row.appendChild(el(&quot;span&quot;, &quot;tp-tag dup&quot;, &quot;duplicate&quot;));
+      if (it.offline)  row.appendChild(el(&quot;span&quot;, &quot;tp-tag offline&quot;, &quot;offline&quot;));
+      if (it.archived) row.appendChild(el(&quot;span&quot;, &quot;tp-tag arch&quot;, &quot;_UNUSED&quot;));
+      row.appendChild(el(&quot;span&quot;, &quot;tp-bin&quot;, it.archived ? &quot;_UNUSED / &quot; + it.bin.split(&quot; / &quot;)[0] : it.bin));
+      row.appendChild(el(&quot;span&quot;, &quot;tp-sz&quot;, it.gb.toFixed(1) + &quot; GB&quot;));
+
+      row.addEventListener(&quot;click&quot;, function () {
+        if (picked[it.n]) delete picked[it.n]; else picked[it.n] = true;
+        render();
+        var n = pickedList().length;
+        say(n ? n + &quot; ticked · &quot; + pickedList().reduce(function (a, i) { return a + i.gb; }, 0).toFixed(1) + &quot; GB&quot;
+              : &quot;Nothing ticked&quot;);
       });
-  })();
+      rowsEl.appendChild(row);
+    });
+
+    /* the weight bar */
+    var t = total() || 1;
+    $(&quot;tpBarUsed&quot;).style.width   = (usedGB() / t * 100) + &quot;%&quot;;
+    $(&quot;tpBarUnused&quot;).style.width = (unusedGB() / t * 100) + &quot;%&quot;;
+    $(&quot;tpUsedGB&quot;).textContent   = usedGB().toFixed(1) + &quot; GB&quot;;
+    $(&quot;tpUnusedGB&quot;).textContent = unusedGB().toFixed(1) + &quot; GB&quot;;
+    $(&quot;tpCounts&quot;).textContent   =
+      items.filter(function (i) { return !i.used; }).length + &quot; of &quot; + items.length + &quot; files not used&quot;;
+
+    var n = pickedList().length;
+    $(&quot;tpMove&quot;).disabled = !n;
+    $(&quot;tpMove&quot;).textContent = n ? &quot;Move &quot; + n + &quot; to _UNUSED&quot; : &quot;Move to _UNUSED&quot;;
+    $(&quot;tpPutback&quot;).disabled = !items.some(function (i) { return i.archived; });
+  }
+
+  function say(msg, warn) {
+    status = $(&quot;tpStatus&quot;);
+    status.textContent = msg;
+    status.className = &quot;tp-status&quot; + (warn ? &quot; warn&quot; : &quot;&quot;);
+  }
+
+  /* ---- the view switch ---- */
+  function setSeg(v) {
+    var segs = document.querySelectorAll(&quot;.tracep-lp .tp-seg&quot;);
+    for (var i = 0; i &lt; segs.length; i++) {
+      segs[i].className = &quot;tp-seg&quot; + (segs[i].getAttribute(&quot;data-view&quot;) === v ? &quot; on&quot; : &quot;&quot;);
+    }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(&quot;.tracep-lp .tp-seg&quot;), function (b) {
+    b.addEventListener(&quot;click&quot;, function () {
+      view = b.getAttribute(&quot;data-view&quot;);
+      setSeg(view);
+      render();
+      say(visible().length + &quot; row&quot; + (visible().length === 1 ? &quot;&quot; : &quot;s&quot;) + &quot; in this view&quot;);
+    });
+  });
+
+  /* ---- labels ---- */
+  Array.prototype.forEach.call(document.querySelectorAll(&quot;.tracep-lp .tp-sw&quot;), function (s) {
+    s.addEventListener(&quot;click&quot;, function () {
+      var list = pickedList();
+      if (!list.length) { say(&quot;Tick the files you want labelled first&quot;, true); return; }
+      var c = s.getAttribute(&quot;data-c&quot;);
+      list.forEach(function (i) { i.label = c; });
+      render();
+      say((c ? &quot;Labelled &quot; : &quot;Label cleared on &quot;) + list.length +
+          &quot; item&quot; + (list.length === 1 ? &quot;&quot; : &quot;s&quot;) + &quot; · one undo step&quot;);
+    });
+  });
+
+  /* ---- move to _UNUSED, with the refusal ---- */
+  $(&quot;tpMove&quot;).addEventListener(&quot;click&quot;, function () {
+    var list = pickedList();
+    var inUse = list.filter(function (i) { return i.used; });
+    var safe  = list.filter(function (i) { return !i.used &amp;&amp; !i.archived; });
+
+    if (inUse.length) {
+      /* Shake the rows it will not touch — refuse, do not warn. */
+      Array.prototype.forEach.call(document.querySelectorAll(&quot;.tracep-lp .tp-row&quot;), function (r) {
+        var nm = r.querySelector(&quot;.tp-nm&quot;);
+        if (nm &amp;&amp; inUse.some(function (i) { return i.n === nm.textContent; })) {
+          r.className += &quot; refuse&quot;;
+          setTimeout(function () { r.className = r.className.replace(&quot; refuse&quot;, &quot;&quot;); }, 340);
+        }
+      });
+    }
+
+    if (!safe.length) {
+      say(&quot;Refused — &quot; + inUse.length + &quot; of those &quot; +
+          (inUse.length === 1 ? &quot;is&quot; : &quot;are&quot;) + &quot; on a timeline. Nothing was moved.&quot;, true);
+      return;
+    }
+
+    safe.forEach(function (i) { i.archived = true; });
+    picked = {};
+    render();
+    say(&quot;Moved &quot; + safe.length + &quot; item&quot; + (safe.length === 1 ? &quot;&quot; : &quot;s&quot;) + &quot; into _UNUSED · &quot; +
+        safe.reduce(function (a, i) { return a + i.gb; }, 0).toFixed(1) + &quot; GB · 2 undo steps&quot; +
+        (inUse.length ? &quot; · refused &quot; + inUse.length + &quot; still in use&quot; : &quot;&quot;));
+  });
+
+  /* ---- put back ---- */
+  $(&quot;tpPutback&quot;).addEventListener(&quot;click&quot;, function () {
+    var back = items.filter(function (i) { return i.archived; });
+    back.forEach(function (i) { i.archived = false; });
+    picked = {};
+    render();
+    say(&quot;Put &quot; + back.length + &quot; item&quot; + (back.length === 1 ? &quot;&quot; : &quot;s&quot;) +
+        &quot; back in the bins they came from · empty bins cleared away&quot;);
+  });
+
+  /* ---- csv ---- */
+  $(&quot;tpCsv&quot;).addEventListener(&quot;click&quot;, function () {
+    var rows = visible();
+    say(&quot;Exported &quot; + rows.length + &quot; row&quot; + (rows.length === 1 ? &quot;&quot; : &quot;s&quot;) +
+        &quot; — name, bin, size, used, label — as trace-plus-&quot; + view + &quot;.csv&quot;);
+  });
+
+  $(&quot;tpReset&quot;).addEventListener(&quot;click&quot;, reset);
+
+  reset();
+})();
+&lt;/script&gt;</textarea><button onclick="cp(this)">Copy</button></div>
+
+<footer>Blocks are generated from the two finished pages, so they cannot drift from them.
+Regenerate this kit whenever the pages change.</footer>
+</div>
+<script>
+function cp(btn){
+  var ta = btn.previousElementSibling;
+  ta.select(); ta.setSelectionRange(0, 999999);
+  try { document.execCommand("copy"); } catch (e) {}
+  if (navigator.clipboard) { try { navigator.clipboard.writeText(ta.value); } catch (e) {} }
+  var old = btn.textContent;
+  btn.textContent = "Copied ✓"; btn.className = "done";
+  setTimeout(function(){ btn.textContent = old; btn.className = ""; }, 1600);
+}
 </script>
-</body>
-</html>
+</body></html>
