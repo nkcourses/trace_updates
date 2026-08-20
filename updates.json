@@ -1,10 +1,10 @@
-{
-  "latest": "0.6.0",
-  "released": "2026-08-12",
-  "headline": "Subclip matching, and Trace now tells you when there is an update.",
+  "latest": "0.40.0",
+  "released": "2026-08-19",
+  "headline": "Faster scans, clearer empty states, and Trace now points you at Trace+ for sequences.",
   "url": "https://www.nkcourses.co.uk/trace",
   "notes": [
-    "Selecting a master clip now finds uses of its subclips, matched on the shared media file.",
-    "An update notice appears in the panel when a new version is out."
+    "Selecting a sequence now explains that Trace answers about clips, and links to Trace+.",
+    "The panel backs off its background re-scan when nothing in the project is changing.",
+    "Assorted fixes to the Source Monitor jump and the selection route."
   ]
 }
