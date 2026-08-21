@@ -1,0 +1,13 @@
+{
+  "_readme": "Publish this into docs/ in the trace_updates repo, BESIDE index.html — Pages serves that folder, so it resolves at https://nkcourses.github.io/trace_updates/updates.json, the FIRST feed js/build-config.js tries. At the repo ROOT it 404s on Pages; a stale 0.40.0 copy sat there for two days announcing an old version. Delete that root copy once this is live — both feeds now read docs/updates.json, so there is one file and one answer. The panel shows a notice only when `latest` is HIGHER than the running version, compared number by number, so bump `latest` when you PUBLISH a release and not before.",
+  "latest": "1.0.0",
+  "released": "2026-08-21",
+  "headline": "Trace 1.0 — every use of a clip, across every sequence, selected at once.",
+  "url": "https://www.nkcourses.co.uk/trace",
+  "notes": [
+    "First public release.",
+    "Merged clips are now identified correctly, and their audio channels count as one use rather than one per channel.",
+    "The background re-scan backs off properly on slow projects instead of running flat out.",
+    "Deselecting a clip now clears the summary, so the panel never shows numbers for a clip you are no longer looking at."
+  ]
+}
