@@ -1,1576 +1,487 @@
 <!DOCTYPE html>
-<!--
-  ┌──────────────────────────────────────────────────────────────────────────┐
-  │  Trace — help documentation. ONE FILE, NO BUILD STEP.                    │
-  │                                                                          │
-  │  Everything is inline: styles, the nav script, the release feed, the     │
-  │  lot. Drop this folder on any static host and it works. Same reasoning   │
-  │  as VersionUp's: the plugin has no build step, and a docs site that      │
-  │  needs npm to publish a typo fix is a docs site that stops getting typo  │
-  │  fixes.                                                                  │
-  │                                                                          │
-  │  Images live in assets/ beside this file. Keep them together.            │
-  │                                                                          │
-  │  🔴 SAME SKELETON AS Version Up/launch/docs/index.html ON PURPOSE — same │
-  │  header, nav grouping, cards, figures, notes, release feed and script.   │
-  │  Two panels from one shop should read as one shop. What changes is the   │
-  │  accent (blue/cyan, not violet), the mark, and every word.               │
-  │                                                                          │
-  │  🔴 THE FACTS HERE COME FROM THE PANEL, NOT FROM MEMORY:                 │
-  │    menu items      index.html  -> Re-scan project / Add markers to used /│
-  │                                   Copy list / Check for updates /        │
-  │                                   Get help / About Trace                 │
-  │    panel location  manifest    -> Window > UXP Plugins > Trace           │
-  │    minimum host    manifest    -> Premiere Pro 25.6.0                    │
-  │    gestures        js/main.js  -> isFind (alt) / isSource (shift) /      │
-  │                                   isMultiSelect (cmd, ctrl)              │
-  │  If any of those change, this page is wrong and nothing will tell you.   │
-  │                                                                          │
-  │  🔴 ONE FILE PER FIGURE: .gif for motion, .png for stills. NOT webp,    │
-  │  and this was measured rather than assumed. Trace's captures are flat    │
-  │  UI art, which palettes to 64 colours almost losslessly — exactly where  │
-  │  GIF is strongest. The demo is 188KB as a GIF and 289KB as an animated   │
-  │  webp, i.e. webp is 54% BIGGER here. It wins on stills (about half) but  │
-  │  ~18KB a piece does not pay for carrying two files.                      │
-  │                                                                          │
-  │  The second reason is sharper: <picture> falls back on FORMAT SUPPORT,   │
-  │  never on a 404. A browser that understands webp takes the <source>,     │
-  │  gets nothing if the file is missing, and shows alt text with a perfect  │
-  │  GIF sitting unused beside it. One file per figure cannot fail that way. │
-  └──────────────────────────────────────────────────────────────────────────┘
--->
-<html lang="en-GB">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trace — Help &amp; Documentation</title>
-<meta name="description" content="User guide for Trace, a free Premiere Pro panel that shows every place a clip is used across every sequence — and selects every instance at once.">
-<link rel="icon" href="assets/trace-mark-black.png">
-<style>
-  /* 🔴 The accent is BLUE, where VersionUp's is violet. The two panels are
-     siblings and should look it, but a reader who has both pages open must be
-     able to tell them apart at a glance without reading the logo. Blue is also
-     the panel's own --tr-accent (#2680eb), so the page and the product agree.
-     --blue-ink is the darkened cut for body links, because #2680eb on white is
-     under 4.5:1 at 16px and this page has a lot of links in prose. */
-  :root{
-    --ink:#14181C; --body:#2A3138; --muted:#6B7280;
-    --blue:#2680EB; --blue-hi:#378EF0; --blue-ink:#1266CC; --mint:#0A7E56;
-    --tint:#F3F8FE; --edge:#D8E7FA; --line:#E6E8EC; --bg:#ffffff;
-    --code:#F4F5F7;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth; scroll-padding-top:80px}
-  body{
-    margin:0; background:var(--bg); color:var(--body);
-    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  a{color:var(--blue-ink); text-decoration:none}
-  a:hover{text-decoration:underline}
-
-  /* ---------- header ---------- */
-  .top{
-    position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:12px;
-    padding:14px 24px; background:rgba(255,255,255,.92); backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .top img{width:26px;height:26px}
-  .top b{color:var(--ink); font-size:16px}
-  .top span{color:var(--muted); font-size:14px}
-  .top .buy{margin-left:auto; background:var(--blue); color:#fff; padding:8px 16px;
-            border-radius:8px; font-size:14px; font-weight:600}
-  .top .buy:hover{background:var(--blue-hi); text-decoration:none}
-  .menu-btn{display:none; margin-left:auto; border:1px solid var(--line); background:none;
-            border-radius:8px; padding:7px 12px; font-size:14px; cursor:pointer}
-
-  /* ---------- layout ---------- */
-  .wrap{display:flex; max-width:1180px; margin:0 auto; gap:40px; padding:0 24px}
-  nav{
-    width:230px; flex:0 0 230px; position:sticky; top:64px; align-self:flex-start;
-    max-height:calc(100vh - 64px); overflow-y:auto; padding:28px 0 60px;
-  }
-  nav h4{margin:22px 0 8px; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-         color:var(--muted)}
-  nav h4:first-child{margin-top:0}
-  nav a{display:block; padding:5px 10px; margin-left:-10px; border-radius:6px;
-        color:var(--body); font-size:14.5px}
-  nav a:hover{background:var(--tint); text-decoration:none}
-  nav a.on{background:var(--tint); color:var(--blue-ink); font-weight:600}
-
-  main{flex:1 1 auto; min-width:0; padding:34px 0 100px; max-width:760px}
-
-  /* ---------- type ---------- */
-  h1{margin:0 0 8px; font-size:40px; line-height:1.1; color:var(--ink); letter-spacing:-.02em}
-  .lede{font-size:19px; color:var(--muted); margin:0 0 30px}
-  h2{margin:56px 0 14px; font-size:27px; color:var(--ink); letter-spacing:-.01em;
-     padding-top:10px; border-top:1px solid var(--line)}
-  h3{margin:32px 0 8px; font-size:19px; color:var(--ink)}
-  p{margin:0 0 15px}
-  ul,ol{margin:0 0 15px; padding-left:22px}
-  li{margin:6px 0}
-  code{background:var(--code); padding:2px 6px; border-radius:4px;
-       font:14px ui-monospace,Menlo,Consolas,monospace; color:var(--ink)}
-  kbd{background:#fff; border:1px solid #D3D7DD; border-bottom-width:2px; border-radius:5px;
-      padding:1px 6px; font:13px ui-monospace,Menlo,Consolas,monospace; color:var(--ink)}
-  strong{color:var(--ink)}
-
-  /* ---------- pieces ---------- */
-  figure{margin:22px 0}
-  figure img{width:100%; border:1px solid var(--line); border-radius:10px; display:block}
-  figcaption{margin-top:8px; font-size:13.5px; color:var(--muted); text-align:center}
-
-  .cards{display:flex; flex-wrap:wrap; gap:14px; margin:28px 0}
-  .card{flex:1 1 220px; border:1px solid var(--edge); background:var(--tint);
-        border-radius:12px; padding:16px 18px}
-  .card b{display:block; color:var(--blue-ink); margin-bottom:3px; font-size:15px}
-  .card span{font-size:14px; color:var(--body)}
-  a.card:hover{text-decoration:none; border-color:var(--blue)}
-
-  .note{border-left:3px solid var(--blue); background:var(--tint);
-        padding:14px 18px; border-radius:0 8px 8px 0; margin:22px 0}
-  .warn{border-left-color:#B45309; background:#FFF8EC}
-  .good{border-left-color:var(--mint); background:#F1FAF6}
-  .note p:last-child{margin-bottom:0}
-  .note b{color:var(--ink)}
-
-  .dl{display:flex; align-items:center; gap:16px; border:1px solid var(--edge);
-      background:var(--tint); border-radius:12px; padding:18px 20px; margin:24px 0}
-  .dl .pdf{flex:0 0 auto; font:600 12px/1 ui-monospace,Menlo,monospace; color:var(--blue-ink);
-           background:#fff; border:1px solid var(--edge); border-radius:8px; padding:14px 12px}
-  .dl b{display:block; color:var(--ink)}
-  .dl span{font-size:14px; color:var(--muted)}
-  .dl a{margin-left:auto; background:var(--blue); color:#fff; padding:9px 16px;
-        border-radius:8px; font-size:14px; font-weight:600; white-space:nowrap}
-  .dl a:hover{background:var(--blue-hi); text-decoration:none}
-
-  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:15px}
-  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line);
-        vertical-align:top}
-  th{color:var(--ink); font-size:13px; letter-spacing:.04em; text-transform:uppercase}
-  td code{white-space:nowrap}
-  /* The left column of the "is not" and "can't do" tables. Amber, not red:
-     these are boundaries, not errors, and red reads as something went wrong. */
-  td.no{color:#B45309; font-weight:600}
-
-  /* ---------- release history ---------- */
-  .rel{border:1px solid var(--line); border-radius:12px; padding:15px 20px; margin:14px 0}
-  .rel:first-child{border-color:var(--edge); background:var(--tint)}
-  .rel-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px}
-  .rel-ver{font-size:17px; font-weight:600; color:var(--ink)}
-  .pill{background:var(--blue); color:#fff; font-size:10.5px; font-weight:700;
-        letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:99px}
-  .rel-date{margin-left:auto; font-size:13.5px; color:var(--muted)}
-  .rel-body>p:first-child{color:var(--ink); font-weight:600}
-  .rel-body>:last-child{margin-bottom:0}
-  .rel-body ul{margin-bottom:0}
-  .loading{color:var(--muted); font-size:14.5px; margin:14px 0}
-
-  footer{border-top:1px solid var(--line); margin-top:70px; padding-top:22px;
-         font-size:14px; color:var(--muted)}
-
-  @media (max-width:900px){
-    .wrap{display:block; padding:0 20px}
-    nav{position:static; width:auto; max-height:none; display:none; padding:16px 0;
-        border-bottom:1px solid var(--line)}
-    nav.open{display:block}
-    .menu-btn{display:block}
-    .top .buy{display:none}
-    main{padding-top:24px}
-    h1{font-size:32px}
-  }
-</style>
+  <meta charset="utf-8" />
+  <title>Trace</title>
+  <link rel="stylesheet" href="css/style.css?v=1.0.0" />
 </head>
 <body>
 
-<header class="top">
-  <img src="assets/trace-mark-black.png" alt="">
-  <b>Trace</b> <span>Help &amp; documentation</span>
-  <button class="menu-btn" id="menuBtn" aria-label="Contents">Contents</button>
-  <a class="buy" href="https://www.nkcourses.co.uk/trace">Get Trace — free</a>
-</header>
+  <!-- 🔴 Icons are inline SVG, not <sp-icon>. UXP's built-in Spectrum set is 36
+       UI-chrome glyphs with nothing for a clip, a sequence or a locator, and the
+       workflow set only ships with the npm SWC library. <use>/<symbol> support
+       is patchy, so every icon is inlined at its use site.
 
-<div class="wrap">
-<nav id="nav">
-  <h4>Start here</h4>
-  <a href="#overview">Overview</a>
-  <a href="#not">What Trace is not</a>
-  <a href="#requirements">Requirements</a>
-  <a href="#install">Install</a>
-  <a href="#quick-start">Quick start</a>
+       🔴 EVERY SHAPE CARRIES ITS OWN fill AND stroke. Presentation attributes do
+       not cascade in UXP — hoisting them onto the <svg> renders perfectly in a
+       browser and draws nothing at all in Premiere, with no error. A mockup in a
+       browser is not evidence.
 
-  <h4>The panel</h4>
-  <a href="#two-views">One clip at a time</a>
-  <a href="#find">Finding every use</a>
-  <a href="#select">Selecting uses</a>
-  <a href="#stepping">Jumping and stepping</a>
-  <a href="#gestures">Every gesture</a>
+       🔴 NO url(#…) PAINT. No gradients, no masks, no clip paths. Confirmed in
+       VersionUp 0.72.0: an unresolved paint reference draws nothing and reports
+       nothing. Flat colours only; the masters in brand/ keep their gradients. -->
 
-  <h4>Real projects</h4>
-  <a href="#nests">Nested sequences</a>
-  <a href="#subclips">Subclips and duplicates</a>
-  <a href="#multicam">Merged and multicam</a>
-  <a href="#archived">Archived sequences</a>
-
-  <h4>Acting on what you find</h4>
-  <a href="#markers">Adding markers</a>
-  <a href="#source">The Source Monitor</a>
-  <a href="#copy">Copying the list</a>
-
-  <h4>Reference</h4>
-  <a href="#updates">Updates and About</a>
-  <a href="#history">Release history</a>
-  <a href="#limits">What it can't do</a>
-  <a href="#troubleshooting">Troubleshooting</a>
-  <a href="#trace-plus">Trace+</a>
-  <a href="#support">Support</a>
-</nav>
-
-<main>
-  <h1>Trace</h1>
-  <p class="lede">Pick one clip. See every place it is used across your entire project — then select
-  every instance at once, which Premiere has never been able to do.</p>
-
-  <div class="cards">
-    <a class="card" href="#install"><b>Install</b><span>Get the panel into Premiere. About a
-      minute, and there is no licence key.</span></a>
-    <a class="card" href="#quick-start"><b>Quick start</b><span>Find every use of a clip and light
-      them all up in the timeline.</span></a>
-    <a class="card" href="#gestures"><b>Every gesture</b><span>Click, shift-click, cmd-click and
-      alt-click, in one table.</span></a>
+  <!-- The update notice. The ONLY thing in this panel that touches the network,
+       and it only ever reads: a small JSON file saying what the latest version
+       is. Nothing is uploaded and nothing identifies the user. -->
+  <div id="updateBar" class="tr-update tr-hidden">
+    <span id="updateText" class="tr-update-text"></span>
+    <div id="updateGet" class="tr-update-btn" role="button" tabindex="0">What's new</div>
+    <div id="updateHide" class="tr-update-x" role="button" tabindex="0" aria-label="Dismiss">
+      <svg class="tr-ico" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round"/>
+      </svg>
+    </div>
   </div>
 
-  <figure>
-    <img src="assets/trace-demo.gif" alt="Trace finding seven uses of a clip across four sequences, then selecting all of them in the timeline at once.">
-    <figcaption>One click on a clip, one press of <strong>Select all</strong>: every instance lights
-      up at the same moment.</figcaption>
-  </figure>
+  <header class="tr-header">
+    <span class="tr-brand">
+      <!-- 🔴 THE 20px CUT of the mark — brand/trace-mark-panel.svg, generated by
+           brand/build.py. It is deliberately NOT the 512px master in
+           brand/trace-mark.svg: scaled faithfully the ring lands at 1.2px and
+           the gaps between the three clips fall below half a pixel, so the mark
+           turns to mush at exactly the size it lives at. Heavier ring, heavier
+           grip, taller clips, wider gaps — same silhouette, drawn for 20px. The
+           master stays the master; treat this as a size-specific cut, the way a
+           real logo system ships one. VersionUp carries its own for the same
+           reason.
 
-  <h2 id="overview">Overview</h2>
-  <p>Click a clip in the Project panel and Trace shows every place it is used — which sequences,
-  which timecodes, how long, and how much of the source you have actually touched. Then one button
-  selects every instance in the timeline at once.</p>
-  <p><strong>The part that matters most:</strong> a selection is not a list. Once nine uses are
-  selected they are a real Premiere selection — nudge them, delete them, apply an effect, colour
-  them. Everything else that answers "where is this clip?" hands you a list and makes you visit the
-  entries one at a time.</p>
+           🔴 FLAT, and the masters keep the gradients. UXP does not resolve
+           url(#…) paint — a gradient here would draw nothing at all, silently.
 
-  <div class="note">
-    <p><b>Premiere can find your clips. It just makes you work for it.</b> The Video Usage column is
-    hidden until you turn it on, and then hands you a dropdown of sequence names — one click, one
-    instance, repeat. Nine uses is nine round trips, and it never tells you there were nine.
-    Sequence Index (26.2) is better inside a single sequence and stops at its edge.</p>
-    <p><b>Neither will</b> select all nine at once so you can act on them together, give you a total,
-    follow a clip into a nest and tell you where it lands in the master, or ignore the old cuts in
-    your <code>_PREVIOUS</code> bin. That is the whole of what Trace is for.</p>
+           🔴 The grip is detached from the ring on purpose. Joined flush at the
+           same weight it reads as a letter Q; fatter than the ring with a gap at
+           the joint, it reads as a magnifier. Do not close that gap. -->
+      <svg class="tr-mark" viewBox="0 0 512 512" aria-hidden="true">
+        <circle cx="236" cy="132" r="68" fill="none" stroke="#f2f4f6" stroke-width="38"/>
+        <path d="M331 227L362 258" fill="none" stroke="#f2f4f6" stroke-width="60" stroke-linecap="round"/>
+        <rect x="96" y="302" width="190" height="52" rx="14" fill="#1fc8ec"/>
+        <rect x="96" y="372" width="290" height="52" rx="14" fill="#9d54e8"/>
+        <rect x="96" y="442" width="232" height="52" rx="14" fill="#16dd7d"/>
+      </svg>
+      <span class="tr-title">Trace</span>
+    </span>
+
+    <div class="tr-header-tools">
+    <!-- 🔴 MARKERS AS A SYMBOL, OUT OF THE ☰ — 14 Aug 2026. The one icon in
+         this panel whose meaning an editor already owns: it is the shape
+         Premiere puts on its own timeline. That is the whole test an icon has
+         to pass here — the last four were drawn properly, meant nothing, and
+         went back to words within a day.
+
+         It sits in the TITLE row rather than the toolbar because the toolbar
+         is full: three words plus the pager come to ~298px of a 320px dock, and
+         a fourth control wraps the row. Up here it costs nothing.
+
+         ⚠️ Size on the wrapping DIV, never on the <svg>. A percentage size on
+         an SVG that is a direct flex child does not resolve in UXP. -->
+    <div id="markBtn" class="tr-menu-btn" role="button" tabindex="0"
+         title="Add a marker to every use on screen"
+         aria-label="Add a marker to every use on screen">
+      <!-- 🔴 FILLED, and narrower than a shield. Outlined and 10 wide it read
+           as a badge; Premiere draws its timeline markers as SOLID chips, and
+           the whole argument for using a symbol here is that the shape is one
+           the editor already knows. ⚠️ The fill is on the path itself — UXP
+           does not resolve url(#…) and does not inherit paint from the <svg>. -->
+      <svg class="tr-ico" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M3.2 2.8h13.6v9.1L10 17.6 3.2 11.9V2.8z" fill="currentColor"/>
+      </svg>
+    </div>
+    <!-- 🔴 CLEAR IS AN ✕, TOP RIGHT — 14 Aug 2026, following Trace+. It is the
+         one control on that row whose meaning a symbol carries perfectly:
+         everybody has closed something with an ✕. It also acts on the PANEL
+         rather than on the list, which is what this row is for. -->
+    <div id="clearBtn" class="tr-menu-btn tr-disabled" role="button" tabindex="0"
+         title="Clear the selection" aria-label="Clear the selection">
+      <svg class="tr-ico" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M5.5 5.5l9 9M14.5 5.5l-9 9" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- 🔴 RE-SCAN SITS WITH THE ☰, NOT WITH THE LIST CONTROLS — 14 Aug 2026.
+         The panel already watches the project and re-scans on a timer, so this
+         is the "I do not believe you" button, which is worth having in a tool
+         whose whole value is that its numbers are right. But it acts on the
+         PANEL, not on the list, and it was the only control on that row that
+         never changed state — which is why it read as decoration down there. -->
+    <div id="rescanBtn" class="tr-menu-btn" role="button" tabindex="0"
+         title="Re-scan project" aria-label="Re-scan project">
+      <svg class="tr-ico" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M16.2 8.4A6.4 6.4 0 1 0 16 12.2" fill="none" stroke="currentColor"
+              stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M11.6 8.4h4.8V3.6" fill="none" stroke="currentColor"
+              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div id="menuBtn" class="tr-menu-btn" role="button" tabindex="0" aria-label="Menu">
+      <svg class="tr-ico" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M3 6h14M3 10h14M3 14h14" fill="none" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round"/>
+      </svg>
+    </div>
+    </div>
+
+    <!-- 🔴 An in-panel popup, NOT Premiere's native flyout. entrypoints.setup()
+         is the only route to the real ☰ and it re-creates the panel body, which
+         detaches every cached node and killed VersionUp 0.24.0. Divs are proven. -->
+    <div id="menuPopup" class="tr-menu tr-hidden">
+      <!-- 🔴 "Re-scan project" WAS here and has been REMOVED. It is the refresh
+           icon immediately above this menu — the same action in two places is
+           not redundancy, it is a menu that takes longer to read for no gain.
+           The button wins because it is visible without a click. -->
+      <div id="menuCopy" class="tr-menu-item" role="button" tabindex="0">Copy list</div>
+      <div id="menuTour" class="tr-menu-item" role="button" tabindex="0">Tips</div>
+      <div id="menuUpdate" class="tr-menu-item" role="button" tabindex="0">Check for updates</div>
+      <!-- 🔴 IN THE MENU, NOT ONLY BEHIND ALT-CLICK. It was hidden on the
+           argument that a menu item opening something incomprehensible costs
+           trust — which is true right up until somebody is reporting a bug, and
+           then the fastest thing in this panel is unreachable by anyone who was
+           not told the gesture. Support asks for this by name. Alt-clicking ☰
+           still works. -->
+      <div id="menuReport" class="tr-menu-item" role="button" tabindex="0">Scan report</div>
+      <!-- 🔴 THE SECOND ROUTE TO THE CLIPBOARD — 20 Aug 2026. The report has a
+           Copy button in its own bar, and the bar was reported invisible on a
+           real dock — not the buttons, the whole row. It holds in jsdom and in a
+           browser, so there is nothing here to reproduce and nothing to fix
+           blind. A support instrument whose one verb depends on a row that may
+           not draw is one that stops working silently, so the same verb lives
+           in the menu, which is already open when somebody goes looking for it.
+           ⚠️ ONLY WHILE THE REPORT IS ON SCREEN. showProbe() shows and hides this
+           with the pair — a Copy that copies nothing is worse than no Copy. -->
+      <div id="menuReportCopy" class="tr-menu-item tr-hidden" role="button" tabindex="0">Copy scan report</div>
+      <div id="menuHelp" class="tr-menu-item" role="button" tabindex="0">Get help</div>
+      <!-- 🔴 A ROUTE OUT OF THE PANEL FOR THE THING THE PANEL GOT WRONG —
+           19 Aug 2026. Get help is documentation; this is the other direction,
+           and without it a bug is only ever reported by somebody motivated
+           enough to find an email address. Ported wholesale from VersionUp,
+           where mailto: was tried three ways and silently did nothing on a real
+           machine — the panel posts the report itself.
+           ⚠️ ONE GOOGLE FORM FOR ALL THREE APPS. The app name is the first
+           field posted, filled in by the panel, so support@ sorts by product
+           without asking the customer a question they would answer wrong. -->
+      <div id="menuBug" class="tr-menu-item" role="button" tabindex="0">Submit bug/feature…</div>
+      <div id="menuAbout" class="tr-menu-item" role="button" tabindex="0">About Trace</div>
+    </div>
+  </header>
+
+  <!-- 🔴 THE CONTROLS SIT UNDER THE TITLE, NOT AT THE BOTTOM — 14 Aug 2026.
+       Trace+ moved first (three layouts mocked at a 320px dock; this is C) and
+       the two panels are one kit — a free panel whose controls live somewhere
+       else is a free panel that looks like a different product. Same row, same
+       ids, one row higher: against the list it changes rather than at the far
+       end of the panel. -->
+  <div class="tr-toolbar">
+    <!-- 🔴 ONE PAGER, NOT THREE LOOSE THINGS — 19 Aug 2026, brought across from
+         Trace+ 0.55.0 so the two panels do not look like two products. Previous,
+         the count and Next were three independent children of the toolbar; they
+         are now one control in a single shell, with the count INSIDE it, which
+         is what it has always meant.
+
+         ⚠️ THE ARITHMETIC IS THE POINT. The thumbs are 23px so the shell comes
+         to 25px, which is what Trace+'s One clip / All clips switch measures
+         (15px line-height + 8px padding + 2px border). Trace has no such switch
+         to sit beside — it is matched to the PAID panel, not to its own row, so
+         that somebody who runs both never sees two versions of one control. -->
+    <div class="tr-pager">
+      <div id="prevBtn" class="tr-step tr-disabled" role="button" tabindex="0"
+           title="Previous use" aria-label="Previous use">
+        <div class="tr-icobox"><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M14.5 5.5L8 12l6.5 6.5" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg></div>
+      </div>
+      <span id="position" class="tr-position">—</span>
+      <div id="nextBtn" class="tr-step tr-disabled" role="button" tabindex="0"
+           title="Next use" aria-label="Next use">
+        <div class="tr-icobox"><svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9.5 5.5L16 12l-6.5 6.5" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg></div>
+      </div>
+    </div>
   </div>
 
-  <h2 id="not">What Trace is not</h2>
-  <p>Trace answers one question — <strong>where is this clip used?</strong> — and it is worth being
-  blunt about everything it deliberately isn't, so you know inside a minute whether it is the tool
-  you want.</p>
-  <table>
-    <tr><th>It is not</th><th>What you actually want</th></tr>
-    <tr><td class="no">A media manager</td><td>Trace never moves, renames, copies, consolidates or deletes a single file. It reads.</td></tr>
-    <tr><td class="no">An unused-media finder</td><td>Trace answers about the clip <em>you selected</em>. "What in this project is used nowhere?" is a different question — that is <a href="#trace-plus">Trace+</a>.</td></tr>
-    <tr><td class="no">A duplicate finder</td><td>It shows repeats of one clip, not every duplicated asset in the project. Also Trace+.</td></tr>
-    <tr><td class="no">A project archiver or trimmer</td><td>It will not shrink your project folder or collect only the used media. Trace+.</td></tr>
-    <tr><td class="no">A reporting or export tool</td><td>No CSV, no PDF, no cue sheet. <strong>Copy list</strong> puts plain text on the clipboard, and that is the whole of it.</td></tr>
-    <tr><td class="no">A search tool</td><td>You cannot type a filename into Trace. It follows what you select, on purpose — nothing to configure and nothing to learn.</td></tr>
-    <tr><td class="no">A replacement for the Video Usage column</td><td>A different question, not a better version of the same one. Use both.</td></tr>
-    <tr><td class="no">Something that edits for you</td><td>It moves the playhead and makes selections. Only if you ask does it add markers or set in/out points. It never cuts, trims or ripples.</td></tr>
-    <tr><td class="no">A subscription, or a trial</td><td>Free. No account, no key, no sign-in, no expiry, nothing to cancel.</td></tr>
-  </table>
-  <p>It is also not a panel most people open every day. It earns its place on the days you inherit
-  someone else's project, hunt a clip you know you used somewhere, or need to know what a
-  forty-minute interview actually gave you.</p>
 
-  <h2 id="requirements">Requirements</h2>
-  <table>
-    <tr><th>Premiere Pro</th><td><strong>25.6 or newer.</strong> Check under
-      <code>Premiere Pro &gt; About Premiere Pro</code>. Earlier versions cannot run it — Trace uses
-      Adobe's current plugin system (UXP), and there is no build for older releases.</td></tr>
-    <tr><th>System</th><td>macOS or Windows.</td></tr>
-    <tr><th>Licence</th><td>None. Trace is free, with no account and no key.</td></tr>
-  </table>
+  <!-- 🔴 THE FIRST-RUN TOUR — a card in the panel, never a dialog. A dialog is
+       its own OS window (so it cannot point at the burger) and uxpShowModal
+       BLOCKS PREMIERE while it is open, which on first load means freezing the
+       host to show a welcome screen. See js/tour.js for the rest of the why.
 
-  <h2 id="install">Install</h2>
-  <ol>
-    <li><strong>Download <code>Trace.ccx</code> and double-click it.</strong> Creative Cloud Desktop
-      installs it for you — nothing to unzip.</li>
-    <li><strong>Quit Premiere Pro and open it again.</strong> Premiere only looks for new panels at
-      startup.</li>
-    <li><strong>Window &gt; UXP Plugins &gt; Trace.</strong></li>
-  </ol>
-  <p>That is all of it. There is no third step where you paste a key.</p>
-
-  <figure>
-    <img src="assets/window-menu.png" alt="Premiere's Window menu open, showing UXP Plugins and Trace.">
-    <figcaption>It is under <strong>Window &gt; UXP Plugins</strong> — not Window &gt;
-      Extensions.</figcaption>
-  </figure>
-
-  <div class="note warn">
-    <p><b>Double-clicking did nothing?</b> Open Creative Cloud Desktop first, then double-click the
-    file again. If Creative Cloud is not installed, use the free
-    <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a> instead.</p>
+       flex: 0 0 auto in the stylesheet, like every other block in this column:
+       a shrinking child gets squeezed below its own content height instead of
+       the column scrolling, and the text then spills over what is beneath. -->
+  <div id="tourCard" class="tr-tour tr-hidden">
+    <!-- Right-aligned notch on the TOP edge. The burger is always top-right, so
+         this points correctly at every panel width with nothing measured. -->
+    <div id="tourArrow" class="tr-tour-arrow tr-hidden"></div>
+    <div class="tr-tour-head">
+      <span id="tourTitle" class="tr-tour-title"></span>
+      <span id="tourClose" class="tr-tour-x" role="button" tabindex="0"
+            title="Close">&times;</span>
+    </div>
+    <p id="tourBody" class="tr-tour-body"></p>
+    <div class="tr-tour-foot">
+      <span id="tourDots" class="tr-tour-dots"></span>
+      <span id="tourCount" class="tr-tour-count"></span>
+      <span id="tourBack" class="tr-tour-btn tr-hidden" role="button" tabindex="0">Back</span>
+      <span id="tourNext" class="tr-tour-btn is-primary" role="button" tabindex="0">Next</span>
+    </div>
   </div>
 
-  <h2 id="quick-start">Quick start</h2>
-  <ol>
-    <li>Open a project and dock Trace down the side of your workspace — it wants height, not width.</li>
-    <li><strong>Click a clip in the Project panel.</strong> Trace scans the project once — a few
-      hundred milliseconds on a normal job — then answers instantly from then on.</li>
-    <li>Click any row to jump the playhead to that use.</li>
-    <li>Press <strong>Select all N in this sequence</strong> to light up every use at once.</li>
-  </ol>
-  <p>With nothing selected, Trace waits. That is the whole loop; everything below is detail.</p>
-
-  <h2 id="two-views">One clip at a time</h2>
-  <p><strong>Trace answers about the clip you select, and nothing else.</strong> There is no view to
-  switch, no mode, no setting. Click a clip, a subclip, an audio file or a sequence in the Project
-  panel and Trace shows every place it is used. Click away and it waits.</p>
-  <p>That is the whole shape of it, and it is deliberate: a panel that only ever answers one question
-  needs no explaining. If you want the same answer for <strong>many clips at once</strong> — what a
-  whole sequence reuses, what the whole project no longer needs — that is
-  <a href="#trace-plus">Trace+</a>.</p>
-  <div class="note">
-    <p style="margin:0"><b>A sequence counts as a clip.</b> Select one and Trace tells you where
-    <em>that sequence</em> is nested, the same way it would for any other item.</p>
+  <!-- Shown INSTEAD of the card when the panel is docked too short for it.
+       Burying the list under a tutorial is worse than not running one. -->
+  <div id="tourHint" class="tr-tour-hint tr-hidden" role="button" tabindex="0">
+    New here? Open ☰ for Tips
   </div>
 
-  <h2 id="find">Finding every use of a clip</h2>
-  <p>Select a clip and Trace answers with a total line — <em>9 uses · 4 sequences · 3m 12s</em> —
-  and then the detail: every sequence it appears in, and inside each one, every use with its
-  timecode, its duration and which track it sits on.</p>
+  <section class="tr-summary">
+    <div id="clipName" class="tr-clip">No clip selected</div>
+    <!-- 🔴 WHERE THE CLIP LIVES, AND THE BUTTON BESIDE IT.
+         Premiere gives plugins no way to select or scroll the Project panel —
+         re-verified 13 Aug 2026 against the shipping 26.3.0 type definitions
+         AND the unreleased 26.5.0-beta.73 ones. `ProjectUtils` has four
+         members and all four are getters; there is no create*SelectionAction
+         among the 78 action creators; there is no command API. The timeline
+         selection is read-write and the Project panel's is read-only, on
+         purpose. See docs/premiere-uxp-api.md.
 
-  <figure>
-    <img src="assets/feature-find.gif" alt="Selecting a clip in the Project panel and Trace immediately listing every sequence it appears in.">
-    <figcaption><strong>Finding every use</strong> — nothing to press, and no column to turn on.
-      Trace follows the Project panel.</figcaption>
-  </figure>
+         So this line IS the answer to "where is it?", and the button does the
+         only half a plugin can do: put the exact name on the clipboard for the
+         Project panel's Find box. It is called Find, not Reveal, because it
+         finds and does not reveal — a button that lies about what it did is
+         worse than no button.
 
-  <p>Audio and video that were shot together and are cut together count as <strong>one</strong> use,
-  not two. Trace pairs them when they overlap by more than half, so a J-cut stays one use and two
-  back-to-back edits stay two.</p>
-  <p>The list updates as you edit. Add a clip, delete one, or move something, and Trace re-scans on
-  its own within a few hundred milliseconds. <strong>☰ &gt; Re-scan project</strong> forces it
-  immediately if you would rather not wait.</p>
+         This comment used to say "the answer is simply on screen". It was not:
+         state.binPath was walked on every selection and never rendered. -->
+    <div id="binRow" class="tr-binrow tr-hidden">
+      <div id="binLine" class="tr-bin"></div>
+    </div>
+    <div id="totals" class="tr-totals">Select a clip in the Project panel.</div>
+    <div id="caveat" class="tr-caveat tr-hidden"></div>
 
-  <h2 id="select">Selecting uses in the timeline</h2>
-  <p><strong>This is the thing nothing else does.</strong> Press <strong>Select all N in this
-  sequence</strong> and every use becomes a real Premiere selection at the same moment — ready to
-  nudge, delete, label, or drop an effect onto.</p>
+  </section>
 
-  <figure>
-    <img src="assets/feature-select-all.gif" alt="Pressing Select all in Trace and seven clips lighting up across the timeline simultaneously.">
-    <figcaption><strong>Select all uses</strong> — seven clips you could not have picked out become
-      one selection.</figcaption>
-  </figure>
-
-  <p>For a subset, tick the box beside any use, or <kbd>Cmd</kbd>-click (<kbd>Ctrl</kbd> on Windows)
-  the row. Ticked rows fill in so the panel and the timeline always agree.</p>
-
-  <div class="note">
-    <p><b>A selection cannot span two sequences</b> — that is Premiere, not Trace. Ticking a use in a
-    different sequence replaces your picks rather than adding to them, and the status line says so
-    when it happens.</p>
+  <!-- The two-line feature only someone who has built a versioning tool would
+       think of: a project full of _PREVIOUS sequences makes every usage list
+       useless, and a Community Expert has confirmed native cannot filter them. -->
+  <div id="archiveFilter" class="tr-filter tr-hidden" role="button" tabindex="0">
+    <span id="archiveCheck" class="tr-check tr-on"></span>
+    <span id="archiveLabel" class="tr-filter-label">Hide archived sequences</span>
   </div>
 
-  <h2 id="stepping">Jumping to a use, and stepping through them</h2>
-  <p>Click any row and Trace activates that sequence, moves the playhead to the use, and selects the
-  clip — three actions, one click.</p>
+  <!-- 🔴 COLOUR LABELS FOR THE SELECTED CLIP — 14 Aug 2026, in BOTH panels.
+       Trace answers about one clip, so it labels one clip; Trace+ can also
+       label everything ticked in the project view. Same bar, same swatches, one
+       fewer job in the free one.
 
-  <figure>
-    <img src="assets/feature-jump.gif" alt="Clicking a use in Trace and the playhead jumping to that clip in the timeline, with the clip selected.">
-    <figcaption><strong>Click a use, land on it</strong> — the sequence is activated, the playhead
-      moves and the clip is selected.</figcaption>
-  </figure>
+       🔴 BUILT FROM `ppro.Constants.ProjectItemColorLabel` AT RUNTIME, never
+       from a list typed in here. Premiere's own label menu offers Caribbean;
+       the API has no CARIBBEAN and carries YELLOW in that slot, and a hardcoded
+       name fails INSIDE a transaction where the error is nearly unreadable.
 
-  <p>The arrows at the bottom walk the playhead through every use on screen, in order, jumping
-  between sequences as needed. The counter between them tells you where you are —
-  <em>3 / 9</em>. <strong>Clear</strong> drops the selection and the picks.</p>
+       ⚠️ WHAT IT COLOURS: the MASTER clip. There is no API to label a clip
+       already cut into a timeline — VideoClipTrackItem and AudioClipTrackItem
+       have no colour action at all, re-verified against 26.5.0-beta.73.
 
-  <h2 id="gestures">Every gesture</h2>
-  <table>
-    <tr><th>Do this</th><th>Get this</th></tr>
-    <tr><td>Click a use</td><td>Jump the playhead there and select that clip</td></tr>
-    <tr><td><kbd>Shift</kbd>-click, or double-click</td><td>Open in the Source Monitor, with that use set as in/out</td></tr>
-    <tr><td><kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click, or the tick box</td><td>Add or remove from the selection</td></tr>
-    <tr><td><kbd>Alt</kbd>-click</td><td>Copy the clip's name, to paste into the Project panel's search box</td></tr>
-    <tr><td>The arrows</td><td>Step through every use on screen</td></tr>
-  </table>
-  <p><kbd>Shift</kbd> and double-click do the same thing deliberately, so the Source Monitor is
-  reachable whichever one you reach for.</p>
-
-  <h2 id="nests">Nested sequences</h2>
-  <p>If a clip lives inside a nest and that nest is cut into a master, Trace reports
-  <strong>both</strong> — the use inside the nest, and where it lands in the master, labelled
-  <code>via &lt;nest name&gt;</code>. Native reports the first and never mentions the second, which
-  is the sequence you are actually working in.</p>
-  <table>
-    <tr><th>Nest trimmed past the use</th><td>Not reported. The master genuinely does not contain it, and a wrong number is worse than a missing one.</td></tr>
-    <tr><th>Retimed nest</th><td>Mapped, divided by the speed, and marked <code>~</code> with a note under the totals.</td></tr>
-    <tr><th>Reversed nest</th><td>Not mapped at all. The arithmetic depends on where the reversal's boundaries sit, and guessing would be a confident lie.</td></tr>
-    <tr><th>Nest inside a nest</th><td>Followed, to six levels, with a guard against a sequence that somehow contains itself.</td></tr>
-  </table>
-
-  <h2 id="subclips">Subclips and duplicate imports</h2>
-  <p>Selecting a master clip also finds uses of its <strong>subclips</strong>, matched on the shared
-  media file. Those rows are labelled with the name of the item they came from.</p>
-  <div class="note warn">
-    <p><b>Trace cannot tell a subclip from a second import of the same file</b> — Premiere exposes no
-    API for that relationship — so it does not claim to. Rows say <em>same media file</em> and name
-    the item, rather than saying <em>subclip</em>.</p>
+       🔴 AND THE TIMELINE DOES NOT FOLLOW BY DEFAULT — corrected 16 Aug 2026.
+       Premiere copies the label into an instance when the clip is cut in and
+       never looks back, UNLESS the project has File ▸ Project Settings ▸
+       General ▸ "Display the project item's name and label color for all
+       instances" ticked. The status line names that switch rather than
+       promising a colour the panel cannot deliver.
+       See docs/premiere-uxp-api.md § Colour labels. -->
+  <div id="labelBar" class="tr-labelbar tr-hidden">
+    <span id="labelCount" class="tr-labelbar-title">Label this clip</span>
+    <div id="labelSwatches" class="tr-swatches"></div>
   </div>
 
-  <h2 id="multicam">Merged and multicam clips</h2>
-  <p>The component clips inside a merged clip, and the angles inside a multicam clip, are
-  <strong>not</strong> resolved. When you select one, Trace says so in the line under the totals
-  rather than quietly reporting a number that is too low.</p>
-  <div class="note warn">
-    <p><b>Merged clips cannot be resolved by any plugin.</b> Premiere exposes
-    <code>isMergedClip()</code> — enough to know that it is one — and nothing at all for reading the
-    sources inside it. Adobe's own answer, on the record: <em>"There are no ExtendScript APIs around
-    multi-cam, and there never will be."</em> The same gap covers merged clips, and no workaround has
-    ever been produced.</p>
-    <p><b>Multicam is a maybe.</b> A multicam source appears in the project as a sequence, so its
-    angles may be reachable that way. That is an untested route, not a promise — and even if it
-    works, nothing exposes which angle a clip is currently switched to.</p>
+  <main id="list" class="tr-list">
+    <div class="tr-state">
+      <div class="tr-state-title">Waiting for Premiere</div>
+      <div>Click any clip, subclip, audio file or sequence in the Project panel and Trace will show every place it is used.</div>
+    </div>
+  </main>
+
+
+  <div id="status" class="tr-status">Waiting for Premiere…</div>
+
+  <!-- ---------------- about ----------------
+       🔴 A MODAL DIALOG, the same shape as VersionUp's, and for the same
+       reason: uxpShowModal() is the only pop-out a UXP panel gets, and About is
+       a thing you read and dismiss rather than work alongside. Blocking
+       Premiere while it is open is the right trade.
+
+       🔴 FLAT COLOURS, and this is not a preference. UXP does not resolve
+       url(#…) paint references — an unresolved paint draws NOTHING, with no
+       error anywhere. VersionUp 0.72.0's About mark was invisible for exactly
+       this reason. Every shape below carries its own fill; nothing is hoisted
+       onto the <svg>, because presentation attributes do not cascade here
+       either. The masters in brand/ keep their gradients, for print and web.
+
+       🔴 This is the 512px master geometry, NOT the 20px panel cut in the
+       header — at 64px the faithful proportions are the right ones. -->
+  <dialog id="aboutDialog" class="tr-dialog">
+    <div class="tr-dialog-body">
+     <!-- 🔴 THE CARDS SCROLL, THE FOOT DOES NOT. At 280×380 — the minSize, and
+          a size the host is free to hand us anyway — the privacy card pushed
+          Close off the bottom with no way to reach it. minSize is a REQUEST
+          Adobe's own docs say the host "may not be able to honor", so the thing
+          that actually guarantees Close stays on screen is this scroller at
+          flex: 1 1 auto + min-height: 0, with .tr-foot at flex: 0 0 auto. -->
+     <div class="tr-scroll">
+      <div class="tr-card tr-about">
+        <span class="tr-about-brand">
+          <svg class="tr-about-mark" viewBox="0 0 512 512" aria-hidden="true">
+            <circle cx="236" cy="132" r="68" fill="none" stroke="#f2f4f6" stroke-width="34"/>
+            <path d="M331 227L362 258" fill="none" stroke="#f2f4f6" stroke-width="54" stroke-linecap="round"/>
+            <rect x="96" y="302" width="190" height="52" rx="14" fill="#1fc8ec"/>
+            <rect x="96" y="372" width="290" height="52" rx="14" fill="#9d54e8"/>
+            <rect x="96" y="442" width="232" height="52" rx="14" fill="#16dd7d"/>
+          </svg>
+          <span class="tr-about-name">Trace</span>
+        </span>
+
+        <span class="tr-about-ver">Version <b id="aboutVersion">&hellip;</b></span>
+
+        <!-- 🔴 THE HEADLINE, and it must match launch/docs/index.html and the
+             store copy word for word. Three places, one sentence. If it is
+             edited here and nowhere else, the panel and the page start selling
+             two different products. -->
+        <!-- 🔴 "every USE OF A clip", not "every used clip". One word, and it is
+             the difference between describing Trace and describing Trace+.
+             "See every used clip across your entire project" promises a list of
+             ALL the project's clips, which is Trace+'s headline and a thing
+             this panel deliberately never does. -->
+        <span class="tr-about-tag">Pick one clip. See every place it's used
+          across your entire project — then select every instance at once.</span>
+
+        <span class="tr-about-line">&copy; 2026 NK Courses. All rights reserved.</span>
+
+        <!-- A div, not an <a>. A UXP panel has nowhere to navigate to; this
+             opens the system browser via uxp.shell. The URL is also the visible
+             text, so it stays useful if that call fails. -->
+        <div id="aboutLink" class="tr-link" role="button" tabindex="0">www.nkcourses.co.uk/trace</div>
+      </div>
+
+     </div>
+
+      <div class="tr-foot">
+        <div id="aboutClose" class="tr-btn tr-cta" role="button" tabindex="0">Close</div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 🔴 THE SCAN REPORT, AND ITS OWN BAR — 14 Aug 2026.
+       It is a support instrument, so the two things anybody does with it are
+       COPY IT and PUT IT AWAY, and both were invisible: the copy happened as a
+       side effect of opening it (so a second copy meant closing and reopening)
+       and the only way to dismiss it was a gesture nobody knows.
+
+       ⚠️ The bar and the <pre> are SIBLINGS, not a wrapper round both. Every
+       flex child in this column needs flex: 0 0 auto or it is squeezed below
+       its content height, and a wrapper is one more box to get that wrong on.
+       showProbe() shows and hides the pair together. -->
+  <div id="probeBar" class="tr-probe-bar tr-hidden">
+    <span class="tr-probe-title">Scan report</span>
+    <span class="tr-probe-gap"></span>
+    <!-- 🔴 SYMBOL + WORD, NOT SYMBOL ALONE. The header buttons are icon-only
+         because each is a shape an editor already knows (a marker chip, an ✕, a
+         refresh arrow). "Copy" and "Hide" are not: two documents and a
+         struck-through eye are guessable at best, and this bar only appears when
+         somebody is already troubleshooting — the worst moment to make them
+         decode a glyph. The word stays; the glyph makes the pair scannable.
+         ⚠️ Paint on the path. UXP does not inherit stroke/fill from the <svg>. -->
+    <div id="probeCopy" class="tr-btn tr-probe-btn" role="button" tabindex="0"
+         title="Copy the whole report to the clipboard"
+         aria-label="Copy the whole report to the clipboard">
+      <svg class="tr-ico tr-ico-sm" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M7.4 2.8h9.8v9.8H7.4z" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M12.6 15.4v1.8H2.8V7.4h1.8" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><span>Copy</span>
+    </div>
+    <div id="probeHide" class="tr-btn tr-probe-btn" role="button" tabindex="0"
+         title="Hide the report" aria-label="Hide the report">
+      <!-- A chevron pointing at the bar it collapses into, not an ✕: the report
+           is hidden, not dismissed, and ✕ already means "clear the selection"
+           in the header. One glyph, one meaning, per panel. -->
+      <svg class="tr-ico tr-ico-sm" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M5.4 12.2L10 7.6l4.6 4.6" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><span>Hide</span>
+    </div>
   </div>
+  <pre id="probe" class="tr-probe tr-hidden"></pre>
+
+  <!-- 🔴 FIRST, ALWAYS. license.js, update.js and main.js all read
+       TRACE_BUILD from it; loaded after them it is undefined and every
+       reader falls back to its "not configured" branch. -->
+  <script src="js/build-config.js?v=1.0.0"></script>
+  <script src="js/timecode.js?v=1.0.0"></script>
+  <script src="js/update.js?v=1.0.0"></script>
+  <script src="js/report.js?v=1.0.0"></script>
+  <script src="js/usage.js?v=1.0.0"></script>
+  <script src="js/tour.js?v=1.0.0"></script>
+  <script src="js/main.js?v=1.0.0"></script>
+
+  <!-- ---------------- report a bug or request a feature ----------------
+       🔴 A <dialog> WITH uxpShowModal, like About and Settings. Divs floating
+       over the panel were tried in VersionUp and lose focus handling.
+       ⚠️ A <textarea> AND AN sp-textfield, NOT DIVS. The div-only rule is about
+       BUTTONS — UXP does not style a <button> and the panel's own smoke test
+       fails the build if one appears. Text entry is the opposite case: a
+       contenteditable div loses the caret, and these two are the shapes proven
+       in VersionUp's own report dialog. -->
+  <dialog id="reportDialog" class="tr-dialog">
+    <div class="tr-dialog-body">
+      <div class="tr-scroll">
+        <div class="tr-card">
+          <span class="tr-set-title">Submit bug/feature</span>
+
+          <!-- 🔴 THE SWITCH CHANGES THE QUESTION, not just a label on the
+               report. "What happened, and what did you expect" and "what would
+               you like it to do" are different prompts, and the prompt is what
+               decides whether a report is usable. -->
+          <div class="tr-switch">
+            <div id="reportKindBug" class="tr-switch-half tr-on" role="button" tabindex="0">A bug</div>
+            <div id="reportKindIdea" class="tr-switch-half" role="button" tabindex="0">An idea</div>
+          </div>
+
+          <div id="reportPrompt" class="tr-card-note">What happened, and what did you expect instead?</div>
+          <textarea id="reportMessage" class="tr-ta" rows="7"
+                    placeholder="The more specific, the faster it gets fixed."></textarea>
+
+          <!-- 🔴 OPTIONAL, AND SAID SO. Demanding an address loses the report
+               from anyone unwilling to give one, and the report is the valuable
+               half. A WRONG one is worth catching — someone who typed an
+               address meant to hear back. -->
+          <sp-textfield id="reportEmail" class="tr-lic-field"
+                        placeholder="Your email, if you would like a reply"></sp-textfield>
+
+          <!-- 🔴 THE PRIVACY LINE IS PART OF THE FEATURE, not a disclaimer under
+               it. Most of this panel's users are under NDA, and a support form
+               that does not say what it sends is a support form they will not
+               use. What actually goes: the message, the optional address, and
+               the software configuration — see diagnostics() in js/report.js.
+               No file paths, no project or sequence names, nothing automatic. -->
+          <div class="tr-card-note">Trace sends nothing on its own. Pressing Send
+            sends your message, your email if you gave one, and your Trace,
+            Premiere and system versions — never a file path, a project name or
+            anything from your timeline.</div>
+
+          <div id="reportState" class="tr-lic-state"></div>
+        </div>
+      </div>
+
+      <div class="tr-foot">
+        <div id="reportSend" class="tr-btn tr-cta" role="button" tabindex="0">Send</div>
+        <div id="reportClose" class="tr-btn" role="button" tabindex="0">Cancel</div>
+      </div>
+    </div>
+  </dialog>
 
-  <h2 id="archived">Archived sequences</h2>
-  <p>If you keep old cuts in a <code>_PREVIOUS</code>, <code>_ARCHIVE</code> or <code>_OLD</code>
-  bin — as <a href="https://www.nkcourses.co.uk/versionup">VersionUp</a> creates — every native usage
-  list is full of them, and there is no way to filter them out.</p>
-
-  <figure>
-    <img src="assets/feature-archived.gif" alt="Toggling Hide archived sequences in Trace and the list dropping from fourteen results to five.">
-    <figcaption><strong>Hide archived sequences</strong> — fourteen results become the five that are
-      about the cut you are working on.</figcaption>
-  </figure>
-
-  <p>Trace hides them by default and tells you how many it is hiding. Untick to see them; the tick
-  box stays on screen either way, so it is a switch and not a trapdoor.</p>
-  <div class="note good">
-    <p>A Community Expert confirmed on the Adobe forums that native Premiere cannot do this. It is a
-    small feature that only exists because the person who built Trace also built a versioning tool
-    and got tired of the noise.</p>
-  </div>
-
-  <h2 id="markers">Adding markers</h2>
-  <p><strong>☰ &gt; Add markers to used</strong> drops a marker over every use in the list. Unlike a
-  selection, a marker survives you clicking somewhere else — it is the persistent version of
-  "highlight every use".</p>
-
-  <figure>
-    <img src="assets/feature-markers.gif" alt="Choosing Add markers to used and markers appearing above every use across the timeline.">
-    <figcaption><strong>Add markers to used</strong> — the flag that outlives the selection.</figcaption>
-  </figure>
-
-  <div class="note warn">
-    <p><b>It is one undo step per sequence</b>, not one for the lot, and Trace tells you how many
-    before you press it. Markers across four sequences is four presses of
-    <kbd>Cmd</kbd>+<kbd>Z</kbd>.</p>
-  </div>
-
-  <h2 id="source">The Source Monitor</h2>
-  <p><kbd>Shift</kbd>-click or double-click any use to open that clip in the Source Monitor with
-  <strong>the used section marked as in and out points</strong>, so you are looking at exactly the
-  stretch Trace is describing.</p>
-
-  <figure>
-    <img src="assets/feature-source-monitor.gif" alt="Shift-clicking a use in Trace and the clip opening in the Source Monitor with in and out points set around that section.">
-    <figcaption><strong>Open in the Source Monitor</strong> — with the used range already marked.</figcaption>
-  </figure>
-
-  <div class="note warn">
-    <p><b>This changes your project.</b> In and out points on a clip are what you get when you drag
-    it into a timeline afterwards, so setting them is a real edit — one
-    <kbd>Cmd</kbd>+<kbd>Z</kbd> to undo, and Trace says so in the status line when it happens.</p>
-    <p>Markers and this are the <strong>only two</strong> things Trace ever writes. Everything else
-    it does is a read.</p>
-  </div>
-
-  <h2 id="copy">Copying the list</h2>
-  <p><strong>☰ &gt; Copy list</strong> puts what is on screen on the clipboard as plain text —
-  sequence names, timecodes and durations — for an email, a note, or a message to whoever asked you
-  where that clip went. There is no CSV and no report file; if you need one of those, see
-  <a href="#trace-plus">Trace+</a>.</p>
-
-  <h2 id="updates">Updates and About</h2>
-  <p>Trace checks once a day whether a newer version exists and shows a small notice in the panel if
-  so. <strong>☰ &gt; Check for updates</strong> asks immediately.</p>
-  <p><strong>☰ &gt; About Trace</strong> shows the version you are running — the first thing to quote
-  if you report a problem — along with a link back to this site.</p>
-
-  <figure>
-    <img src="assets/about-dialog.png" alt="The About Trace window, showing the mark, the version number and the tagline.">
-    <figcaption><strong>☰ &gt; About Trace.</strong> The version number lives here.</figcaption>
-  </figure>
-
-  <h2 id="history">Release history</h2>
-  <div id="releases"><p class="loading">Loading releases…</p></div>
-
-  <h2 id="limits">What Trace can't do</h2>
-  <p>Not oversights. Premiere's plugin API genuinely does not offer these, and no plugin can do
-  them.</p>
-  <table>
-    <tr><th></th><th>Why</th></tr>
-    <tr><td class="no">Reveal a clip in the Project panel</td><td>The Project panel selection is read-only to plugins, and Premiere's own <em>Reveal in Project</em> command cannot be triggered either — Adobe segregates plugins from the main window's UI and keyboard handling deliberately. Trace shows the bin under the clip name, and <kbd>Alt</kbd>-click copies the name to paste into the search box.</td></tr>
-    <tr><td class="no">Colour or tint clips in the timeline</td><td>Colour labels are project-item only. Selection and markers are the two visual channels a plugin gets.</td></tr>
-    <tr><td class="no">Zoom or scroll the timeline</td><td>No API. Moving the playhead is the only navigation, and Premiere scrolls to follow it.</td></tr>
-    <tr><td class="no">Resolve merged clips</td><td>Nothing exists for reading the sources inside one. See <a href="#multicam">above</a>.</td></tr>
-    <tr><td class="no">Have a keyboard shortcut</td><td>Premiere does not support shortcuts for UXP plugins, and Adobe confirmed in April 2026 that none is planned.</td></tr>
-    <tr><td class="no">Search other or unopened projects</td><td>The API cannot reach a project that is not open. Productions are out for the same reason.</td></tr>
-    <tr><td class="no">Park the Source Monitor on the exact frame</td><td>Needs Premiere 26.3. Trace marks the used range as in/out instead, which shows you more.</td></tr>
-  </table>
-
-  <h2 id="troubleshooting">Troubleshooting</h2>
-
-  <h3>Trace isn't in the Window menu</h3>
-  <p>Restart Premiere after installing — it only looks for new panels at startup. Then check
-  <strong>Window &gt; UXP Plugins</strong>, not Window &gt; Extensions. If it is still missing,
-  confirm you are on 25.6 or later under <strong>Premiere Pro &gt; About Premiere Pro</strong>.</p>
-
-  <h3>Double-clicking the .ccx did nothing</h3>
-  <p>Creative Cloud Desktop has to be installed and signed in. Open it first, then double-click the
-  file again. If you do not have it, use the free
-  <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a>.</p>
-
-  <h3>It says 0 uses and I know I used that clip</h3>
-  <p>Three things do this, in order of likelihood:</p>
-  <ul>
-    <li><strong>The uses are in archived sequences.</strong> Untick <em>Hide archived sequences</em>.</li>
-    <li><strong>It is a merged or multicam clip.</strong> Trace flags this under the totals — see
-      <a href="#multicam">above</a>.</li>
-    <li><strong>The sequence has never been opened in this session.</strong> Press
-      <strong>☰ &gt; Re-scan project</strong>.</li>
-  </ul>
-
-  <h3>The numbers look out of date</h3>
-  <p>Trace re-scans on its own as you edit, but <strong>☰ &gt; Re-scan project</strong> forces it.
-  If a forced re-scan changes the answer, that is worth telling me about.</p>
-
-  <h3>Clicking a row moved the playhead but selected nothing</h3>
-  <p>Almost always means the clip has been trimmed or moved since the last scan. Re-scan and try
-  again.</p>
-
-  <h3>The panel is squashed or the buttons overlap</h3>
-  <p>Trace needs vertical room — its answer is a list. Docked down the side of the workspace it will
-  narrow gracefully; docked as a short bar under the timeline there is not enough height for the list
-  to be useful. Drag it taller.</p>
-
-  <h2 id="trace-plus">Trace+</h2>
-  <p><strong>Both search your whole project.</strong> The difference is how many clips they answer
-  for.</p>
-  <table>
-    <tr><th></th><th>Trace</th><th>Trace+</th></tr>
-    <tr><th>You give it</th><td><strong>One</strong> clip</td><td>Nothing, a sequence, or the project</td></tr>
-    <tr><th>It answers for</th><td>That clip, everywhere</td><td><strong>Many clips at once</strong></td></tr>
-    <tr><th>The question</th><td>Where is <em>this</em> used?</td><td>What is reused, what is used <em>nowhere</em>, what can go</td></tr>
-    <tr><th>Depth</th><td>The list</td><td>The list <strong>plus the analysis</strong> — coverage, totals, archive weight</td></tr>
-  </table>
-  <p>So Trace+ is not "Trace with a bigger search". Trace already searches everything. Trace+ asks a
-  different question — <strong>one clip at a time versus all four hundred at once</strong> — and then
-  does something about the answer: files the unused media into <code>_UNUSED</code>, tells you what
-  your archive would weigh without it.</p>
-  <p><strong>Trace+ has everything Trace has, and more.</strong> Nothing you learn in Trace is
-  wasted, and nothing you can do here disappears there. The deeper reading of a single clip —
-  the <strong>source coverage bar</strong>, which draws the whole clip with the used parts filled in
-  and tells you the longest stretch you have never touched — is a Trace+ feature.</p>
-  <p>It is not a paid tier of this panel and Trace is not a trial for it. Trace is free, complete and
-  finished. <a href="https://www.nkcourses.co.uk/trace">Join the list</a> if you want to hear when
-  Trace+ is ready.</p>
-
-  <h2 id="support">Support</h2>
-  <p><a href="mailto:support@nkcourses.co.uk">support@nkcourses.co.uk</a>. Quote the version number
-  from <strong>☰ &gt; About Trace</strong> and say what you selected and what you expected — that is
-  usually enough to find it. I am one person, so it might take a day, but it will be me
-  answering.</p>
-
-  <footer>
-    © NK Courses 2026. All rights reserved. ·
-    <a href="https://www.nkcourses.co.uk/trace">nkcourses.co.uk/trace</a> ·
-    <a href="https://www.nkcourses.co.uk/termsconditions">Terms</a>
-  </footer>
-</main>
-</div>
-
-<script>
-  /* Highlight the section you are reading, and let the nav collapse on a phone. */
-  var links = [].slice.call(document.querySelectorAll('nav a'));
-  var heads = links.map(function (a) { return document.getElementById(a.hash.slice(1)); });
-
-  function mark() {
-    var best = 0;
-    for (var i = 0; i < heads.length; i++) {
-      if (heads[i] && heads[i].getBoundingClientRect().top < 120) best = i;
-    }
-    links.forEach(function (a, i) { a.className = i === best ? 'on' : ''; });
-  }
-  window.addEventListener('scroll', mark, { passive: true });
-  mark();
-
-  var nav = document.getElementById('nav');
-  document.getElementById('menuBtn').addEventListener('click', function () {
-    nav.classList.toggle('open');
-  });
-  nav.addEventListener('click', function (e) {
-    if (e.target.tagName === 'A') nav.classList.remove('open');
-  });
-
-  /* ------------------------------------------------------------------------
-     RELEASE HISTORY — reads the repository's own releases at page load.
-
-     🔴 THERE IS NO PUBLISHING STEP FOR THIS SECTION, AND THERE MUST NEVER BE.
-     The chain already exists: commit updates.json -> the release builds a
-     GitHub release -> this reads it back. Adding "and also update the docs
-     page" to the release routine would be a step that gets skipped, and a
-     changelog that lags the product is worse than no changelog.
-
-     🔴 UNDERSCORE, NOT HYPHEN — nkcourses/trace_updates. That is the repo that
-     exists and the one this page is served from. Until it has a release this
-     section shows the "nothing published yet" line rather than an error, which
-     is correct behaviour and also exactly why a wrong repo name here can sit
-     unnoticed: a 404 and an empty release list look identical to the reader.
-     ------------------------------------------------------------------------ */
-  (function () {
-    var REPO = 'nkcourses/trace_updates';
-    var API  = 'https://api.github.com/repos/' + REPO + '/releases?per_page=20';
-    var LIST = 'https://github.com/' + REPO + '/releases';
-    var box  = document.getElementById('releases');
-    if (!box) return;
-
-    var KEY = 'tr-releases', TTL = 3600000;   // an hour
-
-    function esc(s) {
-      return String(s).replace(/[&<>"]/g, function (c) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
-      });
-    }
-
-    /* Release bodies are written by us, in one shape: a headline line, then
-       "- " bullets. This renders that shape and nothing else — a real Markdown
-       parser would be forty times the code for no visible gain. Everything is
-       escaped first, so a stray < in a release note cannot break the page. */
-    function body(md) {
-      var out = [], list = [];
-      String(md || '').split(/\r?\n/).forEach(function (raw) {
-        var line = raw.trim();
-        if (/^[-*]\s+/.test(line)) { list.push('<li>' + esc(line.replace(/^[-*]\s+/, '')) + '</li>'); return; }
-        if (list.length) { out.push('<ul>' + list.join('') + '</ul>'); list = []; }
-        if (line) out.push('<p>' + esc(line) + '</p>');
-      });
-      if (list.length) out.push('<ul>' + list.join('') + '</ul>');
-      return out.join('');
-    }
-
-    function when(iso) {
-      if (!iso) return '';
-      var d = new Date(iso);
-      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    }
-
-    function paint(rels) {
-      if (!rels || !rels.length) {
-        box.innerHTML = '<p class="loading">No releases published yet. ' +
-          '<a href="' + LIST + '">See them on GitHub</a> when there are.</p>';
-        return;
-      }
-      box.innerHTML = rels.map(function (r, i) {
-        return '<div class="rel"><div class="rel-head">' +
-          '<span class="rel-ver">' + esc(r.name || r.tag_name) + '</span>' +
-          (i === 0 ? '<span class="pill">Latest</span>' : '') +
-          '<span class="rel-date">' + when(r.published_at) + '</span>' +
-          '</div><div class="rel-body">' + body(r.body) + '</div></div>';
-      }).join('');
-    }
-
-    /* Cached for an hour, because GitHub rate-limits unauthenticated calls by
-       IP and a docs page that 403s on the fifth reader is worse than a
-       changelog that is an hour stale. */
-    try {
-      var hit = JSON.parse(sessionStorage.getItem(KEY) || 'null');
-      if (hit && Date.now() - hit.at < TTL) { paint(hit.data); return; }
-    } catch (e) { /* no cache, no problem */ }
-
-    fetch(API)
-      .then(function (r) { return r.ok ? r.json() : []; })
-      .then(function (data) {
-        try { sessionStorage.setItem(KEY, JSON.stringify({ at: Date.now(), data: data })); } catch (e) {}
-        paint(data);
-      })
-      .catch(function () {
-        box.innerHTML = '<p class="loading"><a href="' + LIST + '">Release notes on GitHub</a>.</p>';
-      });
-  })();
-</script>
-</body>
-</html>    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  a{color:var(--blue-ink); text-decoration:none}
-  a:hover{text-decoration:underline}
-
-  /* ---------- header ---------- */
-  .top{
-    position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:12px;
-    padding:14px 24px; background:rgba(255,255,255,.92); backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .top img{width:26px;height:26px}
-
-  /* ---------- the lockup ----------
-     🔴 THE MARK IS DRAWN AT 56px AND SHIPPED AT 512. Downscaling a big PNG in
-     the browser is the only version that stays crisp on a retina screen; a
-     56px file looks right on exactly one class of display. */
-  .lockup{display:flex; align-items:center; gap:16px; margin:0 0 6px}
-  .lockup img{width:56px; height:56px; flex:0 0 56px}
-  .lockup h1{margin:0}
-  .lockup .plus{width:34px;height:34px;flex:0 0 34px}
-  h2 .plus{width:26px;height:26px;vertical-align:-5px;margin-right:8px}
-  .pdf{display:inline-flex; align-items:center; gap:9px; margin:6px 0 2px;
-       border:1px solid var(--line); border-radius:10px; padding:11px 16px;
-       font-weight:600; background:#fff}
-  .pdf:hover{border-color:var(--blue); text-decoration:none}
-  .pdf small{display:block; font-weight:400; color:var(--muted); font-size:12.5px}
-
-  /* ---------- the Trace+ call to action ----------
-     🔴 ONE BUTTON, AT THE END OF A SECTION THAT HAS ALREADY MADE THE CASE.
-     A help page is read by people who already have the free panel and are
-     trying to do something with it; an upsell above the answer they came for
-     would be the fastest way to make them stop reading it. */
-  .plus-cta{margin:28px 0 8px; padding:24px; border:1px solid var(--line);
-            border-radius:14px; background:linear-gradient(180deg,#faf8ff,#fff)}
-  .plus-cta h3{margin:0 0 6px; font-size:21px; letter-spacing:-.01em}
-  .plus-cta p{margin:0 0 16px; color:var(--muted)}
-  .plus-cta .go{display:inline-block; background:var(--blue); color:#fff;
-                padding:12px 22px; border-radius:10px; font-weight:600; font-size:15px}
-  .plus-cta .go:hover{background:var(--blue-hi); text-decoration:none}
-  .plus-cta .note{display:block; margin-top:14px; font-size:13px; color:var(--muted);
-                  border:0; background:none; padding:0}
-  .top b{color:var(--ink); font-size:16px}
-  .top span{color:var(--muted); font-size:14px}
-  .top .buy{margin-left:auto; background:var(--blue); color:#fff; padding:8px 16px;
-            border-radius:8px; font-size:14px; font-weight:600}
-  .top .buy:hover{background:var(--blue-hi); text-decoration:none}
-  .menu-btn{display:none; margin-left:auto; border:1px solid var(--line); background:none;
-            border-radius:8px; padding:7px 12px; font-size:14px; cursor:pointer}
-
-  /* ---------- layout ---------- */
-  .wrap{display:flex; max-width:1180px; margin:0 auto; gap:40px; padding:0 24px}
-  nav{
-    width:230px; flex:0 0 230px; position:sticky; top:64px; align-self:flex-start;
-    max-height:calc(100vh - 64px); overflow-y:auto; padding:28px 0 60px;
-  }
-  nav h4{margin:22px 0 8px; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-         color:var(--muted)}
-  nav h4:first-child{margin-top:0}
-  nav a{display:block; padding:5px 10px; margin-left:-10px; border-radius:6px;
-        color:var(--body); font-size:14.5px}
-  nav a:hover{background:var(--tint); text-decoration:none}
-  nav a.on{background:var(--tint); color:var(--blue-ink); font-weight:600}
-
-  main{flex:1 1 auto; min-width:0; padding:34px 0 100px; max-width:760px}
-
-  /* ---------- type ---------- */
-  h1{margin:0 0 8px; font-size:40px; line-height:1.1; color:var(--ink); letter-spacing:-.02em}
-  .lede{font-size:19px; color:var(--muted); margin:0 0 30px}
-  h2{margin:56px 0 14px; font-size:27px; color:var(--ink); letter-spacing:-.01em;
-     padding-top:10px; border-top:1px solid var(--line)}
-  h3{margin:32px 0 8px; font-size:19px; color:var(--ink)}
-  p{margin:0 0 15px}
-  ul,ol{margin:0 0 15px; padding-left:22px}
-  li{margin:6px 0}
-  code{background:var(--code); padding:2px 6px; border-radius:4px;
-       font:14px ui-monospace,Menlo,Consolas,monospace; color:var(--ink)}
-  kbd{background:#fff; border:1px solid #D3D7DD; border-bottom-width:2px; border-radius:5px;
-      padding:1px 6px; font:13px ui-monospace,Menlo,Consolas,monospace; color:var(--ink)}
-  strong{color:var(--ink)}
-
-  /* ---------- pieces ---------- */
-  figure{margin:22px 0}
-  figure img{width:100%; border:1px solid var(--line); border-radius:10px; display:block}
-  figcaption{margin-top:8px; font-size:13.5px; color:var(--muted); text-align:center}
-
-  .cards{display:flex; flex-wrap:wrap; gap:14px; margin:28px 0}
-  .card{flex:1 1 220px; border:1px solid var(--edge); background:var(--tint);
-        border-radius:12px; padding:16px 18px}
-  .card b{display:block; color:var(--blue-ink); margin-bottom:3px; font-size:15px}
-  .card span{font-size:14px; color:var(--body)}
-  a.card:hover{text-decoration:none; border-color:var(--blue)}
-
-  .note{border-left:3px solid var(--blue); background:var(--tint);
-        padding:14px 18px; border-radius:0 8px 8px 0; margin:22px 0}
-  .warn{border-left-color:#B45309; background:#FFF8EC}
-  .good{border-left-color:var(--mint); background:#F1FAF6}
-  .note p:last-child{margin-bottom:0}
-  .note b{color:var(--ink)}
-
-  .dl{display:flex; align-items:center; gap:16px; border:1px solid var(--edge);
-      background:var(--tint); border-radius:12px; padding:18px 20px; margin:24px 0}
-  .dl .pdf{flex:0 0 auto; font:600 12px/1 ui-monospace,Menlo,monospace; color:var(--blue-ink);
-           background:#fff; border:1px solid var(--edge); border-radius:8px; padding:14px 12px}
-  .dl b{display:block; color:var(--ink)}
-  .dl span{font-size:14px; color:var(--muted)}
-  .dl a{margin-left:auto; background:var(--blue); color:#fff; padding:9px 16px;
-        border-radius:8px; font-size:14px; font-weight:600; white-space:nowrap}
-  .dl a:hover{background:var(--blue-hi); text-decoration:none}
-
-  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:15px}
-  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line);
-        vertical-align:top}
-  th{color:var(--ink); font-size:13px; letter-spacing:.04em; text-transform:uppercase}
-  td code{white-space:nowrap}
-  /* The left column of the "is not" and "can't do" tables. Amber, not red:
-     these are boundaries, not errors, and red reads as something went wrong. */
-  td.no{color:#B45309; font-weight:600}
-  /* ⚠️ The comparison table needs a POSITIVE cell class too. Without one,
-     "Yes" and "—" render identically and the table proves nothing at a glance —
-     which is the only way a comparison table is ever read. */
-  td.yes{color:#0A7E56; font-weight:600}
-
-  /* ---------- release history ---------- */
-  .rel{border:1px solid var(--line); border-radius:12px; padding:15px 20px; margin:14px 0}
-  .rel:first-child{border-color:var(--edge); background:var(--tint)}
-  .rel-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px}
-  .rel-ver{font-size:17px; font-weight:600; color:var(--ink)}
-  .pill{background:var(--blue); color:#fff; font-size:10.5px; font-weight:700;
-        letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; border-radius:99px}
-  .rel-date{margin-left:auto; font-size:13.5px; color:var(--muted)}
-  .rel-body>p:first-child{color:var(--ink); font-weight:600}
-  .rel-body>:last-child{margin-bottom:0}
-  .rel-body ul{margin-bottom:0}
-  .loading{color:var(--muted); font-size:14.5px; margin:14px 0}
-
-  footer{border-top:1px solid var(--line); margin-top:70px; padding-top:22px;
-         font-size:14px; color:var(--muted)}
-
-  @media (max-width:900px){
-    .wrap{display:block; padding:0 20px}
-    nav{position:static; width:auto; max-height:none; display:none; padding:16px 0;
-        border-bottom:1px solid var(--line)}
-    nav.open{display:block}
-    .menu-btn{display:block}
-    .top .buy{display:none}
-    main{padding-top:24px}
-    h1{font-size:32px}
-  }
-</style>
-</head>
-<body>
-
-<header class="top">
-  <img src="assets/trace-mark-black.png" alt="">
-  <b>Trace</b> <span>Help &amp; documentation</span>
-  <button class="menu-btn" id="menuBtn" aria-label="Contents">Contents</button>
-  <a class="buy" href="https://www.nkcourses.co.uk/trace">Get Trace — free</a>
-</header>
-
-<div class="wrap">
-<nav id="nav">
-  <h4>Start here</h4>
-  <a href="#overview">Overview</a>
-  <a href="#not">What Trace is not</a>
-  <a href="#requirements">Requirements</a>
-  <a href="#install">Install</a>
-  <a href="#quick-start">Quick start</a>
-
-  <h4>The panel</h4>
-  <a href="#two-views">One clip at a time</a>
-  <a href="#find">Finding every use</a>
-  <a href="#select">Selecting uses</a>
-  <a href="#stepping">Stepping through uses</a>
-  <a href="#gestures">Every gesture</a>
-
-  <h4>Real projects</h4>
-  <a href="#nests">Nested sequences</a>
-  <a href="#subclips">Subclips and duplicates</a>
-  <a href="#multicam">Merged and multicam</a>
-  <a href="#archived">Archived sequences</a>
-
-  <h4>Acting on what you find</h4>
-  <a href="#markers">Adding markers</a>
-  <a href="#source">The Source Monitor</a>
-  <a href="#copy">Copying the list</a>
-
-  <h4>Reference</h4>
-  <a href="#docking">Docking</a>
-  <a href="#updates">Updates and About</a>
-  <a href="#history">Release history</a>
-  <a href="#limits">What it can't do</a>
-  <a href="#faq">FAQ</a>
-  <a href="#troubleshooting">Troubleshooting</a>
-  <a href="#trace-plus">Trace+</a>
-  <a href="#privacy">Privacy</a>
-  <a href="#support">Support</a>
-</nav>
-
-<main>
-  <div class="lockup">
-    <img src="assets/trace-mark-black.png" alt="">
-    <h1>Trace</h1>
-  </div>
-  <p class="lede">Pick one clip. See every place it's used across your entire project — then select
-  every instance at once.</p>
-
-  <div class="cards">
-    <a class="card" href="#install"><b>Install</b><span>Get the panel into Premiere. About a
-      minute, and there is no licence key.</span></a>
-    <a class="card" href="assets/Trace-Install-Guide.pdf"><b>Install guide (PDF)</b><span>Four
-      pages, printable — covers Trace and Trace+, with every gesture on one page.</span></a>
-    <a class="card" href="#quick-start"><b>Quick start</b><span>Find every use of a clip and light
-      them all up in the timeline.</span></a>
-    <a class="card" href="#gestures"><b>Every gesture</b><span>Click, shift-click, cmd-click and
-      alt-click, in one table.</span></a>
-  </div>
-
-  <figure>
-    <img src="assets/trace-demo.gif" alt="Trace finding seven uses of a clip across four sequences, then selecting all of them in the timeline at once.">
-    <figcaption>One click on a clip, one press of <strong>Select all</strong>: every instance lights
-      up at the same moment.</figcaption>
-  </figure>
-
-  <h2 id="overview">Overview</h2>
-  <p>Click a clip in the Project panel and Trace shows every place it is used — which sequences,
-  which timecodes, how long, and how much of the source you have actually touched. Then one button
-  selects every instance in the timeline at once.</p>
-  <p><strong>The part that matters most:</strong> a selection is not a list. Once nine uses are
-  selected they are a real Premiere selection — nudge them, delete them, apply an effect, colour
-  them. Everything else that answers "where is this clip?" hands you a list and makes you visit the
-  entries one at a time.</p>
-
-  <div class="note">
-    <p><b>Premiere can already find your clips.</b> The Video Usage column does it, and Sequence
-    Index (26.2) lists what is in one sequence. Both are good, and Trace does not replace either.</p>
-    <p><b>What neither can do</b> is select every instance simultaneously, give you a total, resolve
-    through nested sequences, or ignore your archived versions. That is the whole of what Trace is
-    for.</p>
-  </div>
-
-  <h2 id="not">What Trace is not</h2>
-  <p>Trace answers one question — <strong>where is this clip used?</strong> — and it is worth being
-  blunt about everything it deliberately isn't, so you know inside a minute whether it is the tool
-  you want.</p>
-  <table>
-    <tr><th>It is not</th><th>What you actually want</th></tr>
-    <tr><td class="no">A media manager</td><td>Trace never moves, renames, copies, consolidates or deletes a single file. It reads.</td></tr>
-    <tr><td class="no">An unused-media finder</td><td>Trace answers about the clip <em>you selected</em>. "What media in this project is not used?" is a different question — that is <a href="#trace-plus">Trace+</a>.</td></tr>
-    <tr><td class="no">A duplicate finder</td><td>It shows repeats of one clip, not every duplicated asset in the project. Also Trace+.</td></tr>
-    <tr><td class="no">A project archiver or trimmer</td><td>It will not shrink your project folder or collect only the used media. Trace+.</td></tr>
-    <tr><td class="no">A reporting or export tool</td><td>No CSV, no PDF, no cue sheet. <strong>Copy list</strong> puts plain text on the clipboard, and that is the whole of it.</td></tr>
-    <tr><td class="no">A search tool</td><td>You cannot type a filename into Trace. It follows what you select, on purpose — nothing to configure and nothing to learn.</td></tr>
-    <tr><td class="no">A replacement for the Video Usage column</td><td>A different question, not a better version of the same one. Use both.</td></tr>
-    <tr><td class="no">Something that edits for you</td><td>It moves the playhead and makes selections. Only if you ask does it add markers or set in/out points. It never cuts, trims or ripples.</td></tr>
-    <tr><td class="no">A subscription, or a trial</td><td>Free. No account, no key, no sign-in, no expiry, nothing to cancel.</td></tr>
-  </table>
-  <p>It is also not a panel most people open every day. It earns its place on the days you inherit
-  someone else's project, hunt a clip you know you used somewhere, or need to know what a
-  forty-minute interview actually gave you.</p>
-
-  <h2 id="requirements">Requirements</h2>
-  <table>
-    <tr><th>Premiere Pro</th><td><strong>25.6 or newer.</strong> Check under
-      <code>Premiere Pro &gt; About Premiere Pro</code>. Earlier versions cannot run it — Trace uses
-      Adobe's current plugin system (UXP), and there is no build for older releases.</td></tr>
-    <tr><th>System</th><td>macOS or Windows.</td></tr>
-    <tr><th>Licence</th><td>None. Trace is free, with no account and no key.</td></tr>
-  </table>
-
-  <h2 id="install">Install</h2>
-  <p><a class="pdf" href="assets/Trace-Install-Guide.pdf" download>
-    Download the install guide (PDF)
-    <small>Four printable pages — Trace, Trace+, every gesture, and what to do when it goes wrong.</small>
-  </a></p>
-  <ol>
-    <li><strong>Open the download link in your email</strong>, then download
-      <code>Trace.ccx</code> and double-click it. Creative Cloud Desktop installs it for you —
-      nothing to unzip. Nothing arrived? Check spam, then
-      <a href="mailto:support@nkcourses.co.uk">email me</a> and I will send it directly.</li>
-    <li><strong>Quit Premiere Pro and open it again.</strong> Premiere only looks for new panels at
-      startup.</li>
-    <li><strong>Window &gt; UXP Plugins &gt; Trace.</strong></li>
-  </ol>
-  <p>That is all of it. There is no third step where you paste a key.</p>
-
-  <figure>
-    <img src="assets/window-menu.png" alt="Premiere's Window menu open, showing UXP Plugins with Trace and Trace+ listed.">
-    <figcaption>It is under <strong>Window &gt; UXP Plugins</strong> — not Window &gt;
-      Extensions. Trace+ appears in this list too once it is installed; on a fresh install you
-      will see Trace on its own.</figcaption>
-  </figure>
-
-  <div class="note warn">
-    <p><b>Double-clicking did nothing?</b> Open Creative Cloud Desktop first, then double-click the
-    file again. If Creative Cloud is not installed, use the free
-    <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a> instead.</p>
-  </div>
-
-  <h2 id="quick-start">Quick start</h2>
-  <ol>
-    <li>Open a project and dock Trace anywhere you like.</li>
-    <li><strong>Click a clip in the Project panel.</strong> Trace scans the project once — a few
-      hundred milliseconds on a normal job — then answers instantly from then on.</li>
-    <li>Click any row to jump the playhead to that use.</li>
-    <li>Press <strong>Select all N in this sequence</strong> to light up every use at once.</li>
-  </ol>
-  <p>With nothing selected, Trace waits. That is the whole loop; everything below is detail.</p>
-
-  <h2 id="two-views">One clip at a time</h2>
-  <p><strong>Trace answers about the clip you select, and nothing else.</strong> There is no view to
-  switch, no mode, no setting. Click a clip, a subclip, an audio file or a sequence in the Project
-  panel and Trace shows every place it is used. Click away and it waits.</p>
-  <p>That is the whole shape of it, and it is deliberate: a panel that only ever answers one question
-  needs no explaining. If you want the same answer for <strong>many clips at once</strong> — what a
-  whole sequence reuses, what media the whole project is not using — that is
-  <a href="#trace-plus">Trace+</a>.</p>
-  <div class="note">
-    <p style="margin:0"><b>A sequence counts as a clip.</b> Select one and Trace tells you where
-    <em>that sequence</em> is nested, the same way it would for any other item.</p>
-  </div>
-
-  <h2 id="find">Finding every use of a clip</h2>
-  <p>Select a clip and Trace answers with a total line — <em>9 uses · 4 sequences · 3m 12s</em> —
-  and then the detail: every sequence it appears in, and inside each one, every use with its
-  timecode, its duration and which track it sits on.</p>
-
-  <figure>
-    <img src="assets/feature-find.gif" alt="Selecting a clip in the Project panel and Trace immediately listing every sequence it appears in.">
-    <figcaption><strong>Finding every use</strong> — nothing to press, and no column to turn on.
-      Trace follows the Project panel.</figcaption>
-  </figure>
-
-  <p>Audio and video that were shot together and are cut together count as <strong>one</strong> use,
-  not two. Trace pairs them when they overlap by more than half, so a J-cut stays one use and two
-  back-to-back edits stay two.</p>
-  <p>The list updates as you edit. Add a clip, delete one, or move something, and Trace re-scans on
-  its own within a few hundred milliseconds. The <strong>circular arrow</strong> in the title row —
-  next to the ☰ — forces it immediately if you would rather not wait.</p>
-
-  <h2 id="select">Selecting uses in the timeline</h2>
-  <p><strong>This is the thing nothing else does.</strong> Press <strong>Select all N in this
-  sequence</strong> and every use becomes a real Premiere selection at the same moment — ready to
-  nudge, delete, label, or drop an effect onto.</p>
-
-  <figure>
-    <img src="assets/feature-select-all.gif" alt="Pressing Select all in Trace and seven clips lighting up across the timeline simultaneously.">
-    <figcaption><strong>Select all uses</strong> — seven clips you could not have picked out become
-      one selection.</figcaption>
-  </figure>
-
-  <p>For a subset, tick the box beside any use, or <kbd>Cmd</kbd>-click (<kbd>Ctrl</kbd> on Windows)
-  the row. Ticked rows fill in so the panel and the timeline always agree.</p>
-
-  <div class="note">
-    <p><b>A selection cannot span two sequences</b> — that is Premiere, not Trace. Ticking a use in a
-    different sequence replaces your picks rather than adding to them, and the status line says so
-    when it happens.</p>
-  </div>
-
-  <h2 id="stepping">Stepping through uses</h2>
-  <p>The arrows at the bottom walk the playhead through every use on screen, in order, jumping
-  between sequences as needed. The counter between them tells you where you are —
-  <em>3 / 9</em>. <strong>Clear</strong> drops the selection and the picks.</p>
-
-  <h2 id="gestures">Every gesture</h2>
-  <table>
-    <tr><th>Do this</th><th>Get this</th></tr>
-    <tr><td>Click a use</td><td>Jump the playhead there and select that clip</td></tr>
-    <tr><td><kbd>Shift</kbd>-click, or double-click</td><td>Open in the Source Monitor, with that use set as in/out</td></tr>
-    <tr><td><kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click, or the tick box</td><td>Add or remove from the selection</td></tr>
-    <tr><td><kbd>Alt</kbd>-click</td><td><strong>Find in Project</strong> — copies the clip's name for the
-      Project panel's Find box (<kbd>Cmd</kbd>/<kbd>Ctrl</kbd>-F). The <strong>Find</strong> button beside the
-      bin path does the same thing</td></tr>
-    <tr><td>The arrows</td><td>Step through every use on screen</td></tr>
-  </table>
-  <p><kbd>Shift</kbd> and double-click do the same thing deliberately, so the Source Monitor is
-  reachable whichever one you reach for.</p>
-
-  <h2 id="nests">Nested sequences</h2>
-  <p>If a clip lives inside a nest and that nest is cut into a master, Trace reports
-  <strong>both</strong> — the use inside the nest, and where it lands in the master, labelled
-  <code>via &lt;nest name&gt;</code>. Native reports the first and never mentions the second, which
-  is the sequence you are actually working in.</p>
-
-  <figure>
-    <img src="assets/feature-follow.gif" alt="Trace listing a clip's direct use in a master alongside a second use labelled via Nest A, with the nest clip highlighted in the timeline.">
-    <figcaption><strong>Following a clip into a nest.</strong> The second row is the one native
-      never gives you: where the clip lands in the master you are actually cutting, labelled
-      <code>via Nest A</code>. The caveat line says how many uses came through a nest, rather
-      than folding them silently into the total.</figcaption>
-  </figure>
-
-  <table>
-    <tr><th>Nest trimmed past the use</th><td>Not reported. The master genuinely does not contain it, and a wrong number is worse than a missing one.</td></tr>
-    <tr><th>Retimed nest</th><td>Mapped, divided by the speed, and marked <code>~</code> with a note under the totals.</td></tr>
-    <tr><th>Reversed nest</th><td>Not mapped at all. The arithmetic depends on where the reversal's boundaries sit, and guessing would be a confident lie.</td></tr>
-    <tr><th>Nest inside a nest</th><td>Followed, to six levels, with a guard against a sequence that somehow contains itself.</td></tr>
-  </table>
-
-  <h2 id="subclips">Subclips and duplicate imports</h2>
-  <p>Selecting a master clip also finds uses of its <strong>subclips</strong>, matched on the shared
-  media file. Those rows are labelled with the name of the item they came from.</p>
-  <div class="note warn">
-    <p><b>Trace cannot tell a subclip from a second import of the same file</b> — Premiere exposes no
-    API for that relationship — so it does not claim to. Rows say <em>same media file</em> and name
-    the item, rather than saying <em>subclip</em>.</p>
-  </div>
-
-  <h2 id="multicam">Merged and multicam clips</h2>
-  <p>The component clips inside a merged clip, and the angles inside a multicam clip, are
-  <strong>not</strong> resolved. When you select one, Trace says so in the line under the totals
-  rather than quietly reporting a number that is too low.</p>
-  <div class="note warn">
-    <p><b>Merged clips cannot be resolved by any plugin.</b> Premiere exposes
-    <code>isMergedClip()</code> — enough to know that it is one — and nothing at all for reading the
-    sources inside it. Adobe's own answer, on the record: <em>"There are no ExtendScript APIs around
-    multi-cam, and there never will be."</em> The same gap covers merged clips, and no workaround has
-    ever been produced.</p>
-    <p><b>Multicam is a maybe.</b> A multicam source appears in the project as a sequence, so its
-    angles may be reachable that way. That is an untested route, not a promise — and even if it
-    works, nothing exposes which angle a clip is currently switched to.</p>
-  </div>
-
-  <h2 id="archived">Archived sequences</h2>
-  <p>If you keep old cuts in a <code>_PREVIOUS</code>, <code>_ARCHIVE</code> or <code>_OLD</code>
-  bin — as <a href="https://www.nkcourses.co.uk/versionup">VersionUp</a> creates — every native usage
-  list is full of them, and there is no way to filter them out.</p>
-
-  <figure>
-    <img src="assets/feature-archived.gif" alt="Toggling Hide archived sequences in Trace and the list dropping from fourteen results to five.">
-    <figcaption><strong>Hide archived sequences</strong> — fourteen results become the five that are
-      about the cut you are working on.</figcaption>
-  </figure>
-
-  <p>Trace hides them by default and tells you how many it is hiding. Untick to see them; the tick
-  box stays on screen either way, so it is a switch and not a trapdoor.</p>
-  <div class="note good">
-    <p>A Community Expert confirmed on the Adobe forums that native Premiere cannot do this. It is a
-    small feature that only exists because the person who built Trace also built a versioning tool
-    and got tired of the noise.</p>
-  </div>
-
-  <h2 id="markers">Adding markers</h2>
-  <p>The <strong>marker button</strong> in the title row — the flag shape, left of the ✕ — drops a
-  marker over every use on screen. Unlike a selection, a marker survives you clicking somewhere
-  else: it is the persistent version of "highlight every use".</p>
-
-  <figure>
-    <img src="assets/feature-markers.gif" alt="Pressing the marker button and markers appearing above every use across the timeline.">
-    <figcaption><strong>The marker button</strong> — the flag that outlives the selection.</figcaption>
-  </figure>
-
-  <div class="note warn">
-    <p><b>It is one undo step per sequence</b>, not one for the lot, and Trace tells you how many
-    before you press it. Markers across four sequences is four presses of
-    <kbd>Cmd</kbd>+<kbd>Z</kbd>.</p>
-  </div>
-
-  <h2 id="source">The Source Monitor</h2>
-  <p><kbd>Shift</kbd>-click or double-click any use to open that clip in the Source Monitor with
-  <strong>the used section marked as in and out points</strong>, so you are looking at exactly the
-  stretch Trace is describing.</p>
-
-  <figure>
-    <img src="assets/feature-source-monitor.gif" alt="Shift-clicking a use in Trace and the clip opening in the Source Monitor with in and out points set around that section.">
-    <figcaption><strong>Open in the Source Monitor</strong> — with the used range already marked.</figcaption>
-  </figure>
-
-  <div class="note warn">
-    <p><b>This changes your project.</b> In and out points on a clip are what you get when you drag
-    it into a timeline afterwards, so setting them is a real edit — one
-    <kbd>Cmd</kbd>+<kbd>Z</kbd> to undo, and Trace says so in the status line when it happens.</p>
-    <p>Markers and this are the <strong>only two</strong> things Trace ever writes. Everything else
-    it does is a read.</p>
-  </div>
-
-  <h2 id="copy">Copying the list</h2>
-  <p><strong>☰ &gt; Copy list</strong> puts what is on screen on the clipboard as plain text —
-  sequence names, timecodes and durations — for an email, a note, or a message to whoever asked you
-  where that clip went. There is no CSV and no report file; if you need one of those, see
-  <a href="#trace-plus">Trace+</a>.</p>
-
-  <h2 id="docking">Docking</h2>
-  <p>Trace adapts to the space it is given, with nothing to configure.</p>
-
-  <figure>
-    <img src="assets/feature-docking.gif" alt="The Trace panel at three dock sizes: a normal column, a narrow strip, and a short bar under the timeline.">
-    <figcaption><strong>Three shapes, one panel</strong> — the answer keeps the room, the chrome
-      gives it up.</figcaption>
-  </figure>
-
-  <table>
-    <tr><th>A normal column</th><td>Everything: totals, the bin path, filters, the status line.</td></tr>
-    <tr><th>A narrow strip</th><td>Drops the duration column. The timecode still says where and the track still says which.</td></tr>
-    <tr><th>A short bar under the timeline</th><td>Drops the bin path, the filters and the status line so the list keeps the height.</td></tr>
-  </table>
-
-  <h2 id="updates">Updates and About</h2>
-  <p>Trace checks once a day whether a newer version exists and shows a small notice in the panel if
-  so. <strong>☰ &gt; Check for updates</strong> asks immediately.</p>
-  <p><strong>☰ &gt; About Trace</strong> shows the version you are running — the first thing to quote
-  if you report a problem — along with a link back to this site.</p>
-
-  <figure>
-    <img src="assets/about-dialog.png" alt="The About Trace window, showing the mark, the version number and the tagline.">
-    <figcaption><strong>☰ &gt; About Trace.</strong> The version number lives here.</figcaption>
-  </figure>
-
-  <h2 id="history">Release history</h2>
-  <div id="releases"><p class="loading">Loading releases…</p></div>
-
-  <h2 id="limits">What Trace can't do</h2>
-  <p>Not oversights. Premiere's plugin API genuinely does not offer these, and no plugin can do
-  them.</p>
-  <table>
-    <tr><th></th><th>Why</th></tr>
-    <tr><td class="no">Reveal a clip in the Project panel</td><td>The Project panel's selection is
-      <strong>read-only</strong> to plugins — the timeline's is read-write, and that split is deliberate rather
-      than a gap waiting on an update. Re-checked on 13 August 2026 against Premiere's own type definitions for
-      both the shipping 26.3 API and the unreleased 26.5 beta: no <code>reveal</code>, no <code>scrollTo</code>,
-      no way to set a Project panel selection, and none of the 78 undoable actions comes close. Premiere's own
-      <em>Reveal in Project</em> command cannot be triggered either.
-      <br><br>So Trace does the two halves it can: it <strong>shows you the bin</strong> under the clip name, and
-      <strong>Find in Project</strong> — the button beside it, or <kbd>Alt</kbd>-click on any row —
-      copies the exact name for the Project panel's Find box. It is
-      called Find rather than Reveal because that is what it does.</td></tr>
-    <tr><td class="no">Colour or tint clips in the timeline</td><td>Colour labels are project-item only. Selection and markers are the two visual channels a plugin gets.</td></tr>
-    <tr><td class="no">Zoom or scroll the timeline</td><td>No API. Moving the playhead is the only navigation, and Premiere scrolls to follow it.</td></tr>
-    <tr><td class="no">Resolve merged clips</td><td>Nothing exists for reading the sources inside one. See <a href="#multicam">above</a>.</td></tr>
-    <tr><td class="no">Appear in Premiere's own Keyboard Shortcuts list</td><td>A UXP plugin's
-      commands cannot be bound in <em>Edit &gt; Keyboard Shortcuts</em>, and Adobe staff confirmed in
-      April 2026 that this is not planned. <br><br>This is narrower than "no shortcuts at all", which
-      is what this page used to say and what most people will tell you. A UXP <em>hybrid</em> plugin
-      — one carrying a small native add-on, Premiere 26.2 and up — can register a shortcut with the
-      operating system, which is how the plugins that do have one manage it. Trace does not ship a
-      native add-on today.</td></tr>
-    <tr><td class="no">Search other or unopened projects</td><td>The API cannot reach a project that is not open. Productions are out for the same reason.</td></tr>
-    <tr><td class="no">Park the Source Monitor on the exact frame</td><td>Needs Premiere 26.3. Trace marks the used range as in/out instead, which shows you more.</td></tr>
-  </table>
-
-  <h2 id="faq">FAQ</h2>
-
-  <h3>What happens with nested sequences?</h3>
-  <p>Trace follows the clip into the nest and back out again — and the second half is the part
-  nothing else gives you. A clip inside <em>Nest A</em>, where Nest A is cut into your master, is
-  reported <strong>twice</strong>: once at its position inside the nest, and once at the timecode it
-  lands on in the master, labelled <code>via Nest A</code>. Native reports the first and never
-  mentions the second, which is the sequence you are actually working in. Nests inside nests are
-  followed six levels deep.</p>
-  <p>The edge cases are answered honestly rather than optimistically, because a confident wrong
-  timecode sends you to the wrong frame:</p>
-  <table>
-    <tr><th>The nest is trimmed past the use</th><td><strong>Not reported.</strong> The master
-      genuinely does not contain it, and a missing row beats an invented one.</td></tr>
-    <tr><th>The nest is retimed</th><td>Mapped, divided by the speed, and marked <code>~</code> with
-      a note under the totals — approximate, and it says so.</td></tr>
-    <tr><th>The nest is reversed</th><td><strong>Not mapped.</strong> The arithmetic depends on
-      where the reversal's boundaries sit, and guessing would be a confident lie. The row is
-      flagged instead.</td></tr>
-    <tr><th>A nest inside a nest</th><td>Followed, to six levels, with the whole chain named in the
-      row: <code>via Nest B → Nest A</code>.</td></tr>
-  </table>
-  <p>Selecting the nest itself asks a different question — <em>what is in it</em> — and
-  <a href="#trace-plus">Trace+</a> answers that one.</p>
-
-  <h3>What happens with multicam clips?</h3>
-  <p>Trace finds every place the multicam clip itself is used, and says plainly that it has not
-  looked inside it. The <strong>angles</strong> within are not resolved: select angle 3's original
-  camera file and Trace will not report the multicam edits that use it.</p>
-  <p>This is a limit of Premiere, not a shortcut. Adobe, on the record: <em>"There are no
-  ExtendScript APIs around multi-cam, and there never will be."</em> A multicam source does appear
-  in the project as a sequence, which may one day be a route in — that is an untested possibility,
-  not a promise, and even then nothing exposes which angle a clip is currently switched to. Rather
-  than quietly report a number that is too low, Trace flags the clip under the totals.</p>
-
-  <h3>What happens with subclips?</h3>
-  <p>They work, and the wording is careful on purpose. Select a master clip and Trace also finds
-  the uses of its subclips, matched on the <strong>shared media file</strong> — which is the case
-  that otherwise reads as a broken plugin, because you know you used that footage.</p>
-  <p>What it will not do is call them subclips. Premiere exposes no API for the relationship
-  between a subclip and its master, so the same test also matches a second <em>import</em> of the
-  same file. Those rows say <em>same media file</em> and name the item they came from. A slightly
-  vaguer true answer beats a precise wrong one, and either way the thing you wanted to know —
-  <em>you used this footage over there</em> — is on screen.</p>
-
-  <h3>What happens with audio?</h3>
-  <p>Audio is indexed with video, and a synced clip counts as <strong>one use, not two</strong>.
-  Video on V1 with its audio on A1 is two track items pointing at one source, so a naive count
-  doubles — and the count is the whole point of the panel. Trace merges them where they overlap by
-  more than half, so a J-cut or an L-cut stays one use and reports the full on-screen range. Two
-  genuinely separate edits of the same clip, back to back, do not overlap enough to merge and stay
-  two.</p>
-  <p>Audio-only sources — a music cue, a voiceover — never find a video partner and are reported on
-  their own, with the audio track number on each row. If your Premiere build refuses to identify
-  audio clips at all, Trace says so in the scan report and tells you the index is video-only, rather
-  than silently returning a smaller number.</p>
-
-  <h3>Does Trace change my project?</h3>
-  <p>Only if you ask. Markers and in/out points are the ceiling, both one undo away. It never moves,
-  renames, copies, consolidates or deletes anything.</p>
-
-  <h3>Is it really free?</h3>
-  <p>Yes — no account, no key, no trial, no expiry. <a href="#trace-plus">Trace+</a> is the paid
-  panel, and it is a different question rather than a bigger helping of this one.</p>
-
-  <h2 id="troubleshooting">Troubleshooting</h2>
-
-  <h3>Trace isn't in the Window menu</h3>
-  <p>Restart Premiere after installing — it only looks for new panels at startup. Then check
-  <strong>Window &gt; UXP Plugins</strong>, not Window &gt; Extensions. If it is still missing,
-  confirm you are on 25.6 or later under <strong>Premiere Pro &gt; About Premiere Pro</strong>.</p>
-
-  <h3>Double-clicking the .ccx did nothing</h3>
-  <p>Creative Cloud Desktop has to be installed and signed in. Open it first, then double-click the
-  file again. If you do not have it, use the free
-  <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a>.</p>
-
-  <h3>It says 0 uses and I know I used that clip</h3>
-  <p>Three things do this, in order of likelihood:</p>
-  <ul>
-    <li><strong>The uses are in archived sequences.</strong> Untick <em>Hide archived sequences</em>.</li>
-    <li><strong>It is a merged or multicam clip.</strong> Trace flags this under the totals — see
-      <a href="#multicam">above</a>.</li>
-    <li><strong>The sequence has never been opened in this session.</strong> Press the
-      <strong>circular arrow</strong> in the title row.</li>
-  </ul>
-
-  <h3>The numbers look out of date</h3>
-  <p>Trace re-scans on its own as you edit, but the <strong>circular arrow</strong> in the title row
-  forces it. If a forced re-scan changes the answer, that is worth telling me about.</p>
-
-  <h3>Clicking a row moved the playhead but selected nothing</h3>
-  <p>Almost always means the clip has been trimmed or moved since the last scan. Re-scan and try
-  again.</p>
-
-  <h3>The panel is squashed or the buttons overlap</h3>
-  <p>Drag the dock wider or taller. Trace drops columns as it narrows, but below roughly 180px there
-  is nothing left to give up.</p>
-
-  <h2 id="trace-plus"><img class="plus" src="assets/trace-plus-mark-black.png" alt="">Need more control?</h2>
-  <p class="lede" style="margin-bottom:22px">Then <strong>Trace+</strong> may be just for you.</p>
-  <p><strong>Both search your whole project.</strong> The difference is how many clips they answer
-  for — and what you can do about the answer.</p>
-  <table>
-    <tr><th></th><th>Trace</th><th>Trace+</th></tr>
-    <tr><th>You give it</th><td><strong>One</strong> clip</td><td>Nothing, a sequence, or the project</td></tr>
-    <tr><th>It answers for</th><td>That clip, everywhere</td><td><strong>Many clips at once</strong></td></tr>
-    <tr><th>The question</th><td>Where is <em>this</em> used?</td><td>What is reused, what is <em>not used</em>, what can go</td></tr>
-    <tr><th>Depth</th><td>The list</td><td>The list <strong>plus the analysis</strong> — coverage, totals, archive weight</td></tr>
-  </table>
-  <p>So Trace+ is not "Trace with a bigger search". Trace already searches everything. Trace+ asks a
-  different question — <strong>one clip at a time versus all four hundred at once</strong> — and then
-  does something about the answer: files the unused media into <code>_UNUSED</code>, tells you what
-  your archive would weigh without it.</p>
-  <p><strong>Trace+ has everything Trace has, and more.</strong> Nothing you learn in Trace is
-  wasted, and nothing you can do here disappears there. The deeper reading of a single clip —
-  the <strong>source coverage bar</strong>, which draws the whole clip with the used parts filled in
-  and tells you the longest stretch you have never touched — is a Trace+ feature.</p>
-  <figure>
-    <img src="assets/plus-unused.gif" alt="Trace+ reading every bin in a project and reporting thirty-seven clips that are on no timeline at all, with two of them flagged offline and one as a graphic with no media file.">
-    <figcaption><strong>Trace+ · Project.</strong> No selection at all: it reads every bin in
-      the project — not just the timelines — and says what media is not used. The two sections beneath
-      the list are the ones that keep the number honest: items whose <em>media</em> is still in use
-      (a subclip, or the same file imported twice) are never counted as unused, and sequences are
-      left out entirely, because a finished film is not nested inside anything.</figcaption>
-  </figure>
-  <h3>Feature by feature</h3>
-  <table>
-    <tr><th></th><th>Trace</th><th>Trace+</th></tr>
-    <tr><th>Every use of one clip, across every sequence</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-    <tr><th>Select every instance at once</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-    <tr><th>Follows nests, subclips and audio</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-    <tr><th>Markers, Source Monitor, copy list</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-    <tr><th>Hide archived sequences</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-    <tr><th><strong>Every media file in the project, used and unused</strong></th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th><strong>How many gigabytes of it are sitting on disk</strong></th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th><strong>File it away into <code>_UNUSED</code></strong></th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th><strong>Put it back where it came from</strong> — when an archived clip is cut back into
-      the edit, back to its original bin, rebuilding that bin if it was deleted.
-      <strong>Automatically, if you want it to</strong></th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th><strong>The source coverage bar</strong> — the coloured strip showing which parts of a
-      clip you have used, and the longest stretch you never touched</th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th>What one sequence reuses, ranked</th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <!-- 🔴 THE ROW NOTHING ELSE ON THE MARKET HAS. Added 19 Aug 2026, and it
-         goes high in the paid half because it is the one feature somebody
-         cannot get anywhere at any price. -->
-    <tr><th><strong>Compare two cuts</strong> — what is in v04 that is not in v03, which clips both
-      of them lean on, and what changed</th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th><strong>Label by rule</strong> — colour everything unused, heavy, offline or
-      duplicated in one press</th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th>Narrow the list to the cut you have open</th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th>Media imported more than once · offline media</th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th>Find empty bins — <strong>and remove them</strong></th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th>Colour labels: read every clip's, set them in bulk</th><td>Set, one clip</td><td class="yes">Read and set, in bulk</td></tr>
-    <tr><th>Markers over every use</th><td>One clip's uses</td><td class="yes">Every clip in a sequence · a colour per press · and removes them again</td></tr>
-    <tr><th><strong>Export CSV</strong> — including a <strong>cue sheet</strong> with screen time per
-      clip</th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th>Warns when merged/multicam clips make the unused list unreliable</th><td class="no">—</td><td class="yes">Yes</td></tr>
-    <tr><th>Report a bug or an idea from inside the panel</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-    <tr><th>Deletes any media, ever</th><td>Never</td><td>Never</td></tr>
-  </table>
-  <p><strong>Everything Trace does, Trace+ does too.</strong> Nothing you learn here is wasted and
-  no habit disappears — the paid panel is the same engine asked a bigger question.</p>
-
-  <div class="note">
-    <p><b>If you have seen the coloured coverage bar in Trace, it is not there any more.</b> Early
-    builds drew it under the totals: the whole source clip, with the parts you had used filled in,
-    reading <em>68% of the source used · longest untouched 4m 12s</em>. It moved to Trace+ on
-    12 August, before Trace was released.</p>
-    <p>It is the clearest example of where the line between the two panels sits. Trace answers
-    <em>where is this clip?</em> — a lookup. The bar answers <em>how much of this clip have I ever
-    touched?</em> — an analysis of the same clip, and analysis is what Trace+ is for.</p>
-  </div>
-
-  <div class="plus-cta">
-    <h3>Trace+</h3>
-    <p>See every clip your project no longer needs — and every clip it can’t do without.</p>
-    <a class="go" href="https://www.nkcourses.co.uk/traceplus/">Get Trace+</a>
-    <span class="note">Trace stays free, complete and finished. It is not a trial. Trace+ is a
-      superset — it answers everything Trace answers and more — so installing it does not disturb
-      Trace, and you can keep the free panel or remove it, whichever suits your workspace.</span>
-  </div>
-
-  <h2 id="privacy">Privacy</h2>
-  <p><strong>Nothing about your project leaves your machine.</strong> Neither panel uploads, logs or
-  phones home about your media, your sequences, your file paths or your project name. There is no
-  analytics, no account and no telemetry.</p>
-  <p>Both panels make exactly one network request, and only when you ask for it or when the
-  once-a-day update check runs: they fetch a small file from
-  <a href="https://nkcourses.github.io/trace_updates/">nkcourses.github.io</a> that says whether a
-  newer version exists. Nothing is sent with it.</p>
-  <p><strong>Trace</strong> reads your project — the sequences, the clips on them and where they
-  came from. It never opens a media file.</p>
-  <p><strong>Trace+</strong> reads the same, plus the <strong>size</strong> of the media files your
-  project points at, which is where the archive-weight figure comes from. That needs filesystem
-  permission, and it is a bigger ask than the free panel makes, so it is worth saying plainly what it
-  does <em>not</em> do: <strong>it never reads a file's contents.</strong> Only how many bytes long
-  it is.</p>
-  <p>The <strong>Scan report</strong> in the panel menu is the one place your file paths appear, and
-  it goes to your clipboard — nowhere else. Read it before you paste it into an email.</p>
-
-  <h2 id="support">Support</h2>
-  <p><a href="mailto:support@nkcourses.co.uk">support@nkcourses.co.uk</a>. Quote the version number
-  from <strong>☰ &gt; About Trace</strong> and say what you selected and what you expected — that is
-  usually enough to find it. I am one person, so it might take a day, but it will be me
-  answering.</p>
-
-  <footer>
-    © NK Courses 2026. All rights reserved. ·
-    <a href="https://www.nkcourses.co.uk/trace">nkcourses.co.uk/trace</a> ·
-    <a href="https://www.nkcourses.co.uk/termsconditions">Terms</a>
-  </footer>
-</main>
-</div>
-
-<script>
-  /* Highlight the section you are reading, and let the nav collapse on a phone. */
-  var links = [].slice.call(document.querySelectorAll('nav a'));
-  var heads = links.map(function (a) { return document.getElementById(a.hash.slice(1)); });
-
-  function mark() {
-    var best = 0;
-    for (var i = 0; i < heads.length; i++) {
-      if (heads[i] && heads[i].getBoundingClientRect().top < 120) best = i;
-    }
-    links.forEach(function (a, i) { a.className = i === best ? 'on' : ''; });
-  }
-  window.addEventListener('scroll', mark, { passive: true });
-  mark();
-
-  var nav = document.getElementById('nav');
-  document.getElementById('menuBtn').addEventListener('click', function () {
-    nav.classList.toggle('open');
-  });
-  nav.addEventListener('click', function (e) {
-    if (e.target.tagName === 'A') nav.classList.remove('open');
-  });
-
-  /* ------------------------------------------------------------------------
-     RELEASE HISTORY — reads the repository's own releases at page load.
-
-     🔴 THERE IS NO PUBLISHING STEP FOR THIS SECTION, AND THERE MUST NEVER BE.
-     The chain already exists: commit updates.json -> the release builds a
-     GitHub release -> this reads it back. Adding "and also update the docs
-     page" to the release routine would be a step that gets skipped, and a
-     changelog that lags the product is worse than no changelog.
-
-     🔴 THE REPO BELOW DOES NOT EXIST YET. Until nkcourses/trace-updates is
-     created and has a release, this section shows the "nothing published yet"
-     line rather than an error — which is correct behaviour, and also the reason
-     it is easy to forget. It is item one on docs/launch.md.
-     ------------------------------------------------------------------------ */
-  (function () {
-    var REPO = 'nkcourses/trace-updates';
-    var API  = 'https://api.github.com/repos/' + REPO + '/releases?per_page=20';
-    var LIST = 'https://github.com/' + REPO + '/releases';
-    var box  = document.getElementById('releases');
-    if (!box) return;
-
-    var KEY = 'tr-releases', TTL = 3600000;   // an hour
-
-    function esc(s) {
-      return String(s).replace(/[&<>"]/g, function (c) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
-      });
-    }
-
-    /* Release bodies are written by us, in one shape: a headline line, then
-       "- " bullets. This renders that shape and nothing else — a real Markdown
-       parser would be forty times the code for no visible gain. Everything is
-       escaped first, so a stray < in a release note cannot break the page. */
-    function body(md) {
-      var out = [], list = [];
-      String(md || '').split(/\r?\n/).forEach(function (raw) {
-        var line = raw.trim();
-        if (/^[-*]\s+/.test(line)) { list.push('<li>' + esc(line.replace(/^[-*]\s+/, '')) + '</li>'); return; }
-        if (list.length) { out.push('<ul>' + list.join('') + '</ul>'); list = []; }
-        if (line) out.push('<p>' + esc(line) + '</p>');
-      });
-      if (list.length) out.push('<ul>' + list.join('') + '</ul>');
-      return out.join('');
-    }
-
-    function when(iso) {
-      if (!iso) return '';
-      var d = new Date(iso);
-      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    }
-
-    function paint(rels) {
-      if (!rels || !rels.length) {
-        box.innerHTML = '<p class="loading">No releases published yet. ' +
-          '<a href="' + LIST + '">See them on GitHub</a> when there are.</p>';
-        return;
-      }
-      box.innerHTML = rels.map(function (r, i) {
-        return '<div class="rel"><div class="rel-head">' +
-          '<span class="rel-ver">' + esc(r.name || r.tag_name) + '</span>' +
-          (i === 0 ? '<span class="pill">Latest</span>' : '') +
-          '<span class="rel-date">' + when(r.published_at) + '</span>' +
-          '</div><div class="rel-body">' + body(r.body) + '</div></div>';
-      }).join('');
-    }
-
-    /* Cached for an hour, because GitHub rate-limits unauthenticated calls by
-       IP and a docs page that 403s on the fifth reader is worse than a
-       changelog that is an hour stale. */
-    try {
-      var hit = JSON.parse(sessionStorage.getItem(KEY) || 'null');
-      if (hit && Date.now() - hit.at < TTL) { paint(hit.data); return; }
-    } catch (e) { /* no cache, no problem */ }
-
-    fetch(API)
-      .then(function (r) { return r.ok ? r.json() : []; })
-      .then(function (data) {
-        try { sessionStorage.setItem(KEY, JSON.stringify({ at: Date.now(), data: data })); } catch (e) {}
-        paint(data);
-      })
-      .catch(function () {
-        box.innerHTML = '<p class="loading"><a href="' + LIST + '">Release notes on GitHub</a>.</p>';
-      });
-  })();
-</script>
 </body>
 </html>
