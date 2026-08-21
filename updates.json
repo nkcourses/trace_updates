@@ -1,0 +1,13 @@
+{
+  "_readme": "Publish this file where GitHub Pages actually SERVES it — beside launch/docs/index.html, so it resolves at https://nkcourses.github.io/trace_updates/updates.json. That is the FIRST feed js/build-config.js tries. At the repo root it 404s and the panel silently falls through to raw.githubusercontent. The panel shows a notice only when `latest` is HIGHER than the running version, compared number by number, so bump `latest` when you PUBLISH a release and not before.",
+  "latest": "1.0.0",
+  "released": "2026-08-21",
+  "headline": "Trace 1.0 — every use of a clip, across every sequence, selected at once.",
+  "url": "https://www.nkcourses.co.uk/trace",
+  "notes": [
+    "First public release.",
+    "Merged clips are now identified correctly, and their audio channels count as one use rather than one per channel.",
+    "The background re-scan backs off properly on slow projects instead of running flat out.",
+    "Deselecting a clip now clears the summary, so the panel never shows numbers for a clip you are no longer looking at."
+  ]
+}
