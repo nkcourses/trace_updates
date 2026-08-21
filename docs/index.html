@@ -210,7 +210,14 @@
   .rel-date{margin-left:auto; font-size:13.5px; color:var(--muted)}
   .rel-body>p:first-child{color:var(--ink); font-weight:600}
   .rel-body>:last-child{margin-bottom:0}
-  .rel-body ul{margin-bottom:0}
+  .rel-body ul,.rel-body ol{margin-bottom:14px; padding-left:22px}
+  /* 🔴 A RELEASE NOTE'S ### IS A SUB-HEAD INSIDE A CARD, NOT A PAGE SECTION.
+     Sized between the card's own .rel-ver and the body so it groups the list
+     under it without competing with the version number above it. */
+  .rel-body h4{margin:18px 0 6px; font-size:15px; font-weight:600; color:var(--ink)}
+  .rel-body h4:first-child{margin-top:0}
+  .rel-body code{background:var(--code); border-radius:5px; padding:1px 5px;
+                 font-size:13.5px}
   .loading{color:var(--muted); font-size:14.5px; margin:14px 0}
 
   footer{border-top:1px solid var(--line); margin-top:70px; padding-top:22px;
@@ -890,19 +897,77 @@
       });
     }
 
-    /* Release bodies are written by us, in one shape: a headline line, then
-       "- " bullets. This renders that shape and nothing else — a real Markdown
-       parser would be forty times the code for no visible gain. Everything is
-       escaped first, so a stray < in a release note cannot break the page. */
-    function body(md) {
-      var out = [], list = [];
-      String(md || '').split(/\r?\n/).forEach(function (raw) {
-        var line = raw.trim();
-        if (/^[-*]\s+/.test(line)) { list.push('<li>' + esc(line.replace(/^[-*]\s+/, '')) + '</li>'); return; }
-        if (list.length) { out.push('<ul>' + list.join('') + '</ul>'); list = []; }
-        if (line) out.push('<p>' + esc(line) + '</p>');
+    /* 🔴 A RELEASE BODY IS MARKDOWN, AND THIS HAS TO RENDER IT — 21 Aug 2026.
+       The old version assumed release notes came in one shape: a headline line
+       then "- " bullets. The first real release broke every part of that
+       assumption, because what reads well on GitHub's own release page is
+       **bold**, ### headings, a numbered install list and links. The page
+       showed literal asterisks and hashes, and — worse and less obvious —
+       every HARD-WRAPPED LINE became its own <p>, so one paragraph rendered as
+       three stubs with gaps between them.
+
+       ⚠️ STILL NOT A MARKDOWN PARSER, and should not become one. It covers
+       exactly what a release note uses and stops. What it does buy is that the
+       notes can now be written once, for GitHub, and read correctly here.
+
+       🔴 ESCAPE FIRST, THEN INSERT TAGS. Everything goes through esc() before a
+       single < of ours is added, so a stray angle bracket in a release body
+       cannot break the page. That is why the autolink rule matches &lt; rather
+       than < — by the time it runs, the text is already escaped. */
+    function inline(escaped) {
+      /* Code spans are stashed before anything else, so ** or * inside a
+         `literal` is not read as emphasis.  cannot appear in the input:
+         it is escaped text, and JSON from the API would have encoded it. */
+      var code = [];
+      var s = escaped.replace(/`([^`]+)`/g, function (_m, c) {
+        return "\u0001" + (code.push(c) - 1) + "\u0001";
       });
-      if (list.length) out.push('<ul>' + list.join('') + '</ul>');
+      s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+                    '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      s = s.replace(/&lt;(https?:\/\/[^\s&]+)&gt;/g,
+                    '<a href="$1" target="_blank" rel="noopener">$1</a>');
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      /* Emphasis needs a boundary before the * or a mid-word asterisk in a
+         filename would open one that never closes. */
+      s = s.replace(/(^|[\s(])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+      return s.replace(/\u0001(\d+)\u0001/g, function (_m, i) {
+        return '<code>' + code[i] + '</code>';
+      });
+    }
+
+    function body(md) {
+      var out = [], ul = [], ol = [], para = [];
+      function flushPara() {
+        if (!para.length) return;
+        out.push('<p>' + inline(esc(para.join(' '))) + '</p>');
+        para = [];
+      }
+      function flushLists() {
+        if (ul.length) { out.push('<ul>' + ul.join('') + '</ul>'); ul = []; }
+        if (ol.length) { out.push('<ol>' + ol.join('') + '</ol>'); ol = []; }
+      }
+      String(md || '').split(/\r?\n/).forEach(function (raw) {
+        var line = raw.trim(), m;
+        if (!line) { flushPara(); flushLists(); return; }
+        if ((m = /^#{2,4}\s+(.*)$/.exec(line))) {
+          flushPara(); flushLists();
+          out.push('<h4>' + inline(esc(m[1])) + '</h4>');
+          return;
+        }
+        if ((m = /^[-*]\s+(.*)$/.exec(line))) {
+          flushPara(); if (ol.length) flushLists();
+          ul.push('<li>' + inline(esc(m[1])) + '</li>'); return;
+        }
+        if ((m = /^\d+[.)]\s+(.*)$/.exec(line))) {
+          flushPara(); if (ul.length) flushLists();
+          ol.push('<li>' + inline(esc(m[1])) + '</li>'); return;
+        }
+        /* A plain line CONTINUES the paragraph rather than starting one — this
+           is the hard-wrap fix, and it is the whole reason for the buffer. */
+        flushLists();
+        para.push(line);
+      });
+      flushPara(); flushLists();
       return out.join('');
     }
 
