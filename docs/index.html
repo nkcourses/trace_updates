@@ -17,11 +17,11 @@
   │  accent (blue/cyan, not violet), the mark, and every word.               │
   │                                                                          │
   │  🔴 THE FACTS HERE COME FROM THE PANEL, NOT FROM MEMORY:                 │
-  │    ☰ items         index.html  -> Copy list / Tips / Check for updates /│
-  │                                   Scan report / Get help /               │
-  │                                   Submit bug/feature / About Trace       │
+  │    ☰ items         index.html  -> Copy list / Tour / Re-scan project /  │
+  │                                   Scan report / Copy scan report /       │
+  │                                   Send feedback / About Trace            │
   │    title-row       index.html  -> marker button / Clear (✕) /           │
-  │      buttons                      Re-scan (↻) / ☰                        │
+  │      buttons                      ☰                                      │
   │    panel location  manifest    -> Window > UXP Plugins > Trace           │
   │    minimum host    manifest    -> Premiere Pro 25.6.0                    │
   │    gestures        js/main.js  -> isFind (alt) / isSource (shift) /      │
@@ -255,6 +255,7 @@
 
   <h4>The panel</h4>
   <a href="#two-views">One clip at a time</a>
+  <a href="#repeats">Repeats and sections</a>
   <a href="#find">Finding every use</a>
   <a href="#select">Selecting uses</a>
   <a href="#stepping">Stepping through uses</a>
@@ -264,10 +265,11 @@
   <a href="#nests">Nested sequences</a>
   <a href="#subclips">Subclips and duplicates</a>
   <a href="#multicam">Merged and multicam</a>
-  <a href="#archived">Archived sequences</a>
+  <a href="#archived">Old cuts, and the filters</a>
 
   <h4>Acting on what you find</h4>
   <a href="#markers">Adding markers</a>
+  <a href="#colours">Colouring the clip</a>
   <a href="#source">The Source Monitor</a>
   <a href="#copy">Copying the list</a>
   <a href="#report">Reporting a bug</a>
@@ -303,7 +305,7 @@
   </div>
 
   <figure>
-    <img src="assets/trace-demo.gif" alt="Trace finding seven uses of a clip across four sequences, then selecting all of them in the timeline at once.">
+    <img src="assets/ui-wide-dock.png" alt="Trace docked wide under the timeline, listing a clip's uses grouped into a card per sequence, with the action bar pinned at the foot.">
     <figcaption>One click on a clip, one press of <strong>Select all</strong>: every instance lights
       up at the same moment.</figcaption>
   </figure>
@@ -332,7 +334,7 @@
   <table>
     <tr><th>It is not</th><th>What you actually want</th></tr>
     <tr><td class="no">A media manager</td><td>Trace never moves, renames, copies, consolidates or deletes a single file. It reads.</td></tr>
-    <tr><td class="no">An unused-media finder</td><td>Trace answers about the clip <em>you selected</em>. "What media in this project is not used?" is a different question — that is <a href="#trace-plus">Trace+</a>.</td></tr>
+    <tr><td class="no">An unused-media finder</td><td>Trace scans the clip <em>you selected</em>. "What media in this project is not used?" is a different question — that is <a href="#trace-plus">Trace+</a>.</td></tr>
     <tr><td class="no">A duplicate finder</td><td>It shows repeats of one clip, not every duplicated asset in the project. Also Trace+.</td></tr>
     <tr><td class="no">A project archiver or trimmer</td><td>It will not shrink your project folder or collect only the used media. Trace+.</td></tr>
     <tr><td class="no">A reporting or export tool</td><td>No CSV, no PDF, no cue sheet. <strong>Copy list</strong> puts plain text on the clipboard, and that is the whole of it.</td></tr>
@@ -389,12 +391,39 @@
     <li><strong>Click a clip in the Project panel.</strong> Trace scans the project once — a few
       hundred milliseconds on a normal job — then answers instantly from then on.</li>
     <li>Click any row to jump the playhead to that use.</li>
-    <li>Press <strong>Select all N in this sequence</strong> to light up every use at once.</li>
+    <li>Press <strong>Select all</strong> &mdash; on a sequence&rsquo;s own header for that cut alone, or
+      in the bar at the foot of the panel for everything on screen &mdash; and every use becomes a real
+      Premiere selection at once.</li>
   </ol>
   <p>With nothing selected, Trace waits. That is the whole loop; everything below is detail.</p>
 
+  <h2 id="repeats">Repeats and sections</h2>
+  <p><strong>&ldquo;Nine uses&rdquo; and &ldquo;nine different bits of footage&rdquo; are not the
+  same sentence.</strong> Nine uses of one three-second cutaway and nine moments of an interview are
+  opposite facts about a job, and the use count alone cannot tell them apart.</p>
+
+  <p>So when they differ, the totals line says both: <em>9 uses &middot; 4 sections &middot; 2
+  sequences</em>. Four <strong>sections</strong> means four distinct stretches of the source were
+  used; the other five uses are repeats of footage already counted.</p>
+
+  <p>And every use that shares its footage with another carries a <strong>REPEAT</strong> badge on
+  its row, so you can see which ones they are rather than only how many.</p>
+
+  <div class="note">
+    <p><b>It is not shown when it would say nothing.</b> A clip cut into nine different places reads
+    <em>9 uses</em> with no section count, because &ldquo;9 uses &middot; 9 sections&rdquo; on every
+    clip is a line people stop reading.</p>
+    <p><b>Every member of a group is badged, not just the later ones.</b> Two uses of one section are
+    repeats of <em>each other</em> &mdash; picking one to call the original would invent an order
+    your project does not have.</p>
+    <p><b>Two slightly different trims still count as one section.</b> The test is whether the two
+    uses share more than half of the shorter one, so re-trimming a cutaway by a few frames does not
+    turn it into a new section &mdash; and a brief overlap at a dissolve does not make two sections
+    into repeats.</p>
+  </div>
+
   <h2 id="two-views">One clip at a time</h2>
-  <p><strong>Trace answers about the clip you select, and nothing else.</strong> There is no view to
+  <p><strong>Trace scans the clip you select, and nothing else.</strong> There is no view to
   switch, no mode, no setting. Click a clip, a subclip, an audio file or a sequence in the Project
   panel and Trace shows every place it is used. Click away and it waits.</p>
   <p>That is the whole shape of it, and it is deliberate: a panel that only ever answers one question
@@ -411,51 +440,91 @@
   and then the detail: every sequence it appears in, and inside each one, every use with its
   timecode, its duration and which track it sits on.</p>
 
+  <p><strong>Each sequence&rsquo;s uses sit in a card of their own</strong>, with the sequence name as a
+  caption above it. A clip cut into four different timelines reads as four things at a glance rather
+  than one long column of timecodes.</p>
+
   <figure>
-    <img src="assets/feature-find.gif" alt="Selecting a clip in the Project panel and Trace immediately listing every sequence it appears in.">
+    <img src="assets/ui-list.png" alt="Trace listing a clip's uses, grouped into one rounded card per sequence, each header carrying its own Select all button.">
     <figcaption><strong>Finding every use</strong> — nothing to press, and no column to turn on.
       Trace follows the Project panel.</figcaption>
   </figure>
 
+  <p>Click a sequence name to open or close <em>that</em> card and nothing else, so you can have as many
+  open at once as you like. <kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click one to collapse all the rest &mdash;
+  the tidy-up, for when the list has got long.</p>
+
+  <p>The coloured bar at the start of each row is <strong>which part of the source</strong> that use
+  came from. Two uses of the same footage share a colour; a genuinely different moment gets a
+  different one. Nine cuts from one three-second cutaway are one colour, not nine.</p>
+
   <p>Audio and video that were shot together and are cut together count as <strong>one</strong> use,
   not two. Trace pairs them when they overlap by more than half, so a J-cut stays one use and two
   back-to-back edits stay two.</p>
-  <p>The list updates as you edit. Add a clip, delete one, or move something, and Trace re-scans on
-  its own within a few hundred milliseconds. The <strong>circular arrow</strong> in the title row —
-  next to the ☰ — forces it immediately if you would rather not wait.</p>
+  <p>The list updates as you edit. Add a clip, delete one, or move something, and Trace notices within
+  about a second and re-walks <em>only the sequence that changed</em>. <strong>☰ &gt; Re-scan project</strong>
+  forces a full pass if you would rather not wait.</p>
+  <div class="note">
+    <p style="margin:0"><b>It does not re-read the whole project on a timer.</b> Every so often Trace
+    checks whether anything has moved by reading the track counts &mdash; a fraction of the cost of a
+    real scan &mdash; and only re-walks the sequences that actually changed. On a large project that is
+    the difference between a few seconds and well over a minute.</p>
+  </div>
 
   <h2 id="select">Selecting uses in the timeline</h2>
-  <p><strong>This is the thing nothing else does.</strong> Press <strong>Select all N in this
-  sequence</strong> and every use becomes a real Premiere selection at the same moment — ready to
-  nudge, delete, label, or drop an effect onto.</p>
+  <p><strong>This is the thing nothing else does.</strong> Press <strong>Select all</strong> and every
+  use becomes a real Premiere selection at the same moment — ready to nudge, delete, label, or drop an
+  effect onto.</p>
+
+  <p>There are two of them, and they have different scopes. Each sequence card&rsquo;s header carries its
+  own <strong>Select all 5</strong> for that cut alone; the bar pinned at the foot of the panel carries
+  <strong>Select all 9</strong> for everything on screen. Both say how many they will take, so you never
+  have to guess which one you are pressing.</p>
 
   <figure>
-    <img src="assets/feature-select-all.gif" alt="Pressing Select all in Trace and seven clips lighting up across the timeline simultaneously.">
-    <figcaption><strong>Select all uses</strong> — seven clips you could not have picked out become
+    <img src="assets/ui-selected.png" alt="Trace with a sequence's uses selected, the rows filled in, and the bar offering Deselect all.">
+    <figcaption><strong>Select all uses</strong> — clips you could not have picked out by hand become
       one selection.</figcaption>
   </figure>
 
-  <p>For a subset, tick the box beside any use, or <kbd>Cmd</kbd>-click (<kbd>Ctrl</kbd> on Windows)
-  the row. Ticked rows fill in so the panel and the timeline always agree.</p>
+  <h3>Dropping one you did not want</h3>
+  <p><strong>Once anything is ticked, the list becomes a selection rather than a navigator.</strong>
+  Click any row to add it or take it out — no modifier needed. Select all nine, click the two you do
+  not want, act on the seven that are left. The playhead still travels to whichever row you clicked.</p>
+  <p>With <em>nothing</em> ticked the list behaves as it always has: click a use to go there and select
+  that one clip.</p>
 
   <div class="note">
     <p><b>A selection cannot span two sequences</b> — that is Premiere, not Trace. Ticking a use in a
     different sequence replaces your picks rather than adding to them, and the status line says so
     when it happens.</p>
+    <p><b>The bar is outside the scrolling list</b>, so it is reachable at any scroll position. On a
+    clip used sixteen times you no longer have to scroll to the bottom to find it.</p>
   </div>
 
   <h2 id="stepping">Stepping through uses</h2>
   <!-- ⚠️ AT THE TOP, not the bottom. The stepper moved up into its own row in
        0.44.x and this line was left behind — a reader following it looks at the
        wrong end of the panel for a control that is right in front of them. -->
-  <p>The arrows at the top of the panel walk the playhead through every use on screen, in order,
+  <p>The arrows at the top right of the panel walk the playhead through every use on screen, in order,
   jumping between sequences as needed. The counter between them tells you where you are —
-  <em>3 / 9</em>. The <strong>&times;</strong> in the header drops the selection and the picks.</p>
+  <em>3 / 9</em>. The <strong>&times;</strong> at the right-hand end of the bar at the foot of the panel
+  drops the selection and the picks.</p>
 
   <h2 id="gestures">Every gesture</h2>
   <table>
     <tr><th>Do this</th><th>Get this</th></tr>
-    <tr><td>Click a use</td><td>Jump the playhead there and select that clip</td></tr>
+    <tr><td>Click a sequence name</td><td>Opens or closes <em>that</em> group and leaves the others
+      exactly as they were, so you can have as many open at once as you like</td></tr>
+    <tr><td><kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click a sequence name</td><td>Opens that one and
+      <strong>collapses every other</strong> — the tidy-up, for when the list has got long</td></tr>
+    <tr><td>Select all in a sequence</td><td>Every sequence header carries its own <strong>Select all</strong>
+      with the count on it, so you can light one cut's uses without touching the rest. The bar at the
+      foot of the panel does the same for everything on screen</td></tr>
+    <tr><td>Click a use, with nothing ticked</td><td>Jump the playhead there and select that clip</td></tr>
+    <tr><td>Click a use, with a selection running</td><td><strong>Adds or removes it</strong> — so
+      &ldquo;select all, drop the two I don&rsquo;t want&rdquo; needs no modifier. The playhead still
+      goes there</td></tr>
     <tr><td><kbd>Shift</kbd>-click, or double-click</td><td>Open in the Source Monitor, with that use set as in/out</td></tr>
     <tr><td><kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click, or the tick box</td><td>Add or remove from the selection</td></tr>
     <tr><td><kbd>Alt</kbd>-click</td><td><strong>Find in Project</strong> — copies the clip's name for the
@@ -506,24 +575,39 @@
     sources inside it. Adobe's own answer, on the record: <em>"There are no ExtendScript APIs around
     multi-cam, and there never will be."</em> The same gap covers merged clips, and no workaround has
     ever been produced.</p>
-    <p><b>Multicam is a maybe.</b> A multicam source appears in the project as a sequence, so its
-    angles may be reachable that way. That is an untested route, not a promise — and even if it
-    works, nothing exposes which angle a clip is currently switched to.</p>
+    <p><b>It costs you nothing here, and something later.</b> Trace never moves a file, so an
+    unresolved angle is only a short list. The same limit is dangerous the moment you archive unused
+    media: a file used only inside a merged clip is on no timeline any plugin can see, so it reads as
+    unused. <a href="https://www.nkcourses.co.uk/traceplus-waitlist">Trace+</a> marks every merged and
+    multicam clip and refuses to file those away.</p>
+    <p><b>Multicam was a maybe. It is now a no &mdash; tested 3 Sep 2026.</b> The theory was that a
+    multicam source appears in the project as a sequence, so its angles might be reachable by the
+    same walk that resolves nests. They are not: a scan report on a real multicam clip shows
+    <code>in getSequences(): NO</code>. Premiere does not hand that sequence to a plugin, so
+    nothing inside it is ever read. Trace finds every place the multicam clip itself is cut in,
+    and says plainly that it has not looked inside.</p>
   </div>
 
-  <h2 id="archived">Archived sequences</h2>
+  <h2 id="archived">Old cuts</h2>
   <p>If you keep old cuts in a <code>_PREVIOUS</code>, <code>_ARCHIVE</code> or <code>_OLD</code>
   bin — as <a href="https://www.nkcourses.co.uk/versionup">VersionUp</a> creates — every native usage
   list is full of them, and there is no way to filter them out.</p>
 
   <figure>
-    <img src="assets/feature-archived.gif" alt="Toggling Hide archived sequences in Trace and the list dropping from fourteen results to five.">
-    <figcaption><strong>Hide archived sequences</strong> — fourteen results become the five that are
-      about the cut you are working on.</figcaption>
+    <img src="assets/ui-filters.png" alt="The Filters popover open in Trace, showing Hide old cuts ticked with a count beside it and Active sequence only below.">
+    <figcaption><strong>Filters</strong> — two switches behind one button, and a count of how many are on.</figcaption>
   </figure>
 
-  <p>Trace hides them by default and tells you how many it is hiding. Untick to see them; the tick
-  box stays on screen either way, so it is a switch and not a trapdoor.</p>
+  <p>Trace hides them by default and tells you how many it is hiding. Both filters live behind the
+  <strong>Filters</strong> button on the toolbar, which carries a badge counting how many are actually
+  holding rows back &mdash; not how many rows the menu has. Untick to see them; the row stays on screen
+  either way, so it is a switch and not a trapdoor.</p>
+
+  <p><strong>Active sequence only</strong> is the other one: show this clip&rsquo;s uses in the timeline
+  you have open and hide the rest. On a project with four versions of the same film, &ldquo;where is this
+  used?&rdquo; otherwise comes back as four groups, three of them about a cut you are not in. It greys
+  itself with the reason in its own label when nothing is open, or when the clip is only used in the
+  sequence you already have open and there is nothing for it to remove.</p>
   <div class="note good">
     <p>A Community Expert confirmed on the Adobe forums that native Premiere cannot do this. It is a
     small feature that only exists because the person who built Trace also built a versioning tool
@@ -531,19 +615,47 @@
   </div>
 
   <h2 id="markers">Adding markers</h2>
-  <p>The <strong>marker button</strong> in the title row — the flag shape, left of the ✕ — drops a
-  marker over every use on screen. Unlike a selection, a marker survives you clicking somewhere
-  else: it is the persistent version of "highlight every use".</p>
+  <p>The <strong>marker button</strong> — the flag shape at the far left of the bar at the foot of the
+  panel — drops a marker over every use on screen. Unlike a selection, a marker survives you clicking
+  somewhere else: it is the persistent version of &ldquo;highlight every use&rdquo;.</p>
 
-  <figure>
-    <img src="assets/feature-markers.gif" alt="Pressing the marker button and markers appearing above every use across the timeline.">
-    <figcaption><strong>The marker button</strong> — the flag that outlives the selection.</figcaption>
-  </figure>
+  <div class="note">
+    <p style="margin:0"><b>The bar is grouped, and the grouping means something.</b> The two controls
+    that <em>act on</em> a selection — the marker and the colour chip — sit at the left. The two that
+    <em>make or unmake</em> one — Select all and the ✕ — sit at the right. The gap between them is the
+    only thing saying so, and it is enough.</p>
+  </div>
 
   <div class="note warn">
     <p><b>It is one undo step per sequence</b>, not one for the lot, and Trace tells you how many
     before you press it. Markers across four sequences is four presses of
     <kbd>Cmd</kbd>+<kbd>Z</kbd>.</p>
+  </div>
+
+  <h2 id="colours">Colouring the clip</h2>
+  <p>The <strong>four-colour chip</strong> beside the marker opens Premiere&rsquo;s own label colours.
+  Pick one and the clip takes that colour in the Project panel.</p>
+
+  <figure>
+    <img src="assets/ui-colours-wide.png" alt="Trace docked wide under the timeline, with the fifteen label colours laid out along the action bar.">
+    <figcaption><strong>The colours</strong> — along the bar when the panel is wide enough for them.</figcaption>
+  </figure>
+
+  <p>Hover the chip and the colours appear; move away and they go after about half a second. Click the
+  <strong>pin</strong> beside them to keep them open while you label several clips in a row. Docked wide
+  they lay out along the bar itself; docked narrow they open above it instead and, pinned, push the list
+  down rather than covering the names you are trying to read.</p>
+
+  <figure>
+    <img src="assets/ui-colours-narrow.png" alt="Trace docked narrow, with the label colours opening on their own row above the action bar.">
+    <figcaption><strong>Docked narrow</strong> — the same colours, on their own row.</figcaption>
+  </figure>
+
+  <div class="note warn">
+    <p style="margin:0"><b>It colours the master clip, not the clips in your timeline.</b> Premiere has
+    no way for a panel to set a track item&rsquo;s label. Instances take the master&rsquo;s colour by
+    Premiere&rsquo;s own rule &mdash; which is what people mean when they ask for this &mdash; but an
+    instance somebody has already recoloured by hand keeps its override.</p>
   </div>
 
   <h2 id="source">The Source Monitor</h2>
@@ -571,7 +683,7 @@
   <a href="#trace-plus">Trace+</a>.</p>
 
   <h2 id="report">Reporting a bug, or asking for something</h2>
-  <p><strong>☰ &gt; Submit bug/feature</strong> sends a message straight to me from inside the panel,
+  <p><strong>☰ &gt; Send feedback</strong> sends a message straight to me from inside the panel,
   along with your Trace, Premiere and system versions — never a file path, a project name, or
   anything from your timeline. Nothing is sent unless you type something and press Send.</p>
   <p><strong>☰ &gt; Scan report</strong> is the diagnostic behind it: what Trace found, how long it
@@ -581,7 +693,7 @@
 
   <h2 id="updates">Updates and About</h2>
   <p>Trace checks once a day whether a newer version exists and shows a small notice in the panel if
-  so. <strong>☰ &gt; Check for updates</strong> asks immediately.</p>
+  so. <strong>About Trace &gt; Check for updates</strong> asks immediately.</p>
   <p><strong>☰ &gt; About Trace</strong> shows the version you are running — the first thing to quote
   if you report a problem — along with a link back to this site.</p>
 
@@ -702,15 +814,18 @@
   <h3>It says 0 uses and I know I used that clip</h3>
   <p>Three things do this, in order of likelihood:</p>
   <ul>
-    <li><strong>The uses are in archived sequences.</strong> Untick <em>Hide archived sequences</em>.</li>
+    <li><strong>The uses are in archived sequences.</strong> Open <strong>Filters</strong> and untick
+      <em>Hide old cuts</em>.</li>
+    <li><strong>Active sequence only is on.</strong> The Filters button carries a count when a filter is
+      holding rows back — if it says 2, something is hidden.</li>
     <li><strong>It is a merged or multicam clip.</strong> Trace flags this under the totals — see
       <a href="#multicam">above</a>.</li>
-    <li><strong>The sequence has never been opened in this session.</strong> Press the
-      <strong>circular arrow</strong> in the title row.</li>
+    <li><strong>The sequence has never been opened in this session.</strong> Use
+      <strong>☰ &gt; Re-scan project</strong>.</li>
   </ul>
 
   <h3>The numbers look out of date</h3>
-  <p>Trace re-scans on its own as you edit, but the <strong>circular arrow</strong> in the title row
+  <p>Trace re-scans on its own as you edit, but <strong>☰ &gt; Re-scan project</strong>
   forces it. If a forced re-scan changes the answer, that is worth telling me about.</p>
 
   <h3>Clicking a row moved the playhead but selected nothing</h3>
@@ -758,7 +873,7 @@
     <tr><th>Select every instance at once</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
     <tr><th>Follows nests, subclips and audio</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
     <tr><th>Markers, Source Monitor, copy list</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-    <tr><th>Hide archived sequences</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+    <tr><th>Hide old cuts</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
     <tr><th><strong>Every media file in the project, used and unused</strong></th><td class="no">—</td><td class="yes">Yes</td></tr>
     <tr><th><strong>How many gigabytes of it are sitting on disk</strong></th><td class="no">—</td><td class="yes">Yes</td></tr>
     <tr><th><strong>File it away into <code>_UNUSED</code></strong></th><td class="no">—</td><td class="yes">Yes</td></tr>
