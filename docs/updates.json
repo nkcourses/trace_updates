@@ -1,12 +1,9 @@
 {
-  "latest": "1.1.3",
-  "released": "2026-09-09",
-  "headline": "Repeated shots that are the same frames now share a colour, and the update notice has a Download button",
+  "latest": "1.1.4",
+  "released": "2026-09-14",
+  "headline": "The scan report now records how many colour groups a clip has, so the palette question can be answered with a measurement",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**Two rows the same colour now means one thing: the same frames of the same clip.** Reported from a real project — eight uses of one shot, colours that didn't relate to each other. Three things were wrong at once. The colour was keyed to a merged block of the clip, and blocks merge whenever two uses touch, so a chain of unrelated trims came out one colour while the badges beside them disagreed. It only compared the in-point, so two uses starting on the same frame at different lengths were called identical. And the palette held four colours, so on a clip with five groups the first and fifth were painted the same.",
-    "**A shot used once no longer takes a colour.** The chip means *this row has a twin, and its twin is the other row wearing this colour*. A hue on a use with nothing to match is a colour that has to be ignored, and a nine-use clip of them is a rainbow. Rows with no twin now draw neutral — so on the OTHER tab, grey is the answer: nothing else in that clip is those exact frames.",
-    "**The update notice has a Download button.** It hands over the exact version the notice names, rather than whichever build happens to be flagged newest. What's new sits beside it and still explains the release.",
-    "**What's new now actually lands on Release history.** The button was always pointing at the right place; the help page it opens is now published with each release instead of by hand, so the section it jumps to can't be missing or out of date."
+    "**The scan report now carries a colour-groups line.** The row colour is an index into an eight-colour list, wrapped — so a clip with nine distinct repeated portions would paint two unrelated portions the same hue, which is the one direction it is expensive to be wrong in. Nobody knew whether real projects ever reach nine; a 21-use showreel reached seven. The panel now records the highest it has seen in a session and prints it in the report, so a ninth colour gets designed when a real report asks for one, and not before. A count only — never a clip name, a sequence or a path."
   ]
 }
