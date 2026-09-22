@@ -1,9 +1,10 @@
 {
-  "latest": "1.1.4",
-  "released": "2026-09-14",
-  "headline": "The scan report now records how many colour groups a clip has, so the palette question can be answered with a measurement",
+  "latest": "1.2.0",
+  "released": "2026-09-22",
+  "headline": "Ask Trace something only Trace+ answers, and the panel now tells you so",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**The scan report now carries a colour-groups line.** The row colour is an index into an eight-colour list, wrapped — so a clip with nine distinct repeated portions would paint two unrelated portions the same hue, which is the one direction it is expensive to be wrong in. Nobody knew whether real projects ever reach nine; a 21-use showreel reached seven. The panel now records the highest it has seen in a session and prints it in the report, so a ninth colour gets designed when a real report asks for one, and not before. A count only — never a clip name, a sequence or a path."
+    "**A Trace+ card for the questions Trace doesn't answer.** Select a **sequence** and Trace still shows where it is used, but not what is inside it. Select a **bin**, or **several clips** at once, and Trace still works one clip at a time. In each case a small violet card now says what Trace+ does there, with one button: **Join the Trace+ waitlist**. It stays until you close it, and once closed that kind of card does not come back until the panel is reopened.",
+    "**Nothing else changed.** Everything Trace did in 1.1.4 it still does, the same way. Trace scans a clip; Trace+ scans the entire project."
   ]
 }

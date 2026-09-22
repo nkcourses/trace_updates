@@ -1,12 +1,10 @@
 {
-  "latest": "1.1.3",
-  "released": "2026-09-09",
-  "headline": "Repeated shots that are the same frames now share a colour, and the update notice has a Download button",
+  "latest": "1.2.0",
+  "released": "2026-09-22",
+  "headline": "Ask Trace something only Trace+ answers, and the panel now tells you so",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**Two rows the same colour now means one thing: the same frames of the same clip.** Reported from a real project — eight uses of one shot, colours that didn't relate to each other. Three things were wrong at once. The colour was keyed to a merged block of the clip, and blocks merge whenever two uses touch, so a chain of unrelated trims came out one colour while the badges beside them disagreed. It only compared the in-point, so two uses starting on the same frame at different lengths were called identical. And the palette held four colours, so on a clip with five groups the first and fifth were painted the same.",
-    "**A shot used once no longer takes a colour.** The chip means *this row has a twin, and its twin is the other row wearing this colour*. A hue on a use with nothing to match is a colour that has to be ignored, and a nine-use clip of them is a rainbow. Rows with no twin now draw neutral — so on the OTHER tab, grey is the answer: nothing else in that clip is those exact frames.",
-    "**The update notice has a Download button.** It hands over the exact version the notice names, rather than whichever build happens to be flagged newest. What's new sits beside it and still explains the release.",
-    "**What's new now actually lands on Release history.** The button was always pointing at the right place; the help page it opens is now published with each release instead of by hand, so the section it jumps to can't be missing or out of date."
+    "**A Trace+ card for the questions Trace doesn't answer.** Select a **sequence** and Trace still shows where it is used, but not what is inside it. Select a **bin**, or **several clips** at once, and Trace still works one clip at a time. In each case a small violet card now says what Trace+ does there, with one button: **Join the Trace+ waitlist**. It stays until you close it, and once closed that kind of card does not come back until the panel is reopened.",
+    "**Nothing else changed.** Everything Trace did in 1.1.4 it still does, the same way. Trace scans a clip; Trace+ scans the entire project."
   ]
 }
