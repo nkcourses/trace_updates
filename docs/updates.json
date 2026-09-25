@@ -1,10 +1,10 @@
 {
-  "latest": "1.2.0",
-  "released": "2026-09-22",
-  "headline": "Ask Trace something only Trace+ answers, and the panel now tells you so",
+  "latest": "1.3.0",
+  "released": "2026-09-25",
+  "headline": "The selected clip now says what it is made of: VIDEO, AUDIO or STILL, in the same colours as Trace+",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**A Trace+ card for the questions Trace doesn't answer.** Select a **sequence** and Trace still shows where it is used, but not what is inside it. Select a **bin**, or **several clips** at once, and Trace still works one clip at a time. In each case a small violet card now says what Trace+ does there, with one button: **Join the Trace+ waitlist**. It stays until you close it, and once closed that kind of card does not come back until the panel is reopened.",
-    "**Nothing else changed.** Everything Trace did in 1.1.4 it still does, the same way. Trace scans a clip; Trace+ scans the entire project."
+    "**A coloured badge beside the clip name.** VIDEO, AUDIO or STILL, pinned to the right of the name. It is the same word and the same colour Trace+ uses, taken from the same shared engine, so a file badged VIDEO in one panel can never read AUDIO in the other. Nothing is badged for a sequence, a title, a colour matte or a path the panel could not read — silence beats a guess.",
+    "**Row badges kept their colour.** Adding the media kinds introduced a second copy of the badge colour map, which quietly overwrote the first: every REPEAT, OTHER and nest badge lost its tone while the new badge looked perfect. Caught by the panel tests before release, fixed to one map."
   ]
 }
