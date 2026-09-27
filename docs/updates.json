@@ -1,10 +1,10 @@
 {
-  "latest": "1.3.0",
-  "released": "2026-09-25",
-  "headline": "The selected clip now says what it is made of: VIDEO, AUDIO or STILL, in the same colours as Trace+",
+  "latest": "1.3.2",
+  "released": "2026-09-27",
+  "headline": "Copying the scan report now closes it, and the per-sequence button says Select all again",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**A coloured badge beside the clip name.** VIDEO, AUDIO or STILL, pinned to the right of the name. It is the same word and the same colour Trace+ uses, taken from the same shared engine, so a file badged VIDEO in one panel can never read AUDIO in the other. Nothing is badged for a sequence, a title, a colour matte or a path the panel could not read — silence beats a guess.",
-    "**Row badges kept their colour.** Adding the media kinds introduced a second copy of the badge colour map, which quietly overwrote the first: every REPEAT, OTHER and nest badge lost its tone while the new badge looked perfect. Caught by the panel tests before release, fixed to one map."
+    "**Copying the scan report closes it.** The only reason to open the report is to send it, so the copy is the end of the job. If the clipboard refuses, it stays open so you can copy it by hand.",
+    "**Select all is words again (1.3.1).** The per-sequence button had become a double-tick symbol. The words are back, with the count still on them."
   ]
 }
