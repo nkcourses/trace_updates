@@ -1,10 +1,11 @@
 {
-  "latest": "1.3.2",
-  "released": "2026-09-27",
-  "headline": "Copying the scan report now closes it, and the per-sequence button says Select all again",
+  "latest": "1.3.3",
+  "released": "2026-09-28",
+  "headline": "A reliability release: more accurate results, sequences picked up as they change, and proper Windows wording",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**Copying the scan report closes it.** The only reason to open the report is to send it, so the copy is the end of the job. If the clipboard refuses, it stays open so you can copy it by hand.",
-    "**Select all is words again (1.3.1).** The per-sequence button had become a double-tick symbol. The words are back, with the count still on them."
+    "**More accurate results.** Uses inside J-cut nests land on the right frame, dual-mono audio counts once, stacked uses inside a nest are all listed, and episodes like Ep_01 are no longer hidden as old versions.",
+    "**Keeps up with your project.** Deleted and duplicated sequences are picked up straight away, a click during a re-scan is no longer lost, and Mark all no longer triggers a full re-scan.",
+    "**Better on Windows.** Ctrl instead of Cmd in every hint, the same file recognised however its path is spelled, and the scan report keeps its line breaks."
   ]
 }

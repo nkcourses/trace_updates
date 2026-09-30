@@ -56,7 +56,7 @@
      black cut disappears into its own background at thumbnail size. -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Trace — help &amp; documentation">
-<meta property="og:description" content="Pick one clip. See every place it's used across your entire project — then select every instance at once.">
+<meta property="og:description" content="Pick one clip. See every place it's used across your entire project – then select every instance at once.">
 <meta property="og:image" content="assets/trace-mark.png">
 <meta name="twitter:card" content="summary">
 <style>
@@ -233,6 +233,11 @@
     main{padding-top:24px}
     h1{font-size:32px}
   }
+  /* A command to paste into Terminal or Command Prompt. It wraps rather than
+     scrolls, because a hidden tail of a path is exactly the part people miss. */
+  .cmd{display:block;background:var(--code);border-radius:6px;padding:10px 12px;margin:8px 0 14px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.5;
+    white-space:pre-wrap;overflow-wrap:anywhere;user-select:all}
 </style>
 </head>
 <body>
@@ -290,7 +295,7 @@
     <img src="assets/trace-mark-black.png" alt="">
     <h1>Trace</h1>
   </div>
-  <p class="lede">Pick one clip. See every place it's used across your entire project — then select
+  <p class="lede">Pick one clip. See every place it's used across your entire project – then select
   every instance at once.</p>
 
   <div class="cards">
@@ -314,6 +319,12 @@
   <p>Click a clip in the Project panel and Trace shows every place it is used — which sequences,
   which timecodes, how long, and how much of the source you have actually touched. Then one button
   selects every instance in the timeline at once.</p>
+
+  <figure>
+    <img src="assets/trace-features.gif" alt="Trace selecting every use of a clip in the timeline, giving the clip a label colour from the panel's colour chip, dropping a marker over every use, then Premiere's Paste Attributes applying a grade to all of them.">
+    <figcaption><strong>Select all, colour, mark, grade.</strong> The last step is Premiere&rsquo;s own
+      Paste Attributes, run on the selection Trace made.</figcaption>
+  </figure>
   <p><strong>The part that matters most:</strong> a selection is not a list. Once nine uses are
   selected they are a real Premiere selection — nudge them, delete them, apply an effect, colour
   them. Everything else that answers "where is this clip?" hands you a list and makes you visit the
@@ -363,7 +374,7 @@
   </a></p>
   <ol>
     <li><strong>Open the download link in your email</strong>, then download
-      <code>Trace.ccx</code> and double-click it. Creative Cloud Desktop installs it for you —
+      <code>trace.ccx</code> and double-click it. Creative Cloud Desktop installs it for you —
       nothing to unzip. Nothing arrived? Check spam, then
       <a href="mailto:support@nkcourses.co.uk">email me</a> and I will send it directly.</li>
     <li><strong>Quit Premiere Pro and open it again.</strong> Premiere only looks for new panels at
@@ -380,8 +391,8 @@
 
   <div class="note warn">
     <p><b>Double-clicking did nothing?</b> Open Creative Cloud Desktop first, then double-click the
-    file again. If Creative Cloud is not installed, use the free
-    <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a> instead.</p>
+    file again. Still nothing, or a message saying Creative Cloud cannot open it? <a href="#install-fallback">Install it from Terminal or Command
+    Prompt</a> instead. It is one line to paste.</p>
   </div>
 
   <h2 id="quick-start">Quick start</h2>
@@ -628,8 +639,13 @@
   <div class="note warn">
     <p><b>It is one undo step per sequence</b>, not one for the lot, and Trace tells you how many
     before you press it. Markers across four sequences is four presses of
-    <kbd>Cmd</kbd>+<kbd>Z</kbd>.</p>
+    <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>Z</kbd>.</p>
   </div>
+
+  <p><strong>Taking them off again.</strong> Each marker Trace adds is named <em>Trace &middot;</em> and the clip&rsquo;s
+  name, with <em>Use 3 of 5</em> in its comment, so they are easy to spot in Premiere&rsquo;s own <strong>Markers</strong> panel (<em>Window &gt;
+  Markers</em>), where you can select and delete them. Removing every Trace marker in one press is
+  part of <a href="#trace-plus">Trace+</a>.</p>
 
   <h2 id="colours">Colouring the clip</h2>
   <p>The <strong>four-colour chip</strong> beside the marker opens Premiere&rsquo;s own label colours.
@@ -670,7 +686,7 @@
   <div class="note warn">
     <p><b>This changes your project.</b> In and out points on a clip are what you get when you drag
     it into a timeline afterwards, so setting them is a real edit — one
-    <kbd>Cmd</kbd>+<kbd>Z</kbd> to undo, and Trace says so in the status line when it happens.</p>
+    <kbd>Cmd</kbd>/<kbd>Ctrl</kbd>+<kbd>Z</kbd> to undo, and Trace says so in the status line when it happens.</p>
     <p>Markers and this are the <strong>only two</strong> things Trace ever writes. Everything else
     it does is a read.</p>
   </div>
@@ -805,10 +821,21 @@
   <strong>Window &gt; UXP Plugins</strong>, not Window &gt; Extensions. If it is still missing,
   confirm you are on 25.6 or later under <strong>Premiere Pro &gt; About Premiere Pro</strong>.</p>
 
-  <h3>Double-clicking the .ccx did nothing</h3>
-  <p>Creative Cloud Desktop has to be installed and signed in. Open it first, then double-click the
-  file again. If you do not have it, use the free
-  <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a>.</p>
+  <h3 id="install-fallback">Double-clicking the .ccx did nothing, or said &ldquo;Creative Cloud cannot open files of this type&rdquo;</h3>
+  <p>Creative Cloud Desktop has to be installed and signed in. <strong>Open it first, then
+  double-click the file again.</strong> That fixes most cases.</p>
+  <p>Still not working? Nothing is wrong with the file. Install it with Adobe&rsquo;s own plugin installer instead, the same one
+  Creative Cloud uses behind the scenes. Quit Premiere first.</p>
+  <p><strong>Mac:</strong> open <em>Terminal</em> (Applications &gt; Utilities), paste this one line
+  and press Return. It downloads the latest Trace and installs it:</p>
+  <code class="cmd">curl -fL -o /tmp/trace.ccx https://github.com/nkcourses/trace_updates/releases/latest/download/trace.ccx &amp;&amp; "/Library/Application Support/Adobe/Adobe Desktop Common/RemoteComponents/UPI/UnifiedPluginInstallerAgent/UnifiedPluginInstallerAgent.app/Contents/MacOS/UnifiedPluginInstallerAgent" --install /tmp/trace.ccx</code>
+  <p><strong>Windows:</strong> open <em>Command Prompt</em> (not PowerShell), paste this one line
+  and press Enter:</p>
+  <code class="cmd">curl -fL -o "%TEMP%\trace.ccx" https://github.com/nkcourses/trace_updates/releases/latest/download/trace.ccx &amp;&amp; "C:\Program Files\Common Files\Adobe\Adobe Desktop Common\RemoteComponents\UPI\UnifiedPluginInstallerAgent\UnifiedPluginInstallerAgent.exe" /install "%TEMP%\trace.ccx"</code>
+  <p>When it finishes, restart Premiere and look under <strong>Window &gt; UXP Plugins</strong>.</p>
+  <p>No Creative Cloud Desktop at all? The free
+  <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a> works too. Still
+  stuck? <a href="mailto:support@nkcourses.co.uk">Email me</a> and I will sort it with you.</p>
 
   <h3>It says 0 uses and I know I used that clip</h3>
   <p>Three things do this, in order of likelihood:</p>
