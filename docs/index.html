@@ -47,8 +47,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trace — Help &amp; Documentation</title>
 <meta name="description" content="User guide for Trace, a free Premiere Pro panel that shows every place a clip is used across every sequence — and selects every instance at once.">
-<link rel="icon" href="assets/trace-mark-black.png">
-<link rel="apple-touch-icon" href="assets/trace-mark-black.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNCAyNiIgIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iVHJhY2UiPgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMjAuNCIgaGVpZ2h0PSI2IiByeD0iMyIgZmlsbD0iIzFGQzhFQyIvPgo8cmVjdCB4PSIwIiB5PSIxMCIgd2lkdGg9IjM0IiBoZWlnaHQ9IjYiIHJ4PSIzIiBmaWxsPSIjOUQ1NEU4Ii8+CjxyZWN0IHg9IjAiIHk9IjIwIiB3aWR0aD0iMjYuNTIiIGhlaWdodD0iNiIgcng9IjMiIGZpbGw9IiMxNkREN0QiLz4KPC9zdmc+Cg==">
+<link rel="apple-touch-icon" href="assets/trace-tile-180.png">
 <!-- 🔴 A LINK TO THIS PAGE IS AN ADVERT WHETHER OR NOT IT WAS MEANT AS ONE.
      Pasted into Slack, a forum or a DM without these, it renders as a bare URL;
      with them it renders as the mark, the name and the one-liner. The image is
@@ -57,7 +57,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Trace — help &amp; documentation">
 <meta property="og:description" content="Pick one clip. See every place it's used across your entire project – then select every instance at once.">
-<meta property="og:image" content="assets/trace-mark.png">
+<meta property="og:image" content="https://nkcourses.github.io/trace_updates/assets/trace-tile-512.png">
 <meta name="twitter:card" content="summary">
 <style>
   /* 🔴 The accent is BLUE, where VersionUp's is violet. The two panels are
@@ -88,17 +88,17 @@
     padding:14px 24px; background:rgba(255,255,255,.92); backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);
   }
-  .top img{width:26px;height:26px}
+  .top img.wm{height:22px;width:auto;display:block}
 
   /* ---------- the lockup ----------
      🔴 THE MARK IS DRAWN AT 56px AND SHIPPED AT 512. Downscaling a big PNG in
      the browser is the only version that stays crisp on a retina screen; a
      56px file looks right on exactly one class of display. */
   .lockup{display:flex; align-items:center; gap:16px; margin:0 0 6px}
-  .lockup img{width:56px; height:56px; flex:0 0 56px}
+  .lockup img.wm{height:52px; width:auto; display:block}
   .lockup h1{margin:0}
   .lockup .plus{width:34px;height:34px;flex:0 0 34px}
-  h2 .plus{width:26px;height:26px;vertical-align:-5px;margin-right:8px}
+  h2 .plus-wm{display:block;height:30px;width:auto;margin:0 0 10px}
   .pdf{display:inline-flex; align-items:center; gap:9px; margin:6px 0 2px;
        border:1px solid var(--line); border-radius:10px; padding:11px 16px;
        font-weight:600; background:#fff}
@@ -243,8 +243,8 @@
 <body>
 
 <header class="top">
-  <img src="assets/trace-mark-black.png" alt="">
-  <b>Trace</b> <span>Help &amp; documentation</span>
+  <img class="wm" src="assets/trace-wordmark-bars.svg" alt="Trace">
+  <span>Help &amp; documentation</span>
   <button class="menu-btn" id="menuBtn" aria-label="Contents">Contents</button>
   <a class="buy" href="https://www.nkcourses.co.uk/trace">Get Trace — free</a>
 </header>
@@ -291,10 +291,7 @@
 </nav>
 
 <main>
-  <div class="lockup">
-    <img src="assets/trace-mark-black.png" alt="">
-    <h1>Trace</h1>
-  </div>
+  <h1 class="lockup"><img class="wm" src="assets/trace-wordmark-bars.svg" alt="Trace"></h1>
   <p class="lede">Pick one clip. See every place it's used across your entire project – then select
   every instance at once.</p>
 
@@ -865,7 +862,7 @@
   <p>Drag the dock wider or taller. Trace is happiest in a normal side column — give it a bit more
   room and the row will lay out properly again.</p>
 
-  <h2 id="trace-plus"><img class="plus" src="assets/trace-plus-mark-black.png" alt="">Need more control?</h2>
+  <h2 id="trace-plus"><img class="plus-wm" src="assets/trace-plus-wordmark-bars.svg" alt="Trace+">Need more control?</h2>
   <p class="lede" style="margin-bottom:22px">Then <strong>Trace+</strong> may be just for you.</p>
   <p><strong>Both search your whole project.</strong> The difference is how many clips they answer
   for — and what you can do about the answer.</p>
