@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">VersionUp logo mark, dark ink</title>
+  <desc id="description">An upward arrow above three coloured timeline bars, in near-black for light backgrounds.</desc>
+  <defs>
+    <linearGradient id="vu-arrow" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#14181c"/><stop offset="1" stop-color="#363d45"/></linearGradient>
+    <linearGradient id="vu-cyan" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#2bdcff"/><stop offset="1" stop-color="#00a8db"/></linearGradient>
+    <linearGradient id="vu-violet" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b66aff"/><stop offset="1" stop-color="#7d3bc9"/></linearGradient>
+    <linearGradient id="vu-green" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#24f28c"/><stop offset="1" stop-color="#00c86a"/></linearGradient>
+  </defs>
+  <path d="M256 308V112M132 190 256 66l124 124" fill="none" stroke="url(#vu-arrow)" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="156" y="324" width="52" height="124" rx="26" fill="url(#vu-cyan)"/>
+  <rect x="230" y="360" width="52" height="124" rx="26" fill="url(#vu-violet)"/>
+  <rect x="304" y="324" width="52" height="124" rx="26" fill="url(#vu-green)"/>
+</svg>
