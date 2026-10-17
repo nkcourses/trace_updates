@@ -1,11 +1,11 @@
 {
-  "latest": "1.3.3",
-  "released": "2026-09-28",
-  "headline": "A reliability release: more accurate results, sequences picked up as they change, and proper Windows wording",
+  "latest": "1.4.0",
+  "released": "2026-10-17",
+  "headline": "Trace+ is out now, and About checks for updates as it opens",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**More accurate results.** Uses inside J-cut nests land on the right frame, dual-mono audio counts once, stacked uses inside a nest are all listed, and episodes like Ep_01 are no longer hidden as old versions.",
-    "**Keeps up with your project.** Deleted and duplicated sequences are picked up straight away, a click during a re-scan is no longer lost, and Mark all no longer triggers a full re-scan.",
-    "**Better on Windows.** Ctrl instead of Cmd in every hint, the same file recognised however its path is spelled, and the scan report keeps its line breaks."
+    "**Trace+ is out now.** The Trace+ card's button says Get Trace+ and opens the Trace+ page.",
+    "**About checks for updates as it opens**, with a Check for updates button and a Help guide link.",
+    "**Clearer tour.** Modifier keys and key points are bold rows you can scan."
   ]
 }
