@@ -1,11 +1,11 @@
 {
-  "latest": "1.4.0",
-  "released": "2026-10-17",
-  "headline": "Trace+ is out now, and About checks for updates as it opens",
+  "latest": "1.4.2",
+  "released": "2026-10-20",
+  "headline": "One-click updates",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**Trace+ is out now.** The Trace+ card's button says Get Trace+ and opens the Trace+ page.",
-    "**About checks for updates as it opens**, with a Check for updates button and a Help guide link.",
-    "**Clearer tour.** Modifier keys and key points are bold rows you can scan."
+    "**New: one-click Update.** Next time there's an update, press Update. Creative Cloud asks once to replace the current version, and Trace reloads. No file to find, no restart.",
+    "**If Update can't install from inside Premiere,** it opens the download in your browser instead, as before.",
+    "**Wording tidied:** Trace is called a plugin everywhere."
   ]
 }

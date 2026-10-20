@@ -1,11 +1,11 @@
 {
-  "latest": "1.4.1",
-  "released": "2026-10-19",
-  "headline": "Trace keeps listening after Premiere goes quiet",
+  "latest": "1.4.2",
+  "released": "2026-10-20",
+  "headline": "One-click updates",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**Trace no longer goes silent.** If Premiere stops answering, Trace says so and starts listening again.",
-    "**Reopening Trace makes it look again** at the Project panel straight away.",
-    "**Trace waits until you stop editing** before it re-reads the timeline, so it stays out of the way while you drag clips in."
+    "**New: one-click Update.** Next time there's an update, press Update. Creative Cloud asks once to replace the current version, and Trace reloads. No file to find, no restart.",
+    "**If Update can't install from inside Premiere,** it opens the download in your browser instead, as before.",
+    "**Wording tidied:** Trace is called a plugin everywhere."
   ]
 }

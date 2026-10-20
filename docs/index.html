@@ -263,7 +263,7 @@
   <a href="#install">Install</a>
   <a href="#quick-start">Quick start</a>
 
-  <h4>The plugin</h4>
+  <h4>The panel</h4>
   <a href="#two-views">One clip at a time</a>
   <a href="#repeats">Repeats and sections</a>
   <a href="#find">Finding every use</a>
@@ -302,7 +302,7 @@
   every instance at once.</p>
 
   <div class="cards">
-    <a class="card" href="#install"><b>Install</b><span>Get the plugin into Premiere. About a
+    <a class="card" href="#install"><b>Install</b><span>Get the panel into Premiere. About a
       minute, and there is no licence key.</span></a>
     <a class="card" href="assets/Trace-Install-Guide.pdf"><b>Install guide (PDF)</b><span>Four
       pages, printable — covers Trace and Trace+, with every gesture on one page.</span></a>
@@ -357,7 +357,7 @@
     <tr><td class="no">Something that edits for you</td><td>It moves the playhead and makes selections. Only if you ask does it add markers or set in/out points. It never cuts, trims or ripples.</td></tr>
     <tr><td class="no">A subscription, or a trial</td><td>Free. No account, no key, no sign-in, no expiry, nothing to cancel.</td></tr>
   </table>
-  <p>It is also not a plugin most people open every day. It earns its place on the days you inherit
+  <p>It is also not a panel most people open every day. It earns its place on the days you inherit
   someone else's project, hunt a clip you know you used somewhere, or need to know what a
   forty-minute interview actually gave you.</p>
 
@@ -380,7 +380,7 @@
       <code>trace.ccx</code> and double-click it. Creative Cloud Desktop installs it for you —
       nothing to unzip. Nothing arrived? Check spam, then
       <a href="mailto:support@nkcourses.co.uk">email me</a> and I will send it directly.</li>
-    <li><strong>Quit Premiere Pro and open it again.</strong> Premiere only looks for new plugins at
+    <li><strong>Quit Premiere Pro and open it again.</strong> Premiere only looks for new panels at
       startup.</li>
     <li><strong>Window &gt; UXP Plugins &gt; Trace.</strong></li>
   </ol>
@@ -405,7 +405,7 @@
       hundred milliseconds on a normal job — then answers instantly from then on.</li>
     <li>Click any row to jump the playhead to that use.</li>
     <li>Press <strong>Select all</strong> &mdash; on a sequence&rsquo;s own header for that cut alone, or
-      in the bar at the foot of the plugin for everything on screen &mdash; and every use becomes a real
+      in the bar at the foot of the panel for everything on screen &mdash; and every use becomes a real
       Premiere selection at once.</li>
   </ol>
   <p>With nothing selected, Trace waits. That is the whole loop; everything below is detail.</p>
@@ -420,12 +420,7 @@
   used; the other five uses are repeats of footage already counted.</p>
 
   <p>And every use that shares its footage with another carries a <strong>REPEAT</strong> badge on
-  its row, so you can see which ones they are rather than only how many. A use from a different part of the
-  source carries an <strong>OTHER</strong> badge.</p>
-
-  <p>The three tabs under the totals filter the list by that: <strong>All</strong> shows every use,
-  <strong>Repeat</strong> only the uses of footage you have already used elsewhere, and <strong>OTHER</strong>
-  only the uses of a different part of the file. Each tab shows how many rows it holds before you press it.</p>
+  its row, so you can see which ones they are rather than only how many.</p>
 
   <div class="note">
     <p><b>It is not shown when it would say nothing.</b> A clip cut into nine different places reads
@@ -444,7 +439,7 @@
   <p><strong>Trace scans the clip you select, and nothing else.</strong> There is no view to
   switch, no mode, no setting. Click a clip, a subclip, an audio file or a sequence in the Project
   panel and Trace shows every place it is used. Click away and it waits.</p>
-  <p>That is the whole shape of it, and it is deliberate: a plugin that only ever answers one question
+  <p>That is the whole shape of it, and it is deliberate: a panel that only ever answers one question
   needs no explaining. If you want the same answer for <strong>many clips at once</strong> — what a
   whole sequence reuses, what media the whole project is not using — that is
   <a href="#trace-plus">Trace+</a>.</p>
@@ -495,7 +490,7 @@
   effect onto.</p>
 
   <p>There are two of them, and they have different scopes. Each sequence card&rsquo;s header carries its
-  own <strong>Select all 5</strong> for that cut alone; the bar pinned at the foot of the plugin carries
+  own <strong>Select all 5</strong> for that cut alone; the bar pinned at the foot of the panel carries
   <strong>Select all 9</strong> for everything on screen. Both say how many they will take, so you never
   have to guess which one you are pressing.</p>
 
@@ -524,9 +519,9 @@
   <!-- ⚠️ AT THE TOP, not the bottom. The stepper moved up into its own row in
        0.44.x and this line was left behind — a reader following it looks at the
        wrong end of the panel for a control that is right in front of them. -->
-  <p>The arrows at the top right of the plugin walk the playhead through every use on screen, in order,
+  <p>The arrows at the top right of the panel walk the playhead through every use on screen, in order,
   jumping between sequences as needed. The counter between them tells you where you are —
-  <em>3 / 9</em>. The <strong>&times;</strong> at the right-hand end of the bar at the foot of the plugin
+  <em>3 / 9</em>. The <strong>&times;</strong> at the right-hand end of the bar at the foot of the panel
   drops the selection and the picks.</p>
 
   <h2 id="gestures">Every gesture</h2>
@@ -538,7 +533,7 @@
       <strong>collapses every other</strong> — the tidy-up, for when the list has got long</td></tr>
     <tr><td>Select all in a sequence</td><td>Every sequence header carries its own <strong>Select all</strong>
       with the count on it, so you can light one cut's uses without touching the rest. The bar at the
-      foot of the plugin does the same for everything on screen</td></tr>
+      foot of the panel does the same for everything on screen</td></tr>
     <tr><td>Click a use, with nothing ticked</td><td>Jump the playhead there and select that clip</td></tr>
     <tr><td>Click a use, with a selection running</td><td><strong>Adds or removes it</strong> — so
       &ldquo;select all, drop the two I don&rsquo;t want&rdquo; needs no modifier. The playhead still
@@ -546,7 +541,8 @@
     <tr><td><kbd>Shift</kbd>-click, or double-click</td><td>Open in the Source Monitor, with that use set as in/out</td></tr>
     <tr><td><kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click, or the tick box</td><td>Add or remove from the selection</td></tr>
     <tr><td><kbd>Alt</kbd>-click</td><td><strong>Find in Project</strong> — copies the clip's name for the
-      Project panel's Find box (<kbd>Cmd</kbd>/<kbd>Ctrl</kbd>-F)</td></tr>
+      Project panel's Find box (<kbd>Cmd</kbd>/<kbd>Ctrl</kbd>-F). The <strong>Find</strong> button beside the
+      bin path does the same thing</td></tr>
     <tr><td>The arrows</td><td>Step through every use on screen</td></tr>
   </table>
   <p><kbd>Shift</kbd> and double-click do the same thing deliberately, so the Source Monitor is
@@ -633,7 +629,7 @@
 
   <h2 id="markers">Adding markers</h2>
   <p>The <strong>marker button</strong> — the flag shape at the far left of the bar at the foot of the
-  plugin — drops a marker over every use on screen. Unlike a selection, a marker survives you clicking
+  panel — drops a marker over every use on screen. Unlike a selection, a marker survives you clicking
   somewhere else: it is the persistent version of &ldquo;highlight every use&rdquo;.</p>
 
   <div class="note">
@@ -660,7 +656,7 @@
 
   <figure>
     <img src="assets/ui-colours-wide.png" alt="Trace docked wide under the timeline, with the fifteen label colours laid out along the action bar.">
-    <figcaption><strong>The colours</strong> — along the bar when the plugin is wide enough for them.</figcaption>
+    <figcaption><strong>The colours</strong> — along the bar when the panel is wide enough for them.</figcaption>
   </figure>
 
   <p>Hover the chip and the colours appear; move away and they go after about half a second. Click the
@@ -675,7 +671,7 @@
 
   <div class="note warn">
     <p style="margin:0"><b>It colours the master clip, not the clips in your timeline.</b> Premiere has
-    no way for a plugin to set a track item&rsquo;s label. Instances take the master&rsquo;s colour by
+    no way for a panel to set a track item&rsquo;s label. Instances take the master&rsquo;s colour by
     Premiere&rsquo;s own rule &mdash; which is what people mean when they ask for this &mdash; but an
     instance somebody has already recoloured by hand keeps its override.</p>
   </div>
@@ -705,7 +701,7 @@
   <a href="#trace-plus">Trace+</a>.</p>
 
   <h2 id="report">Reporting a bug, or asking for something</h2>
-  <p><strong>☰ &gt; Send feedback</strong> sends a message straight to me from inside the plugin,
+  <p><strong>☰ &gt; Send feedback</strong> sends a message straight to me from inside the panel,
   along with your Trace, Premiere and system versions — never a file path, a project name, or
   anything from your timeline. Nothing is sent unless you type something and press Send.</p>
   <p><strong>☰ &gt; Scan report</strong> is the diagnostic behind it: what Trace found, how long it
@@ -715,10 +711,14 @@
 
   <h2 id="updates">Updates and About</h2>
   <p>Trace checks once a day whether a newer version exists and shows a small notice in the plugin if
-  so. <strong>☰ &gt; Check for updates</strong> asks immediately, and the About window checks by itself every time it opens.</p>
+  so. <strong>About Trace &gt; Check for updates</strong> asks immediately.</p>
+  <p>Press <strong>Update</strong> on the notice: Trace downloads the new version and Creative Cloud asks
+  once to replace the current one. Click Replace and Trace reloads – no file to find and no restart.
+  (One-click Update arrived in 1.4.2. On an older copy, or if Update can't install from inside Premiere,
+  it opens the download in your browser instead: double-click <code>trace.ccx</code> as on the first
+  install.)</p>
   <p><strong>☰ &gt; About Trace</strong> shows the version you are running — the first thing to quote
-  if you report a problem — along with a link back to this site and a <strong>Help guide</strong> button that opens this page.</p>
-  <p><strong>☰ &gt; Tour</strong> replays the short tour Trace shows the first time you open it.</p>
+  if you report a problem — along with a link back to this site.</p>
 
   <figure>
     <img src="assets/about-dialog.png" alt="The About Trace window, showing the mark, the version number and the tagline.">
@@ -740,7 +740,7 @@
       no way to set a Project panel selection, and none of the 78 undoable actions comes close. Premiere's own
       <em>Reveal in Project</em> command cannot be triggered either.
       <br><br>So Trace does the two halves it can: it <strong>shows you the bin</strong> under the clip name, and
-      <strong>Find in Project</strong> — <kbd>Alt</kbd>-click on any row —
+      <strong>Find in Project</strong> — the button beside it, or <kbd>Alt</kbd>-click on any row —
       copies the exact name for the Project panel's Find box. It is
       called Find rather than Reveal because that is what it does.</td></tr>
     <tr><td class="no">Colour or tint clips in the timeline</td><td>Colour labels are project-item only. Selection and markers are the two visual channels a plugin gets.</td></tr>
@@ -805,7 +805,7 @@
   <h3>What happens with audio?</h3>
   <p>Audio is indexed with video, and a synced clip counts as <strong>one use, not two</strong>.
   Video on V1 with its audio on A1 is two track items pointing at one source, so a naive count
-  doubles — and the count is the whole point of the plugin. Trace merges them where they overlap by
+  doubles — and the count is the whole point of the panel. Trace merges them where they overlap by
   more than half, so a J-cut or an L-cut stays one use and reports the full on-screen range. Two
   genuinely separate edits of the same clip, back to back, do not overlap enough to merge and stay
   two.</p>
@@ -820,12 +820,12 @@
 
   <h3>Is it really free?</h3>
   <p>Yes — no account, no key, no trial, no expiry. <a href="#trace-plus">Trace+</a> is the paid
-  plugin, and it is a different question rather than a bigger helping of this one.</p>
+  panel, and it is a different question rather than a bigger helping of this one.</p>
 
   <h2 id="troubleshooting">Troubleshooting</h2>
 
   <h3>Trace isn't in the Window menu</h3>
-  <p>Restart Premiere after installing — it only looks for new plugins at startup. Then check
+  <p>Restart Premiere after installing — it only looks for new panels at startup. Then check
   <strong>Window &gt; UXP Plugins</strong>, not Window &gt; Extensions. If it is still missing,
   confirm you are on 25.6 or later under <strong>Premiere Pro &gt; About Premiere Pro</strong>.</p>
 
@@ -845,7 +845,7 @@
   <a href="https://aescripts.com/learn/zxp-installer/">ZXP/UXP installer</a> works too. Still
   stuck? <a href="mailto:support@nkcourses.co.uk">Email me</a> and I will sort it with you.</p>
 
-  <h3>It says &ldquo;Not used&rdquo; and I know I used that clip</h3>
+  <h3>It says 0 uses and I know I used that clip</h3>
   <p>Three things do this, in order of likelihood:</p>
   <ul>
     <li><strong>The uses are in archived sequences.</strong> Open <strong>Filters</strong> and untick
@@ -862,16 +862,11 @@
   <p>Trace re-scans on its own as you edit, but <strong>☰ &gt; Re-scan project</strong>
   forces it. If a forced re-scan changes the answer, that is worth telling me about.</p>
 
-  <h3>Trace stopped picking up clips</h3>
-  <p>Since 1.4.1 Trace notices when Premiere stops answering and frees itself within about a minute,
-  with a message in the status line. If it still shows nothing, use <strong>☰ &gt; Re-scan project</strong>,
-  or restart Premiere. If you are on an older version, update first: <strong>☰ &gt; Check for updates</strong>.</p>
-
   <h3>Clicking a row moved the playhead but selected nothing</h3>
   <p>Almost always means the clip has been trimmed or moved since the last scan. Re-scan and try
   again.</p>
 
-  <h3>The plugin is squashed or the buttons overlap</h3>
+  <h3>The panel is squashed or the buttons overlap</h3>
   <!-- ⚠️ NO ADAPTIVITY CLAIM. "Trace drops columns as it narrows" was the same
        promise the deleted Docking section made, and it is not what the panel
        does. Keep the advice, drop the claim. -->
@@ -941,14 +936,14 @@
     <tr><th>Deletes any media, ever</th><td>Never</td><td>Never</td></tr>
   </table>
   <p><strong>Everything Trace does, Trace+ does too.</strong> Nothing you learn here is wasted and
-  no habit disappears — the paid plugin is the same engine asked a bigger question.</p>
+  no habit disappears — the paid panel is the same engine asked a bigger question.</p>
 
   <div class="note">
     <p><b>If you have seen the coloured coverage bar in Trace, it is not there any more.</b> Early
     builds drew it under the totals: the whole source clip, with the parts you had used filled in,
     reading <em>68% of the source used · longest untouched 4m 12s</em>. It moved to Trace+ on
     12 August, before Trace was released.</p>
-    <p>It is the clearest example of where the line between the two plugins sits. Trace answers
+    <p>It is the clearest example of where the line between the two panels sits. Trace answers
     <em>where is this clip?</em> — a lookup. The bar answers <em>how much of this clip have I ever
     touched?</em> — an analysis of the same clip, and analysis is what Trace+ is for.</p>
   </div>
@@ -959,7 +954,7 @@
     <a class="go" href="https://www.nkcourses.co.uk/traceplus/">Get Trace+</a>
     <span class="note">Trace stays free, complete and finished. It is not a trial. Trace+ is a
       superset — it answers everything Trace answers and more — so installing it does not disturb
-      Trace, and you can keep the free plugin or remove it, whichever suits your workspace.</span>
+      Trace, and you can keep the free panel or remove it, whichever suits your workspace.</span>
   </div>
 
   <h2 id="versionup"><span class="vu-lockup"><img src="assets/versionup-mark-black.svg" alt=""><span>VersionUp</span></span>Versioning your cuts by hand?</h2>
@@ -978,10 +973,10 @@
   </div>
 
   <h2 id="privacy">Privacy</h2>
-  <p><strong>Nothing about your project leaves your machine.</strong> Neither plugin uploads, logs or
+  <p><strong>Nothing about your project leaves your machine.</strong> Neither panel uploads, logs or
   phones home about your media, your sequences, your file paths or your project name. There is no
   analytics, no account and no telemetry.</p>
-  <p>Both plugins make exactly one network request, and only when you ask for it or when the
+  <p>Both panels make exactly one network request, and only when you ask for it or when the
   once-a-day update check runs: they fetch a small file from
   <a href="https://nkcourses.github.io/trace_updates/">nkcourses.github.io</a> that says whether a
   newer version exists. Nothing is sent with it.</p>
@@ -989,10 +984,10 @@
   came from. It never opens a media file.</p>
   <p><strong>Trace+</strong> reads the same, plus the <strong>size</strong> of the media files your
   project points at, which is where the archive-weight figure comes from. That needs filesystem
-  permission, and it is a bigger ask than the free plugin makes, so it is worth saying plainly what it
+  permission, and it is a bigger ask than the free panel makes, so it is worth saying plainly what it
   does <em>not</em> do: <strong>it never reads a file's contents.</strong> Only how many bytes long
   it is.</p>
-  <p>The <strong>Scan report</strong> in the plugin menu is the one place your file paths appear, and
+  <p>The <strong>Scan report</strong> in the panel menu is the one place your file paths appear, and
   it goes to your clipboard — nowhere else. Read it before you paste it into an email.</p>
 
   <h2 id="support">Support</h2>
