@@ -404,8 +404,8 @@
     <li><strong>Click a clip in the Project panel.</strong> Trace scans the project once — a few
       hundred milliseconds on a normal job — then answers instantly from then on.</li>
     <li>Click any row to jump the playhead to that use.</li>
-    <li>Press <strong>Select all</strong> &mdash; on a sequence&rsquo;s own header for that cut alone, or
-      in the bar at the foot of the panel for everything on screen &mdash; and every use becomes a real
+    <li>Tick the box at the top left of a sequence for that cut alone, or press <strong>Select all</strong>
+      in the bar at the foot of the plugin for everything on screen, and every use becomes a real
       Premiere selection at once.</li>
   </ol>
   <p>With nothing selected, Trace waits. That is the whole loop; everything below is detail.</p>
@@ -447,6 +447,11 @@
     <p style="margin:0"><b>A sequence counts as a clip.</b> Select one and Trace tells you where
     <em>that sequence</em> is nested, the same way it would for any other item.</p>
   </div>
+  <div class="note">
+    <p style="margin:0"><b>A bin is not a clip.</b> Select one and Trace says so, and asks you to
+    select a clip inside it instead. Its <strong>Get Trace+</strong> button is for when you want the
+    whole bin at once: Trace+ scans entire bins and builds Stringout sequences from them.</p>
+  </div>
 
   <h2 id="find">Finding every use of a clip</h2>
   <p>Select a clip and Trace answers with a total line — <em>9 uses · 4 sequences · 3m 12s</em> —
@@ -458,7 +463,7 @@
   than one long column of timecodes.</p>
 
   <figure>
-    <img src="assets/ui-list.png" alt="Trace listing a clip's uses, grouped into one rounded card per sequence, each header carrying its own Select all button.">
+    <img src="assets/ui-list.png" alt="Trace listing a clip's uses, grouped into one rounded card per sequence, each header starting with its own tick box.">
     <figcaption><strong>Finding every use</strong> — nothing to press, and no column to turn on.
       Trace follows the Project panel.</figcaption>
   </figure>
@@ -489,10 +494,10 @@
   use becomes a real Premiere selection at the same moment — ready to nudge, delete, label, or drop an
   effect onto.</p>
 
-  <p>There are two of them, and they have different scopes. Each sequence card&rsquo;s header carries its
-  own <strong>Select all 5</strong> for that cut alone; the bar pinned at the foot of the panel carries
-  <strong>Select all 9</strong> for everything on screen. Both say how many they will take, so you never
-  have to guess which one you are pressing.</p>
+  <p>There are two of them, and they have different scopes. The tick box at the top left of each
+  sequence card takes that cut alone: empty, a bar when some of its uses are ticked, a tick when all
+  are. The bar pinned at the foot of the plugin carries <strong>Select all 9</strong> for everything on
+  screen, and says how many it will take before you press it.</p>
 
   <figure>
     <img src="assets/ui-selected.png" alt="Trace with a sequence's uses selected, the rows filled in, and the bar offering Deselect all.">
@@ -519,10 +524,10 @@
   <!-- ⚠️ AT THE TOP, not the bottom. The stepper moved up into its own row in
        0.44.x and this line was left behind — a reader following it looks at the
        wrong end of the panel for a control that is right in front of them. -->
-  <p>The arrows at the top right of the panel walk the playhead through every use on screen, in order,
-  jumping between sequences as needed. The counter between them tells you where you are —
-  <em>3 / 9</em>. The <strong>&times;</strong> at the right-hand end of the bar at the foot of the panel
-  drops the selection and the picks.</p>
+  <p>The arrows in the bar at the foot of the plugin, just before <strong>Select all</strong>, walk the
+  playhead through every use on screen, in order, jumping between sequences as needed. The counter
+  between them tells you where you are — <em>3 of 9</em>. The <strong>&times;</strong> at the right-hand
+  end of the bar drops the selection and the picks.</p>
 
   <h2 id="gestures">Every gesture</h2>
   <table>
@@ -531,9 +536,10 @@
       exactly as they were, so you can have as many open at once as you like</td></tr>
     <tr><td><kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click a sequence name</td><td>Opens that one and
       <strong>collapses every other</strong> — the tidy-up, for when the list has got long</td></tr>
-    <tr><td>Select all in a sequence</td><td>Every sequence header carries its own <strong>Select all</strong>
-      with the count on it, so you can light one cut's uses without touching the rest. The bar at the
-      foot of the panel does the same for everything on screen</td></tr>
+    <tr><td>The tick box on a sequence</td><td>Every sequence header starts with its own tick box, so you
+      can light one cut's uses without touching the rest. <kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click it to add
+      that sequence to what is ticked. <strong>Select all</strong> in the bar at the foot of the plugin
+      does the same for everything on screen</td></tr>
     <tr><td>Click a use, with nothing ticked</td><td>Jump the playhead there and select that clip</td></tr>
     <tr><td>Click a use, with a selection running</td><td><strong>Adds or removes it</strong> — so
       &ldquo;select all, drop the two I don&rsquo;t want&rdquo; needs no modifier. The playhead still
@@ -635,7 +641,7 @@
   <div class="note">
     <p style="margin:0"><b>The bar is grouped, and the grouping means something.</b> The two controls
     that <em>act on</em> a selection — the marker and the colour chip — sit at the left. The two that
-    <em>make or unmake</em> one — Select all and the ✕ — sit at the right. The gap between them is the
+    <em>make or unmake</em> one — the arrows, Select all and the ✕ — sit at the right. The gap between them is the
     only thing saying so, and it is enough.</p>
   </div>
 

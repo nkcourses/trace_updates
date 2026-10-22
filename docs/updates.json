@@ -1,11 +1,12 @@
 {
-  "latest": "1.4.2",
-  "released": "2026-10-20",
-  "headline": "One-click updates",
+  "latest": "1.4.3",
+  "released": "2026-10-22",
+  "headline": "Select all and the arrows sit where they do in Trace+",
   "url": "https://nkcourses.github.io/trace_updates/#history",
   "notes": [
-    "**New: one-click Update.** Next time there's an update, press Update. Creative Cloud asks once to replace the current version, and Trace reloads. No file to find, no restart.",
-    "**If Update can't install from inside Premiere,** it opens the download in your browser instead, as before.",
-    "**Wording tidied:** Trace is called a plugin everywhere."
+    "**Each sequence has a tick box at the top left.** Tick it to select that cut's uses; it works on a folded sequence too.",
+    "**The back and forward arrows moved to the bottom bar**, just before Select all.",
+    "**Source brings the Source Monitor to the front**, even when that clip is already open in it.",
+    "**Selecting a bin shows a Get Trace+ button**: Trace+ scans entire bins and builds Stringout sequences."
   ]
 }
