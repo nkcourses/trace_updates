@@ -1,12 +1,12 @@
 {
-  "latest": "1.4.3",
-  "released": "2026-10-22",
-  "headline": "Select all and the arrows sit where they do in Trace+",
-  "url": "https://nkcourses.github.io/trace_updates/#history",
+  "latest": "1.5.0",
+  "released": "2026-11-15",
+  "headline": "See every use of a clip as a picture",
+  "url": "https://nkcourses.github.io/trace_updates/#views",
   "notes": [
-    "**Each sequence has a tick box at the top left.** Tick it to select that cut's uses; it works on a folded sequence too.",
-    "**The back and forward arrows moved to the bottom bar**, just before Select all.",
-    "**Source brings the Source Monitor to the front**, even when that clip is already open in it.",
-    "**Selecting a bin shows a Get Trace+ button**: Trace+ scans entire bins and builds Stringout sequences."
+    "**Three ways to see a clip's uses**, like Premiere's own: List, List with thumbnails and Icon view.",
+    "**A size slider in the bottom bar** makes the thumbnails bigger or smaller, or the text in List view.",
+    "**The same shot used more than once folds under its first use**, marked ×2, ×3. Filters › Group repeated shots turns this off.",
+    "**Filters › Colour labels** shows or hides the coloured bar on each use."
   ]
 }

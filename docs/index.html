@@ -161,6 +161,10 @@
   /* ---------- pieces ---------- */
   figure{margin:22px 0}
   figure img{width:100%; border:1px solid var(--line); border-radius:10px; display:block}
+  figure.trio{display:flex; flex-wrap:wrap; justify-content:space-between}
+  figure.trio img{width:32%; margin-bottom:8px}
+  figure.trio figcaption{flex:0 0 100%}
+  @media (max-width:640px){ figure.trio img{width:100%} }
   figcaption{margin-top:8px; font-size:13.5px; color:var(--muted); text-align:center}
 
   .cards{display:flex; flex-wrap:wrap; gap:14px; margin:28px 0}
@@ -267,6 +271,7 @@
   <a href="#two-views">One clip at a time</a>
   <a href="#repeats">Repeats and sections</a>
   <a href="#find">Finding every use</a>
+  <a href="#views">Three ways to see the uses</a>
   <a href="#select">Selecting uses</a>
   <a href="#stepping">Stepping through uses</a>
   <a href="#gestures">Every gesture</a>
@@ -467,6 +472,29 @@
     <figcaption><strong>Finding every use</strong> — nothing to press, and no column to turn on.
       Trace follows the Project panel.</figcaption>
   </figure>
+
+  <h3 id="views">Three ways to see the uses</h3>
+  <p>The three buttons at the top switch between Premiere&rsquo;s own three views:
+  <strong>List view</strong>, <strong>List with thumbnails</strong> and <strong>Icon view</strong>.
+  In the last two, each use is a frame from the middle of that use.</p>
+  <figure class="trio">
+    <img src="assets/ui-clipview-list.png" alt="Trace in List view: one row per use with its timecode, length and tag.">
+    <img src="assets/ui-clipview-thumbs.png" alt="Trace in List with thumbnails: each use has a frame beside its timecode, length and tag.">
+    <img src="assets/ui-clipview-icons.png" alt="Trace in Icon view: each use is a large frame with its timecode and length under it.">
+    <figcaption>List view, List with thumbnails and Icon view. The slider in the bottom bar sizes
+      whichever one you are in.</figcaption>
+  </figure>
+  <ul>
+    <li><strong>The slider in the bottom bar</strong> makes the frames bigger or smaller, or the text in
+      List view, and each view remembers its own size.</li>
+    <li><strong>A frame is what the sequence shows at that moment</strong>, not the clip on its own,
+      so a title or another clip above the use is in the picture. Frames are made one at a time in
+      the background, so a clip with many uses takes a moment to fill in.</li>
+    <li><strong>The same shot used more than once folds under its first use</strong>, marked ×2, ×3.
+      Click it to open the others, or press <strong>Show all takes</strong> beside the sequence name.
+      <strong>Filters ▸ Group repeated shots</strong> turns this off.</li>
+    <li><strong>Filters ▸ Colour labels</strong> shows or hides the coloured bar on each use.</li>
+  </ul>
 
   <p>Click a sequence name to open or close <em>that</em> card and nothing else, so you can have as many
   open at once as you like. <kbd>Cmd</kbd> / <kbd>Ctrl</kbd>-click one to collapse all the rest &mdash;
