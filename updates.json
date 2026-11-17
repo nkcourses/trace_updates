@@ -1,12 +1,10 @@
 {
-  "latest": "1.5.0",
-  "released": "2026-11-15",
-  "headline": "See every use of a clip as a picture",
+  "latest": "1.5.1",
+  "released": "2026-11-17",
+  "headline": "Thumbnails come faster",
   "url": "https://nkcourses.github.io/trace_updates/#views",
   "notes": [
-    "**Three ways to see a clip's uses**, like Premiere's own: List, List with thumbnails and Icon view.",
-    "**A size slider in the bottom bar** makes the thumbnails bigger or smaller, or the text in List view.",
-    "**The same shot used more than once folds under its first use**, marked ×2, ×3. Filters › Group repeated shots turns this off.",
-    "**Filters › Colour labels** shows or hides the coloured bar on each use."
+    "**Thumbnails come faster**: the uses on screen go first, three at once, and every frame is kept on disk.",
+    "**The count between the arrows in the bottom bar is centred.**"
   ]
 }
