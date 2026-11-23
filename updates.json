@@ -1,10 +1,9 @@
 {
-  "latest": "1.5.1",
-  "released": "2026-11-17",
-  "headline": "Thumbnails come faster",
+  "latest": "1.5.2",
+  "released": "2026-11-23",
+  "headline": "Unused footage thumbnails fill their frame",
   "url": "https://nkcourses.github.io/trace_updates/#views",
   "notes": [
-    "**Thumbnails come faster**: the uses on screen go first, three at once, and every frame is kept on disk.",
-    "**The count between the arrows in the bottom bar is centred.**"
+    "**A thumbnail of unused footage no longer sits small in a black frame** when the clip is smaller than the first one Trace made previews from."
   ]
 }
